@@ -1,0 +1,237 @@
+# AI Learning Roadmap
+
+## Vision
+
+Build an AI learning platform that adapts to each person's lifestyle, age, occupation, goals, and available learning time.
+
+Instead of asking:
+
+> "What AI tool should I learn?"
+
+The platform asks:
+
+- Who are you?
+- What do you want to achieve?
+- How much time do you have?
+
+Then generates a personalized AI roadmap.
+
+---
+
+# Target Audience
+
+## Tier 1 - Kids (5-10)
+
+Goals
+
+- Learn safely
+- Have fun
+- Build creativity
+
+Learning Style
+
+- Games
+- Stories
+- Images
+- Voice
+
+---
+
+## Tier 2 - Teenagers (11-17)
+
+Goals
+
+- Homework
+- Coding
+- Content Creation
+- School Projects
+
+Learning Style
+
+- Challenges
+- Short Videos
+- Quizzes
+
+---
+
+## Tier 3 - College Students
+
+Goals
+
+- Research
+- Presentation
+- Resume
+- Internship
+- Productivity
+
+Tracks
+
+- Business
+- Engineering
+- Medical
+- Law
+- Design
+- Marketing
+
+---
+
+## Tier 4 - Office Workers
+
+Goals
+
+- Save time
+- Improve productivity
+- Automate repetitive work
+
+Departments
+
+- HR
+- Finance
+- Sales
+- Marketing
+- Supply Chain
+- Purchasing
+- Engineering
+- Operations
+
+---
+
+## Tier 5 - Business Owners
+
+Goals
+
+- Marketing
+- Customer Service
+- Accounting
+- Inventory
+- Automation
+
+---
+
+## Tier 6 - Professionals
+
+Examples
+
+- Doctors
+- Lawyers
+- Teachers
+- Consultants
+- Architects
+
+---
+
+## Tier 7 - Retirees
+
+Goals
+
+- Travel
+- Health
+- Family
+- Hobbies
+- Photography
+- Writing
+- AI Assistant
+
+---
+
+# User Journey
+
+Landing Page
+
+↓
+
+Choose Your Profile
+
+↓
+
+Choose Your Goal
+
+↓
+
+Choose Available Time
+
+↓
+
+AI Generates Roadmap
+
+↓
+
+Interactive Lessons
+
+↓
+
+Projects
+
+↓
+
+Certificate
+
+---
+
+# Learning Levels
+
+Level 1
+
+Discover AI
+
+Level 2
+
+Use AI
+
+Level 3
+
+Work Smarter
+
+Level 4
+
+Automate
+
+Level 5
+
+Build AI Projects
+
+Level 6
+
+Become AI Ready
+
+---
+
+# Website Pages
+
+Home
+
+About
+
+Roadmaps
+
+Learning Paths
+
+AI Playground
+
+Tool Directory
+
+Community
+
+Projects
+
+Career Guide
+
+Pricing
+
+Blog
+
+Contact
+
+---
+
+# Future Features
+
+- AI Coach
+- Daily Missions
+- Gamification
+- Certificates
+- Progress Tracking
+- Learning Analytics
+- Community Challenges
+- Mobile App
+- Multi-language Support

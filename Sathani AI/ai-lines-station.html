@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="th" data-contrast="normal">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>วัยเก๋า — สถานีการเรียน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EBEDF1;--card:#F7F8FA;--ink:#12161D;--ink-soft:#4E5765;--rule:#C7CDD6;
+  --copper:#96471E;--lock:#8A2F2F;--ok:#237848;--scale:1.06;
+  font-size:calc(16px * var(--scale));
+}
+html[data-contrast="high"]{--paper:#fff;--card:#fff;--ink:#000;--ink-soft:#1D2229;--rule:#7C838D;--copper:#6E2E09;--lock:#6B0000;--ok:#0C5730}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans Thai",system-ui,sans-serif;line-height:1.7}
+h1,h2,h3{font-weight:600;margin:0;line-height:1.32}
+html[lang="en"] h1,html[lang="en"] h2{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;letter-spacing:-.02em;line-height:1.12}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.wrap{max-width:900px;margin:0 auto;padding:0 20px}
+.eyebrow{font-size:.82rem;color:var(--ink-soft)}
+
+.util{position:sticky;top:0;z-index:60;background:var(--ink);color:var(--paper)}
+.util .wrap{display:flex;gap:9px;align-items:center;flex-wrap:wrap;padding:8px 20px;max-width:900px}
+.util .brand{font-weight:600;margin-right:auto}
+.util button{background:transparent;border:1px solid rgba(255,255,255,.3);color:inherit;border-radius:99px;padding:3px 11px;font-size:.8rem}
+.util button[aria-pressed="true"]{background:var(--paper);color:var(--ink)}
+.util :focus-visible{outline-color:#fff}
+
+/* station rail */
+.srail{display:flex;gap:8px;margin:28px 0 22px;flex-wrap:wrap}
+.srail button{flex:1 1 150px;text-align:left;background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:10px 13px;position:relative}
+.srail button[aria-current="true"]{border-color:var(--copper);border-width:2px;background:var(--paper)}
+.srail .num{font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--ink-soft);display:block}
+.srail .nm{font-weight:600;font-size:.94rem;display:block;line-height:1.35}
+.srail .st{font-size:.74rem;display:inline-block;margin-top:5px;border-radius:99px;padding:0 9px;border:1px solid var(--rule);color:var(--ink-soft)}
+.srail .st.req{border-color:var(--lock);color:var(--lock)}
+.srail .st.done{border-color:var(--ok);color:var(--ok)}
+
+.head{border-top:6px solid var(--copper);background:var(--card);border:1px solid var(--rule);border-top-width:6px;border-radius:4px;padding:24px}
+.head h1{font-size:clamp(1.6rem,4.4vw,2.3rem)}
+.meta{display:flex;gap:22px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid var(--rule)}
+.meta div span{display:block;font-size:.76rem;color:var(--ink-soft)}
+.meta div b{font-weight:600}
+
+.req{border-left:5px solid var(--lock);background:var(--paper);padding:13px 16px;margin-top:18px;border-radius:0 4px 4px 0}
+.req b{display:block;color:var(--lock)}
+.req span{font-size:.9rem;color:var(--ink-soft)}
+
+/* steps */
+.step{background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:22px;margin-top:16px}
+.step>header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.badge{width:38px;height:38px;border-radius:50%;border:3px solid var(--copper);color:var(--copper);display:grid;place-items:center;font-weight:600;flex:0 0 auto;background:var(--paper)}
+.step h2{font-size:1.28rem}
+.step .mins{margin-inline-start:auto;font-size:.8rem;color:var(--ink-soft);white-space:nowrap}
+.video{border:1px dashed var(--rule);border-radius:4px;padding:16px;display:flex;gap:14px;align-items:center;background:var(--paper)}
+.video .play{width:44px;height:44px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;flex:0 0 auto}
+.video b{display:block}
+.video span{font-size:.84rem;color:var(--ink-soft)}
+
+.prompt{border:2px solid var(--ink);border-radius:4px;background:var(--paper);margin-top:12px}
+.prompt .ptxt{padding:16px 18px;font-size:1.06rem}
+.prompt footer{display:flex;gap:10px;align-items:center;border-top:1px solid var(--rule);padding:9px 14px;flex-wrap:wrap}
+.prompt footer span{font-size:.8rem;color:var(--ink-soft);margin-inline-end:auto}
+.copy{background:var(--ink);color:var(--paper);border:0;border-radius:99px;padding:6px 16px;font-size:.86rem}
+.expect{margin-top:12px;font-size:.92rem;color:var(--ink-soft)}
+.stuck{margin-top:12px;border-inline-start:4px solid var(--rule);padding-inline-start:14px;font-size:.9rem;color:var(--ink-soft)}
+.stuck b{color:var(--ink);font-weight:600}
+
+.donebox{display:flex;gap:12px;align-items:flex-start;margin-top:16px;border-top:1px solid var(--rule);padding-top:14px}
+.check{width:30px;height:30px;border:2px solid var(--rule);border-radius:6px;background:var(--paper);flex:0 0 auto;display:grid;place-items:center;font-size:1rem;color:transparent}
+.check[aria-pressed="true"]{border-color:var(--ok);color:var(--ok)}
+.donebox p{margin:0;font-size:.94rem}
+.donebox p b{display:block}
+
+.foot{margin:26px 0 70px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.primary{background:var(--ink);color:var(--paper);border:0;border-radius:99px;padding:11px 24px}
+.ghost{background:transparent;border:1px solid var(--rule);border-radius:99px;padding:11px 20px}
+.pausenote{width:100%;font-size:.9rem;color:var(--ink-soft);margin-top:4px}
+.printonly{display:none}
+
+@media print{
+  .util,.srail,.foot,.copy,.donebox,.video .play{display:none!important}
+  body{background:#fff;font-size:13pt}
+  .step,.head{border:1px solid #999;break-inside:avoid;background:#fff}
+  .printonly{display:block;font-size:.9rem;color:#444;margin-bottom:10px}
+  .prompt{border-color:#000}
+  a[href]::after{content:""}
+}
+@media(max-width:600px){.meta{gap:14px}.step{padding:18px}}
+</style>
+</head>
+<body>
+
+<div class="util"><div class="wrap">
+  <div class="brand" id="brand"></div>
+  <button data-scale="1.06" aria-pressed="true">ก</button>
+  <button data-scale="1.2" aria-pressed="false">ก+</button>
+  <button data-scale="1.38" aria-pressed="false">ก++</button>
+  <button id="contrast" aria-pressed="false"></button>
+  <button id="print"></button>
+  <button data-lang="th" aria-pressed="true">ไทย</button>
+  <button data-lang="en" aria-pressed="false">EN</button>
+</div></div>
+
+<div class="wrap">
+  <nav class="srail" id="srail" aria-label="stations"></nav>
+  <div id="station"></div>
+</div>
+
+<script>
+const UI={
+ th:{brand:"วัยเก๋า · สายที่ 6", contrast:"คอนทราสต์สูง", print:"พิมพ์ใบงาน",
+  station:n=>`สถานี ${n} จาก 4`, req:"ต้องเรียน ข้ามไม่ได้", doneTag:"เรียนแล้ว",
+  steps:["ดู","ลอง","ทำ","เล่า"],
+  mTime:"เวลาที่ใช้", mFormat:"รูปแบบ", mBuddy:"คู่เรียน", mNeed:"สิ่งที่ต้องมี",
+  format:"30 นาที · สัปดาห์ละ 2 ครั้ง", buddy:"เรียนคู่กับเพื่อนหรือคนในบ้าน", need:"โทรศัพท์หรือคอมพิวเตอร์ และกระดาษหนึ่งแผ่น",
+  copy:"คัดลอกข้อความ", copied:"คัดลอกแล้ว", promptHint:"คัดลอกไปวางในช่องแชทได้เลย ไม่ต้องพิมพ์เอง",
+  expectT:"คำตอบควรออกมาแบบไหน", stuckT:"ถ้าติดขัด",
+  doneT:"ถือว่าผ่านเมื่อ", markDone:"ทำเสร็จแล้ว",
+  next:"ไปสถานีถัดไป", back:"ย้อนกลับ", finish:"จบสายวัยเก๋า",
+  pause:"หยุดตรงนี้ได้ทุกเมื่อ ความคืบหน้าไม่หาย และเราไม่ส่งข้อความตามคุณ",
+  printNote:"ใบงานสำหรับพิมพ์ · เก็บไว้ข้างโทรศัพท์ได้",
+  watchCap:"มีคำบรรยายภาษาไทย · เปิดเสียงหรืออ่านอย่างเดียวก็ได้"},
+ en:{brand:"Second Act · Line 6", contrast:"High contrast", print:"Print handout",
+  station:n=>`Station ${n} of 4`, req:"Required — cannot be skipped", doneTag:"done",
+  steps:["Watch","Try","Make","Show"],
+  mTime:"Time", mFormat:"Format", mBuddy:"Buddy", mNeed:"You need",
+  format:"30 minutes · twice a week", buddy:"Learn with a friend or someone at home", need:"A phone or computer, and one sheet of paper",
+  copy:"Copy the text", copied:"Copied", promptHint:"Copy and paste it into the chat box — no typing needed",
+  expectT:"What the answer should look like", stuckT:"If you get stuck",
+  doneT:"You're done when", markDone:"Mark as done",
+  next:"Next station", back:"Back", finish:"Finish Second Act",
+  pause:"Stop any time. Progress is kept, and we don't send you reminders.",
+  printNote:"Printed handout · keep it beside your phone",
+  watchCap:"Thai captions · listen, or just read"}
+};
+
+const S={th:[
+ {n:"บทสนทนาแรกของคุณ",req:false,
+  watch:{t:"AI คืออะไร ในสามนาที",d:"3 นาที 20 วินาที"},
+  try:{p:"ช่วยอธิบายว่า “ดอกเบี้ยทบต้น” คืออะไร แบบที่เล่าให้เพื่อนวัยเดียวกันฟัง ใช้ภาษาง่าย ๆ ไม่เกิน 5 บรรทัด",
+       e:"คำตอบสั้น อ่านง่าย เหมือนคนพูด ถ้ายาวหรือเป็นทางการเกินไป ให้พิมพ์ต่อไปว่า “สั้นกว่านี้ ภาษาง่ายกว่านี้” แล้วมันจะแก้ให้",
+       s:"ถ้าคำตอบดูแปลกหรือไม่ตรงคำถาม ให้พิมพ์ใหม่ทั้งประโยค ไม่ต้องแก้ทีละคำ · ถ้าพิมพ์ไม่ถนัด กดปุ่มรูปไมโครโฟนแล้วพูดได้"},
+  make:{t:"ถามสามคำถามที่คุณสงสัยจริง ๆ แล้วจดคำตอบที่ชอบที่สุดหนึ่งข้อลงกระดาษ",
+        d:"คุณพิมพ์หรือพูดคำถามของตัวเองได้ โดยไม่ต้องมีใครบอกว่าจะถามอะไร"},
+  show:{t:"เล่าให้คู่เรียนฟังว่าคำตอบไหนดี และคำตอบไหนที่คุณคิดว่ามันมั่ว"}},
+
+ {n:"จับมิจฉาชีพ",req:true,
+  watch:{t:"เสียงปลอม ข้อความหลอก และกฎ “หยุดก่อน”",d:"4 นาที 10 วินาที"},
+  try:{p:"ฉันจะวางข้อความที่ได้รับให้ดู ช่วยบอกเป็นข้อ ๆ ว่าข้อความนี้น่าสงสัยตรงไหน และถ้าเป็นของจริง ปกติหน่วยงานจะติดต่อมาแบบไหน อย่าเพิ่งบอกให้ฉันทำอะไร ให้ชี้จุดน่าสงสัยก่อน",
+       e:"มันจะชี้จุดสังเกต เช่น การเร่งเวลา ลิงก์แปลก ๆ หรือการขอข้อมูลที่ไม่ควรขอ ใช้เป็นความเห็นประกอบ ไม่ใช่คำตัดสิน",
+       s:"AI ก็ผิดได้ ถ้ายังไม่แน่ใจ ให้ถือว่าเป็นของปลอมไว้ก่อน แล้วโทรถามจากเบอร์ที่คุณหาเอง ไม่ใช่เบอร์ในข้อความ"},
+  make:{t:"เขียน “กฎสามข้อของฉัน” ลงกระดาษหนึ่งแผ่น แล้วติดไว้ข้างโทรศัพท์",
+        d:"คุณบอกได้ทันทีว่าข้อความเร่งรัดแบบไหนควรหยุด และเบอร์ที่จะโทรกลับคือเบอร์ไหน"},
+  show:{t:"สอนกฎสามข้อนี้ให้คนในบ้านหนึ่งคน โดยไม่ต้องเปิดกระดาษดู"},
+  hard:"ไม่มีธนาคาร ไม่มีตำรวจ ไม่มีหน่วยงานรัฐใด ขอ OTP เลขบัตรประชาชน หรือรหัสผ่าน ทางข้อความหรือทางโทรศัพท์ ถ้ามีคนขอ นั่นคือมิจฉาชีพ ไม่มีข้อยกเว้น"},
+
+ {n:"ผู้ช่วยในชีวิตประจำวัน",req:false,
+  watch:{t:"ใช้ AI ช่วยงานเอกสารในบ้าน",d:"5 นาที"},
+  try:{p:"ช่วยร่างจดหมายสุภาพถึงโรงพยาบาล เพื่อขอเลื่อนนัดจากวันพฤหัสไปเป็นวันจันทร์ ความยาวไม่เกิน 8 บรรทัด ลงท้ายด้วยชื่อและเบอร์โทร แล้วเว้นช่องให้ฉันเติมเอง",
+       e:"ได้จดหมายสั้น สุภาพ พร้อมช่องว่างให้เติมชื่อ อ่านทวนก่อนใช้เสมอ วันเวลาและชื่อคนเป็นจุดที่มันพลาดบ่อยที่สุด",
+       s:"ถ้าภาษาทางการเกินไป ให้พิมพ์ว่า “ขอแบบเป็นกันเองกว่านี้” · ห้ามใส่เลขบัตรประชาชนหรือเลขบัญชีลงไปเด็ดขาด"},
+  make:{t:"ทำงานเอกสารจริงของคุณให้เสร็จหนึ่งชิ้น — จดหมาย แบบฟอร์ม หรือบทพูดสำหรับโทรศัพท์",
+        d:"คุณได้ส่งหรือใช้เอกสารชิ้นนั้นจริง ไม่ใช่แค่ลองทำ"},
+  show:{t:"ให้คู่เรียนอ่านก่อนส่ง แล้วถามว่าอ่านแล้วเข้าใจไหม"}},
+
+ {n:"บันทึกเรื่องราวของคุณ",req:false,
+  watch:{t:"เล่าด้วยเสียง แล้วให้ AI เรียบเรียงเป็นตัวหนังสือ",d:"4 นาที 30 วินาที"},
+  try:{p:"ช่วยสัมภาษณ์ฉันเกี่ยวกับงานแรกในชีวิต ถามทีละคำถาม รอฉันตอบก่อนแล้วค่อยถามข้อถัดไป ถามให้ครบ 6 ข้อ ใช้ภาษาง่าย ๆ",
+       e:"มันจะถามทีละข้อ ไม่ถามรวด ถ้ามันถามรวดหมด ให้พิมพ์ว่า “ถามทีละข้อ” แล้วเริ่มใหม่",
+       s:"พูดตอบแล้วให้มันถอดเป็นตัวหนังสือได้ ไม่ต้องพิมพ์ · เรื่องไหนไม่อยากเล่า ข้ามได้ ไม่ต้องตอบทุกข้อ"},
+  make:{t:"เรียบเรียงเป็นเรื่องเล่าหนึ่งบท ยาว 1–2 หน้า แล้วพิมพ์ออกมาหนึ่งชุด",
+        d:"คนในครอบครัวอ่านแล้วบอกว่า “ใช่ นี่แหละเรื่องของคุณ”"},
+  show:{t:"มอบฉบับพิมพ์ให้ครอบครัวหนึ่งชุด แล้วสอนวิธีนี้ให้เพื่อนหนึ่งคน"}}
+],
+en:[
+ {n:"Your first conversation",req:false,
+  watch:{t:"What AI is, in three minutes",d:"3 min 20 sec"},
+  try:{p:"Explain what “compound interest” means, the way you'd explain it to a friend your own age. Plain language, no more than 5 lines.",
+       e:"A short, spoken-sounding answer. If it comes back long or formal, reply “shorter, simpler” and it will fix it.",
+       s:"If the answer misses the point, retype the whole question rather than editing a word. If typing is hard, press the microphone button and speak."},
+  make:{t:"Ask three questions you genuinely wonder about, and write your favourite answer on paper.",
+        d:"You can type or speak your own question without anyone telling you what to ask."},
+  show:{t:"Tell your buddy which answer was good, and which one you think it made up."}},
+
+ {n:"Spot the scam",req:true,
+  watch:{t:"Cloned voices, fake messages, and the pause rule",d:"4 min 10 sec"},
+  try:{p:"I'm going to paste a message I received. List what looks suspicious about it, point by point, and tell me how a real organisation would normally get in touch. Don't tell me what to do yet — just point out the warning signs.",
+       e:"It will flag things like urgency, odd links, or requests for information nobody should ask for. Treat it as a second opinion, not a verdict.",
+       s:"AI gets this wrong too. If you're unsure, assume it's fake and call using a number you looked up yourself — never the one in the message."},
+  make:{t:"Write “my three rules” on one sheet of paper and stick it beside your phone.",
+        d:"You can say straight away which kind of urgent message to stop at, and which number you'd call back on."},
+  show:{t:"Teach the three rules to someone at home — without looking at the paper."},
+  hard:"No bank, no police force, and no government office asks for an OTP, an ID number, or a password by message or phone call. If someone asks, it is a scam. There are no exceptions."},
+
+ {n:"A helper for daily life",req:false,
+  watch:{t:"Using AI for the paperwork at home",d:"5 min"},
+  try:{p:"Draft a polite letter to the hospital asking to move my appointment from Thursday to Monday. No more than 8 lines. End with my name and phone number, and leave those blank for me to fill in.",
+       e:"A short, polite letter with blanks to fill. Always read it through — dates and names are what it gets wrong most often.",
+       s:"If it sounds too formal, reply “make it warmer”. Never put an ID number or bank account into the message."},
+  make:{t:"Finish one real piece of your own paperwork — a letter, a form, or a script for a phone call.",
+        d:"You actually sent or used it, not just practised."},
+  show:{t:"Have your buddy read it before you send, and ask whether it was clear."}},
+
+ {n:"Your story, written down",req:false,
+  watch:{t:"Speak it out loud, let AI write it down",d:"4 min 30 sec"},
+  try:{p:"Interview me about my first job. Ask one question at a time, wait for my answer before the next one, six questions in total. Keep the language simple.",
+       e:"It should ask one question at a time. If it fires all six at once, reply “one at a time” and start again.",
+       s:"You can speak your answers and let it write them down — no typing. Skip anything you'd rather not talk about."},
+  make:{t:"Turn it into one chapter, one or two pages, and print a copy.",
+        d:"Someone in your family reads it and says: yes, that's your story."},
+  show:{t:"Give the printed copy to your family, and teach one friend how you did it."}}
+]};
+
+let lang="th",idx=0,done={};
+const $=id=>document.getElementById(id),U=()=>UI[lang];
+
+function rail(){
+  const T=U();
+  $("srail").innerHTML=S[lang].map((s,i)=>{
+    const dn=done[i]&&done[i].length===4;
+    return `<button data-i="${i}" aria-current="${i===idx}">
+      <span class="num">${i+1}</span><span class="nm">${s.n}</span>
+      ${s.req?`<span class="st req">${T.req}</span>`:dn?`<span class="st done">✓ ${T.doneTag}</span>`:""}
+    </button>`}).join("");
+  $("srail").querySelectorAll("button").forEach(b=>b.onclick=()=>{idx=+b.dataset.i;render();window.scrollTo({top:0,behavior:"smooth"})});
+}
+
+function render(){
+  const T=U(),s=S[lang][idx];
+  document.querySelectorAll("[data-scale],[data-lang]");
+  $("brand").textContent=T.brand;$("contrast").textContent=T.contrast;$("print").textContent=T.print;
+  rail();
+  $("station").innerHTML=`
+  <div class="printonly">${T.printNote}</div>
+  <div class="head">
+    <div class="eyebrow">${T.station(idx+1)}</div>
+    <h1>${s.n}</h1>
+    <div class="meta">
+      <div><span>${T.mTime}</span><b>30 ${lang==="th"?"นาที":"min"}</b></div>
+      <div><span>${T.mFormat}</span><b>${T.format}</b></div>
+      <div><span>${T.mBuddy}</span><b>${T.buddy}</b></div>
+      <div><span>${T.mNeed}</span><b>${T.need}</b></div>
+    </div>
+    ${s.req?`<div class="req"><b>${T.req}</b><span>${s.hard}</span></div>`:""}
+  </div>
+
+  <section class="step">
+    <header><span class="badge">1</span><h2>${T.steps[0]}</h2><span class="mins">${s.watch.d}</span></header>
+    <div class="video"><span class="play">▶</span><span><b>${s.watch.t}</b><span>${T.watchCap}</span></span></div>
+    ${chk(0)}
+  </section>
+
+  <section class="step">
+    <header><span class="badge">2</span><h2>${T.steps[1]}</h2></header>
+    <div class="prompt"><div class="ptxt" id="ptxt">${s.try.p}</div>
+      <footer><span>${T.promptHint}</span><button class="copy" id="copyBtn">${T.copy}</button></footer></div>
+    <p class="expect"><b>${T.expectT}:</b> ${s.try.e}</p>
+    <div class="stuck"><b>${T.stuckT}</b><br>${s.try.s}</div>
+    ${chk(1)}
+  </section>
+
+  <section class="step">
+    <header><span class="badge">3</span><h2>${T.steps[2]}</h2></header>
+    <p style="margin:0;font-size:1.06rem">${s.make.t}</p>
+    <div class="stuck" style="border-color:var(--ok)"><b>${T.doneT}</b><br>${s.make.d}</div>
+    ${chk(2)}
+  </section>
+
+  <section class="step">
+    <header><span class="badge">4</span><h2>${T.steps[3]}</h2></header>
+    <p style="margin:0;font-size:1.06rem">${s.show.t}</p>
+    ${chk(3)}
+  </section>
+
+  <div class="foot">
+    ${idx>0?`<button class="ghost" id="prev">${T.back}</button>`:""}
+    <button class="primary" id="nxt">${idx<3?T.next:T.finish}</button>
+    <p class="pausenote">${T.pause}</p>
+  </div>`;
+
+  $("copyBtn").onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(s.try.p);$("copyBtn").textContent=T.copied;
+    setTimeout(()=>{const b=$("copyBtn");if(b)b.textContent=T.copy},1600)};
+  document.querySelectorAll(".check").forEach(c=>c.onclick=()=>{
+    const i=+c.dataset.s,d=done[idx]||[];
+    done[idx]=d.includes(i)?d.filter(x=>x!==i):[...d,i];render()});
+  const p=$("prev");if(p)p.onclick=()=>{idx--;render();window.scrollTo({top:0,behavior:"smooth"})};
+  $("nxt").onclick=()=>{if(idx<3){idx++;render();window.scrollTo({top:0,behavior:"smooth"})}};
+}
+function chk(i){
+  const on=(done[idx]||[]).includes(i);
+  return `<div class="donebox"><button class="check" data-s="${i}" aria-pressed="${on}">✓</button>
+    <p><b>${U().markDone}</b></p></div>`;
+}
+
+document.querySelectorAll("[data-scale]").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("[data-scale]").forEach(x=>x.setAttribute("aria-pressed",x===b));
+  document.documentElement.style.setProperty("--scale",b.dataset.scale)});
+document.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("[data-lang]").forEach(x=>x.setAttribute("aria-pressed",x===b));
+  lang=b.dataset.lang;document.documentElement.lang=lang;render()});
+$("contrast").onclick=e=>{const on=document.documentElement.dataset.contrast!=="high";
+  document.documentElement.dataset.contrast=on?"high":"normal";e.target.setAttribute("aria-pressed",on)};
+$("print").onclick=()=>window.print();
+
+render();
+</script>
+</body>
+</html>

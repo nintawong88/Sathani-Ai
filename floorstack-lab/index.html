@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chawin Intawong — Building in the Open</title>
+<meta name="description" content="Supply chain operator, building the FloorStack suite in public.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F0EEE3; --card:#FFFFFF; --ink:#15171A; --ink-soft:#6E7166; --rule:#DAD6C8;
+  --ok:#1F5C3E; --ok-bg:#E7EFE7; --alert:#B23A2E; --alert-bg:#F5E4E1; --warn:#B0631E; --warn-bg:#F3E8D8;
+  --blue:#2F6FB0; --orange:#D97706; --teal:#2F8F86; --purple:#6B4FA0;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;line-height:1.6}
+h1,h2,h3{font-family:"Archivo",sans-serif;font-weight:800;letter-spacing:-.01em;margin:0}
+.mono{font-family:"IBM Plex Mono",monospace}
+a{color:var(--ink)}
+:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+
+.topbar{background:var(--card);border-bottom:1px solid var(--rule)}
+.tickerwrap{max-width:1180px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-family:"Archivo";font-weight:800;font-size:1.15rem;margin-right:auto}
+.brand .mark{width:26px;height:26px;border-radius:6px;background:conic-gradient(from 210deg,var(--blue),var(--teal),var(--orange),var(--blue));flex:0 0 auto}
+.ticker{display:flex;gap:16px;flex-wrap:wrap;font-size:.82rem;color:var(--ink-soft);align-items:center}
+.ticker b{color:var(--ink);font-weight:600}
+.ticker .alert{color:var(--alert);font-weight:600}
+.ticker .dot{opacity:.4}
+
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+.hero{padding:44px 0 8px}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+h1.title{font-size:clamp(1.9rem,4.6vw,3rem)}
+.subtitle{font-family:"IBM Plex Mono";font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-top:8px}
+.asof{text-align:right;font-size:.82rem;color:var(--ink-soft)}
+.asof b{display:block;font-size:.95rem;color:var(--ink);font-family:"IBM Plex Mono"}
+.rule-thick{height:3px;background:var(--ink);margin:22px 0}
+
+.kpi-row{display:flex;gap:0;margin-bottom:8px}
+.kpi{flex:1;padding:6px 28px 20px 0}
+.kpi:not(:first-child){border-left:1px solid var(--rule);padding-left:28px}
+.kpi .klabel{font-size:.85rem;color:var(--ink-soft);font-weight:600}
+.kpi .klabel sup{font-family:"IBM Plex Mono";font-size:.72rem;color:var(--ink-soft);margin-left:4px}
+.kpi .kvalue{font-family:"Archivo";font-weight:900;font-size:clamp(2.2rem,6vw,3.4rem);color:var(--ok);line-height:1;margin:6px 0}
+.kpi .ksub{font-size:.85rem;color:var(--ink-soft)}
+.rule-double{border-top:3px solid var(--ink);border-bottom:1px solid var(--ink);height:4px;margin:0 0 6px}
+
+section{padding:40px 0}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px}
+h2.sech{font-size:1.5rem}
+p.lede{color:var(--ink-soft);font-size:.92rem;max-width:64ch;margin:6px 0 20px}
+
+.ctable{width:100%;border-collapse:collapse;font-size:.9rem}
+.ctable thead th{text-align:left;font-family:"IBM Plex Mono";font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink-soft);font-weight:500;padding:8px 12px;border-bottom:2px solid var(--ink)}
+.ctable tbody td{padding:14px 12px;border-bottom:1px solid var(--rule);vertical-align:middle}
+.ctable tbody tr:hover{background:rgba(0,0,0,.015)}
+.ctable .num{font-family:"IBM Plex Mono";color:var(--ink-soft)}
+.ctable .name{font-weight:700;font-size:.98rem}
+.status-pill{display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:.85rem}
+.status-pill .sq{width:9px;height:9px;flex:0 0 auto}
+.status-pill.ok{color:var(--ok)} .status-pill.ok .sq{background:var(--ok)}
+.status-pill.warn{color:var(--warn)} .status-pill.warn .sq{background:var(--warn)}
+.status-pill.plan{color:var(--ink-soft)} .status-pill.plan .sq{background:var(--ink-soft)}
+.wlink{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:600}
+.wlink .ic{width:22px;height:22px;border-radius:5px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.7rem;font-weight:800;flex:0 0 auto}
+.wlink span.u{text-decoration:underline;text-underline-offset:3px}
+.wlink.disabled{color:var(--ink-soft);pointer-events:none}
+.wlink.disabled .ic{background:var(--rule)!important;color:var(--ink-soft)}
+
+.about-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:32px}
+@media(max-width:720px){.about-grid{grid-template-columns:1fr}.kpi-row{flex-direction:column}.kpi:not(:first-child){border-left:0;border-top:1px solid var(--rule);padding-left:0;padding-top:16px}}
+.about-grid p{font-size:.96rem;margin:0 0 14px}
+.manifest{background:var(--card);border:1px solid var(--rule);padding:18px 20px}
+.manifest .mh{font-family:"IBM Plex Mono";font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px}
+.manifest ul{margin:0;padding:0;list-style:none}
+.manifest li{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-top:1px dashed var(--rule);font-size:.86rem}
+.manifest li:first-child{border-top:0}
+.manifest li b{font-family:"IBM Plex Mono";font-weight:600}
+
+footer{border-top:1px solid var(--rule);padding:28px 0 40px;font-size:.85rem;color:var(--ink-soft)}
+.foot-links{display:flex;gap:18px;flex-wrap:wrap;margin-top:10px;font-family:"IBM Plex Mono";font-size:.82rem}
+footer a{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="tickerwrap">
+  <div class="brand"><span class="mark"></span>Chawin Intawong</div>
+  <div class="ticker">
+    <span><span class="alert">●</span> FloorStack Procure: <b>3 RFQs</b> awaiting reply</span><span class="dot">·</span>
+    <span>FloorStack Count: <b>8,214 SKUs</b> reconciled this cycle</span><span class="dot">·</span>
+    <span>Building in public since <b>Jul 2026</b></span><span class="dot">·</span>
+    <span><b>28 yrs</b> in operations</span>
+  </div>
+</div></div>
+
+<div class="wrap">
+
+  <div class="hero">
+    <div class="hero-top">
+      <div>
+        <h1 class="title">Build Control Center</h1>
+        <div class="subtitle">Every product, one statement</div>
+      </div>
+      <div class="asof">As of<b>2 Aug 2026 · 14:20</b></div>
+    </div>
+    <div class="rule-thick"></div>
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="klabel">Years in operations <sup>(1)</sup></div>
+        <div class="kvalue">28</div>
+        <div class="ksub">SAP eWM · ByDesign · cold chain, FMCG, manufacturing</div>
+      </div>
+      <div class="kpi">
+        <div class="klabel">FloorStack products <sup>(2)</sup></div>
+        <div class="kvalue">5</div>
+        <div class="ksub">3 live · 2 building</div>
+      </div>
+    </div>
+    <div class="rule-double"></div>
+  </div>
+
+  <section id="build">
+    <div class="sec-head"><h2 class="sech">FloorStack suite</h2></div>
+    <p class="lede">Operations software built from real warehouse and procurement problems. Status is honest — Count and Procure have working demos with sample data, linked below.</p>
+
+    <table class="ctable">
+      <thead><tr><th>№</th><th>Product</th><th>Status</th><th>Detail</th><th>Workspace</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="num">1</td>
+          <td class="name">FloorStack Count</td>
+          <td><span class="status-pill ok"><span class="sq"></span>Live</span></td>
+          <td>Multi-tenant stock count. Floor scans, blind recounts, SAP reconciliation.</td>
+          <td><a class="wlink" href="floorstack-count.html" target="_blank" rel="noopener"><span class="ic" style="background:var(--blue)">FC</span><span class="u">Open demo</span></a></td>
+        </tr>
+        <tr>
+          <td class="num">2</td>
+          <td class="name">FloorStack Procure</td>
+          <td><span class="status-pill warn"><span class="sq"></span>Building</span></td>
+          <td>Ask a procurement question in Thai over LINE, get an answer grounded in live ERP data.</td>
+          <td><a class="wlink" href="floorstack-procure.html" target="_blank" rel="noopener"><span class="ic" style="background:var(--orange)">FP</span><span class="u">Open demo</span></a></td>
+        </tr>
+        <tr>
+          <td class="num">3</td>
+          <td class="name">FloorStack WMS</td>
+          <td><span class="status-pill warn"><span class="sq"></span>Building</span></td>
+          <td>Warehouse shell linked to SAP eWM — inbound, storage, replenishment, outbound.</td>
+          <td><span class="wlink disabled"><span class="ic" style="background:var(--teal)">FW</span><span class="u">Coming soon</span></span></td>
+        </tr>
+        <tr>
+          <td class="num">4</td>
+          <td class="name">FloorStack Maintain</td>
+          <td><span class="status-pill ok"><span class="sq"></span>Live</span></td>
+          <td>Machine health and preventive maintenance tracking — running at Pattana Intercool today.</td>
+          <td><span class="wlink disabled"><span class="ic" style="background:var(--purple)">FM</span><span class="u">Internal</span></span></td>
+        </tr>
+        <tr>
+          <td class="num">5</td>
+          <td class="name">FloorStack Hub</td>
+          <td><span class="status-pill ok"><span class="sq"></span>Live</span></td>
+          <td>Company knowledge base and workflow hub with an AI assistant — running at Pattana Intercool today.</td>
+          <td><span class="wlink disabled"><span class="ic" style="background:var(--ink-soft)">FH</span><span class="u">Internal</span></span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="about">
+    <div class="sec-head"><h2 class="sech">About</h2></div>
+    <div class="about-grid">
+      <div>
+        <p>I spent nearly three decades running distribution centers and procurement across Thailand — cold chain, FMCG, commercial refrigeration. I learned SAP eWM the hard way, on live floors, with real deadlines. AI is the same kind of tool: useful the moment you stop treating it as theory and point it at an actual bin, an actual PO, an actual stock count that's wrong.</p>
+        <p>This page is where I write down what actually works, what breaks, and what I'd do differently — as I build it, not after.</p>
+      </div>
+      <div class="manifest">
+        <div class="mh">Manifest</div>
+        <ul>
+          <li>Years in operations <b>28+</b></li>
+          <li>Systems <b>SAP eWM · ByDesign</b></li>
+          <li>Currently building <b>FloorStack suite</b></li>
+          <li>Consulting as <b>ChawinConsulting</b></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="journal">
+    <div class="sec-head"><h2 class="sech">Journal</h2></div>
+    <p class="lede">Dated, unpolished, architecture and reasoning only. No client names, no client data, ever.</p>
+    <table class="ctable">
+      <thead><tr><th>№</th><th>Date</th><th>Entry</th><th>Type</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="num">003</td>
+          <td class="mono">02 Aug 2026</td>
+          <td><b>Why the procurement bot lives on LINE, not a web app.</b> The people who need to ask a procurement question are already in LINE, ten times a day, for everything else. A web app is one more login nobody opens.</td>
+          <td><span class="status-pill ok"><span class="sq"></span>Architecture</span></td>
+        </tr>
+        <tr>
+          <td class="num">002</td>
+          <td class="mono">28 Jul 2026</td>
+          <td><b>The quotation poller couldn't tell an acknowledgment from an actual quote.</b> Fixed with a dedicated acknowledgments table so the two never get compared as if equivalent.</td>
+          <td><span class="status-pill warn"><span class="sq"></span>Debugging</span></td>
+        </tr>
+        <tr>
+          <td class="num">001</td>
+          <td class="mono">15 Jul 2026</td>
+          <td><b>Why I'm writing this down at all.</b> Undocumented decisions get relearned the hard way, usually by someone else, usually at a worse time.</td>
+          <td><span class="status-pill plan"><span class="sq"></span>Starting</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer>
+    <div>Chawin Intawong — supply chain operator, building in public.</div>
+    <div class="foot-links">
+      <a href="https://linkedin.com/in/chawin-intawong">LinkedIn</a>
+      <a href="mailto:chawin@example.com">Email</a>
+      <a href="#build">FloorStack</a>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

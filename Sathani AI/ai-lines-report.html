@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cross-Model Plan Comparison — AI Learning Roadmap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EDEEE8;
+  --card:#F7F7F3;
+  --ink:#1B1E1A;
+  --ink-soft:#565F55;
+  --rule:#C7CCC1;
+  --adopt:#2F6F4E;
+  --adopt-bg:#E3EEE6;
+  --adapt:#9C6B14;
+  --adapt-bg:#F3E9D4;
+  --reject:#8C3B2E;
+  --reject-bg:#F3E0DB;
+  --meta:#45505E;
+  --meta-bg:#E4E7EC;
+  --scale:1;
+  font-size:calc(16px * var(--scale));
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;line-height:1.6}
+h1,h2,h3{font-family:"Space Grotesk",sans-serif;font-weight:600;letter-spacing:-.01em;margin:0;line-height:1.15}
+.mono{font-family:"IBM Plex Mono",monospace}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+code{font-family:"IBM Plex Mono",monospace;background:var(--meta-bg);padding:1px 5px;border-radius:3px;font-size:.92em}
+
+/* ===== top bar ===== */
+.topbar{position:sticky;top:0;z-index:80;background:var(--ink);color:var(--paper);}
+.topbar .in{max-width:1320px;margin:0 auto;padding:9px 24px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.tb-title{font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:.95rem;margin-right:auto;white-space:nowrap}
+.tb-title span{opacity:.55;font-weight:400;font-size:.78rem;margin-left:8px}
+.tbtn{background:transparent;border:1px solid rgba(237,238,232,.32);color:inherit;border-radius:99px;padding:4px 12px;font-size:.78rem;font-family:"IBM Plex Mono",monospace;cursor:pointer}
+.tbtn[aria-pressed="true"]{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.tbtn:hover{border-color:rgba(237,238,232,.6)}
+
+/* ===== layout ===== */
+.shell{max-width:1320px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:230px 1fr;gap:40px;align-items:start}
+@media(max-width:980px){.shell{grid-template-columns:1fr}}
+
+/* ===== rail ===== */
+.rail{position:sticky;top:52px;padding-top:34px;padding-bottom:40px;font-size:.86rem}
+.rail nav a{display:block;padding:6px 0;color:var(--ink-soft);text-decoration:none;border-left:2px solid transparent;padding-left:12px;margin-left:-13px}
+.rail nav a:hover,.rail nav a.on{color:var(--ink);border-left-color:var(--ink);font-weight:500}
+.rail .stamp-mini{display:flex;gap:6px;margin:18px 0 22px;flex-wrap:wrap}
+.rail .stamp-mini button{font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.04em;border:1.5px solid var(--rule);background:var(--card);border-radius:3px;padding:3px 8px;cursor:pointer;color:var(--ink-soft)}
+.rail .stamp-mini button[aria-pressed="true"]{color:#fff}
+.rail .stamp-mini button.adopt[aria-pressed="true"]{background:var(--adopt);border-color:var(--adopt)}
+.rail .stamp-mini button.adapt[aria-pressed="true"]{background:var(--adapt);border-color:var(--adapt)}
+.rail .stamp-mini button.reject[aria-pressed="true"]{background:var(--reject);border-color:var(--reject)}
+.rail .count{font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--ink-soft);margin-top:2px}
+@media(max-width:980px){.rail{position:static;padding-top:20px}}
+
+/* ===== manifest header ===== */
+.manifest{padding-top:40px}
+.doc-eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+h1.doctitle{font-size:clamp(1.9rem,4.4vw,3rem);margin:8px 0 20px;max-width:16ch}
+.manifest-box{border:1.5px solid var(--ink);border-radius:2px;background:var(--card);padding:20px 24px;position:relative}
+.manifest-box::before{content:"MANIFEST";position:absolute;top:-11px;left:20px;background:var(--paper);padding:0 8px;font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.14em;color:var(--ink-soft)}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:4px}
+.mgrid div span{display:block;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+.mgrid div b{font-weight:500;font-size:.92rem}
+.rev-note{margin-top:16px;padding-top:14px;border-top:1px dashed var(--rule);font-size:.88rem;color:var(--ink-soft)}
+
+/* ===== sections ===== */
+section.sec{padding:52px 0 8px;border-top:1px solid var(--rule);scroll-margin-top:60px}
+section.sec:first-of-type{border-top:0}
+.sec-eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+h2.sech{font-size:clamp(1.4rem,3vw,1.9rem);margin:6px 0 22px}
+p.lede{color:var(--ink-soft);max-width:70ch;margin:0 0 24px;font-size:.98rem}
+
+/* ===== matrix table (section 1) ===== */
+.tablewrap{overflow-x:auto;border:1px solid var(--rule);border-radius:3px;background:var(--card)}
+table.matrix{border-collapse:collapse;width:100%;font-size:.86rem;min-width:900px}
+table.matrix th{background:var(--ink);color:var(--paper);text-align:left;padding:10px 14px;font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;font-weight:500;white-space:nowrap}
+table.matrix td{padding:12px 14px;border-top:1px solid var(--rule);vertical-align:top;line-height:1.5}
+table.matrix td:first-child{font-weight:600;white-space:nowrap;color:var(--ink)}
+table.matrix tr:nth-child(even) td{background:rgba(0,0,0,.015)}
+.honest{margin-top:18px;border-left:4px solid var(--ink);padding:4px 0 4px 16px;font-size:.94rem}
+
+/* ===== stamped rows (section 2) ===== */
+.rowcard{display:grid;grid-template-columns:96px 1fr;gap:0;border:1px solid var(--rule);border-radius:3px;background:var(--card);margin-bottom:14px;overflow:hidden;transition:opacity .15s,transform .15s}
+.rowcard.hide{display:none}
+.stampcol{display:flex;align-items:flex-start;justify-content:center;padding-top:20px;border-right:1px dashed var(--rule)}
+.stamp{
+  font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.68rem;letter-spacing:.06em;
+  border:2.5px solid currentColor;border-radius:4px;padding:5px 7px;text-align:center;line-height:1.15;
+  transform:rotate(-7deg);position:relative;
+}
+.stamp::after{content:"";position:absolute;inset:2px;border:1px solid currentColor;border-radius:2px;opacity:.5}
+.stamp.adopt{color:var(--adopt)}
+.stamp.adapt{color:var(--adapt)}
+.stamp.reject{color:var(--reject)}
+.rowbody{padding:18px 22px 20px}
+.rowid{font-family:"IBM Plex Mono",monospace;font-size:.7rem;color:var(--ink-soft);letter-spacing:.05em}
+.rowfeature{font-weight:600;font-size:1rem;margin:3px 0 8px;line-height:1.4}
+.rowsrc{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.04em;background:var(--meta-bg);color:var(--meta);border-radius:99px;padding:2px 10px;margin-bottom:10px}
+.rowwhy{font-size:.92rem;color:var(--ink);line-height:1.65}
+.rowwhy b{font-weight:600}
+.roweffort{margin-top:10px;font-size:.78rem;color:var(--ink-soft);font-family:"IBM Plex Mono",monospace}
+.roweffort b{color:var(--ink);font-family:"IBM Plex Sans",sans-serif;font-weight:500}
+
+/* ===== conflicts (section 3) ===== */
+.conflict{border:1px solid var(--rule);border-left:4px solid var(--reject);background:var(--card);border-radius:0 3px 3px 0;padding:16px 20px;margin-bottom:12px}
+.conflict .lk{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.05em;text-transform:uppercase;color:var(--reject)}
+.conflict h3{font-size:1.02rem;margin:4px 0 8px}
+.conflict .ch{font-size:.86rem;color:var(--ink-soft);margin-bottom:8px}
+.conflict .vd{font-size:.92rem;padding-top:8px;border-top:1px dashed var(--rule)}
+.conflict .vd b{font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;color:var(--adopt);display:block;margin-bottom:3px}
+
+/* ===== build plan (section 4) ===== */
+.pages3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:28px}
+.pagecard{border:1px solid var(--rule);background:var(--card);border-radius:3px;padding:16px 18px}
+.pagecard b{display:block;font-size:.95rem;margin-bottom:4px}
+.pagecard span{font-size:.84rem;color:var(--ink-soft)}
+.phaseline{display:grid;grid-template-columns:110px 1fr;gap:16px;padding:16px 0;border-top:1px solid var(--rule)}
+.phaseline:first-of-type{border-top:0}
+.phaseline .ph{font-family:"IBM Plex Mono",monospace;font-size:.82rem;font-weight:600;padding-top:2px}
+.phaseline p{margin:0;font-size:.92rem;line-height:1.7}
+.callout{border:1.5px solid var(--ink);border-radius:3px;padding:20px 22px;margin-top:26px;background:var(--card);position:relative}
+.callout::before{content:attr(data-label);position:absolute;top:-11px;left:18px;background:var(--paper);padding:0 8px;font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.12em;color:var(--ink-soft)}
+.callout p{margin:0 0 10px;font-size:.94rem;line-height:1.7}
+.callout p:last-child{margin-bottom:0}
+.namechips{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.namechip{font-family:"IBM Plex Mono",monospace;font-size:.78rem;border:1.5px solid var(--ink);border-radius:99px;padding:4px 13px}
+
+footer.pagefoot{margin:60px 0 50px;padding-top:20px;border-top:1px solid var(--rule);font-size:.82rem;color:var(--ink-soft)}
+
+@media print{
+  .topbar,.rail{display:none}
+  .shell{grid-template-columns:1fr;display:block;max-width:100%}
+  body{background:#fff}
+  .rowcard,.conflict,.pagecard,.manifest-box,.callout{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="in">
+  <div class="tb-title">Cross-Model Comparison <span>AI Learning Roadmap · Rev 5</span></div>
+  <button class="tbtn" data-scale="1" aria-pressed="true">A</button>
+  <button class="tbtn" data-scale="1.15" aria-pressed="false">A+</button>
+  <button class="tbtn" id="printBtn">Print / Save PDF</button>
+</div></div>
+
+<div class="shell">
+
+  <aside class="rail">
+    <nav>
+      <a href="#sources" class="navlink">1 · What each model brought</a>
+      <a href="#adopt" class="navlink">2a · Adopt</a>
+      <a href="#adapt" class="navlink">2b · Adapt</a>
+      <a href="#reject" class="navlink">2c · Reject</a>
+      <a href="#conflicts" class="navlink">3 · Conflicts checked</a>
+      <a href="#plan" class="navlink">4 · Build plan &amp; naming</a>
+    </nav>
+    <div class="stamp-mini" role="group" aria-label="Filter rows by verdict">
+      <button class="adopt" data-filter="adopt" aria-pressed="true">ADOPT</button>
+      <button class="adapt" data-filter="adapt" aria-pressed="true">ADAPT</button>
+      <button class="reject" data-filter="reject" aria-pressed="true">REJECT</button>
+    </div>
+    <div class="count" id="visCount"></div>
+  </aside>
+
+  <main>
+    <div class="manifest">
+      <div class="doc-eyebrow">Decision register · working document</div>
+      <h1 class="doctitle">Cross-Model Plan Comparison</h1>
+      <div class="manifest-box">
+        <div class="mgrid">
+          <div><span>Sources</span><b>ChatGPT · Gemini · Kimi K3 · Z.AI · Claude</b></div>
+          <div><span>Documents read</span><b>12 files, 5 models</b></div>
+          <div><span>Revision</span><b>Rev 5</b></div>
+          <div><span>Method</span><b>markitdown + OCR + direct read</b></div>
+        </div>
+        <div class="rev-note">
+          <b>Rev 5</b> adds the final ChatGPT chat ("AI Project Office" / GitHub setup): the guiding-principle feature filter, the 20-document PMO scaffold, the "AI Learning Compass" naming argument, and the "AI Learning Foundation" multi-product umbrella (rejected for now as scope inflation). Earlier revisions added the 87-page and 30-page ChatGPT chat PDFs, the Thai Kimi About page, and Gemini's Execution Plan PDF — all rasterized/OCR'd or read directly, in full.
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ SECTION 1 ============ -->
+    <section class="sec" id="sources">
+      <div class="sec-eyebrow">Section 1</div>
+      <h2 class="sech">What each model contributed</h2>
+      <p class="lede">Side by side across eight dimensions. Blank or thin cells are as telling as full ones.</p>
+      <div class="tablewrap">
+        <table class="matrix">
+          <thead><tr><th>Dimension</th><th>ChatGPT</th><th>Gemini</th><th>Kimi K3</th><th>Z.AI</th><th>Claude (ours)</th></tr></thead>
+          <tbody>
+            <tr><td>Tier model</td><td>7 tiers incl. Business Owners + Professionals; 4-dimension routing (who / goal / skill / learning style)</td><td>4 tiers, energy-conscious mode for Tier 4</td><td>3+ tiers referenced (Explorers, Navigators, Professionals)</td><td>3 tiers</td><td>6 lines, dose-based, route-map metaphor</td></tr>
+            <tr><td>Placement</td><td>Persona → goal → skill → style quiz</td><td>3-question onboarding quiz, auto-routing</td><td>—</td><td>—</td><td>3-tap entry + 8-item literacy check with safety floor + facilitator split</td></tr>
+            <tr><td>Monetization</td><td>"Robin Hood" freemium; B2B dashboards; certifications; talent database; corporate patronage; gov grants</td><td>Full phased roadmap: affiliates, sponsored tool placements, verified certs $15–49, cohort bootcamps $99–299, patron packages $5k–25k/yr</td><td><b>Concrete THB pricing</b>: institutional 48k–300k/yr by seats; enterprise ฿48–120/seat/yr; white-label ฿100k–500k; career services ฿5k–15k/placement; 90-day guarantee</td><td>Enterprise demo CTA</td><td>Curated directory + disclosed affiliate links only</td></tr>
+            <tr><td>Founder asset</td><td>"Founder's Edge" section; case studies embedded in modules; no-brag pitch script; 30-day founder upskilling plan</td><td><b>Operations AI Blueprints</b> — real SAP eWM / cold-chain / procurement prompt templates as showcase; credibility strip in hero</td><td>Full founder story page (1994→2026 timeline), track-record metrics table, "7 apps I built" list</td><td>Founder section with 3 proof points</td><td>Not addressed at all</td></tr>
+            <tr><td>B2B product</td><td>HR admin dashboard; company-specific AI policy modules; proctored certification</td><td>Employee progress dashboard; custom operational roadmaps; patron brand placement</td><td>Institutional license w/ SSO + LMS integration; white-label for gov/libraries/senior centres; pilot school programme</td><td>Admin dashboard mockup</td><td>Facilitator accounts (phase 3), employer data-policy module</td></tr>
+            <tr><td>Engagement layer</td><td>AI mentor per learner; daily missions; gamification; streaks; certificates; community challenges</td><td>Micro-badges (LinkedIn-shareable); peer hubs segregated by tier; project showcase</td><td>Certificates for institutions</td><td>—</td><td>Deliberately none for Second Act/Adaptive; showcase planned; capstones as proof</td></tr>
+            <tr><td>Tech stack</td><td>React/Next.js + Supabase/Firebase; Softr no-code alternative</td><td>Next.js 14 + Supabase w/ <b>RLS for child data</b> + Vercel AI SDK + full SQL schema</td><td>Data hosted in Thailand as PDPA selling point</td><td>Tailwind CDN</td><td>Astro + MDX, localStorage no-accounts MVP, Netlify</td></tr>
+            <tr><td>Safety/compliance</td><td>Workplace AI ethics module</td><td>RLS child data protection</td><td>PDPA mentioned as B2B FAQ answer</td><td>Accessibility statement link</td><td>PDPA-by-design: facilitator model, data ledger, no health data, age-20 majority handling, non-skippable safety stations</td></tr>
+            <tr><td>Working artifacts</td><td>Text plans</td><td>1 interactive mockup</td><td>3 marketing pages (2 in Thai)</td><td>1 landing page</td><td>4 working prototypes, 8 timecoded video scripts, shot plan, full bilingual content for 2 lines</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="honest"><b>Honest read:</b> the other models out-thought us on <b>business model and founder positioning</b>. We out-built everyone on <b>learner experience, safety architecture, and actual content</b>. Nobody else wrote a single lesson.</p>
+    </section>
+
+    <!-- ============ SECTION 2a ADOPT ============ -->
+    <section class="sec" id="adopt">
+      <div class="sec-eyebrow">Section 2 · Filed</div>
+      <h2 class="sech">Adopt — clear wins, fit our locked decisions</h2>
+      <p class="lede">Fifteen items. Each one is checked against the decision register before it's stamped.</p>
+
+      <div class="rowcard" data-v="adopt"><div class="stampcol"><span class="stamp adopt">ADOPT<br>A1</span></div><div class="rowbody">
+        <div class="rowfeature">Robin Hood monetization frame — free for individuals forever; institutions pay for dashboards, customisation, reporting.</div>
+        <span class="rowsrc">ChatGPT · Kimi</span>
+        <p class="rowwhy">We had no revenue model at all. This one funds the mission without paywalling learners. "Your payment isn't tuition, it's the service layer + funding free access" — Kimi's FAQ framing answers the obvious objection.</p>
+        <div class="roweffort"><b>Effort:</b> positioning only — 0 build</div>
+      </div></div>
+
+      <div class="rowcard" data-v="adopt"><div class="stampcol"><span class="stamp adopt">ADOPT<br>A2</span></div><div class="rowbody">
+        <div class="rowfeature">Founder story + Operations AI Blueprints page</div>
+        <span class="rowsrc">Kimi (story) · Gemini (blueprints)</span>
+        <p class="rowwhy">The single most defensible asset. Nobody else teaching AI in Thailand has run a 25,000-pallet ASRS or built an AI procurement bot. Gemini's blueprint cards (SAP eWM variance prompt, cold-chain vision-AI work order, reorder requisition) ARE the B2B lead magnet — and the content already exists from PIC work.</p>
+        <div class="roweffort"><b>Effort:</b> 1 page + 6–10 blueprint cards</div>
+      </div></div>
+
+      <div class="rowcard" data-v="adopt"><div class="stampcol"><span class="stamp adopt">ADOPT<br>A3</span></div><div class="rowbody">
+        <div class="rowfeature">Institutional pricing table in THB</div>
+        <span class="rowsrc">Kimi</span>
+        <p class="rowwhy">Concrete anchors (100 seats = ฿48k/yr etc.) turn "corporate patronage" from a wish into a sellable SKU. Numbers need validating, but publishing a price is itself a filter.</p>
+        <div class="roweffort"><b>Effort:</b> 1 page</div>
+      </div></div>
+
+      <div class="rowcard" data-v="adopt"><div class="stampcol"><span class="stamp adopt">ADOPT<br>A4</span></div><div class="rowbody">
+        <div class="rowfeature">White-label for libraries, senior centres, gov agencies</div>
+        <span class="rowsrc">Kimi</span>
+        <p class="rowwhy">This is the distribution answer for Second Act that we never solved — the learners are IN those buildings. Our facilitator kit becomes the delivery vehicle.</p>
+        <div class="roweffort"><b>Effort:</b> contract template + branding layer, phase 3</div>
+      </div></div>
+
+      <div class="rowcard" data-v="adopt"><div class="stampcol"><span class="stamp adopt">ADOPT<br>A5</span></div><div class="rowbody">
+        <div class="rowfeature">Impact loop messaging — "every baht from institutions funds free learners"</div>
+        <span class="rowsrc">Kimi · Gemini</span>
+        <p class="rowwhy">Free to say, powerful for CSR-motivated Thai corporates, and true under A1.</p>
+        <div class="roweffort"><b>Effort:</b> copy only</div>
+      </div></div>
+
+      <div class="rowcard" data-v="adopt"><div class="stampcol"><span class="stamp adopt">ADOPT<br>A6</span></div><div class="rowbody">
+        <div class="rowfeature">Case studies as course modules — Makro turnaround, Khon Kaen greenfield, PIC apps inside Operators content</div>
+        <span class="rowsrc">ChatGPT · Kimi</span>
+        <p class="rowwhy">Our Operators examples are currently generic. Chawin's real cases make them unfakeable — and double as the B2B pitch.</p>
+        <div class="roweffort"><b>Effort:</b> rewrite ~4 Try/Make steps</div>
+      </div></div>
+
+      <div class="rowcard" data-v="adopt"><div class="stampcol"><span class="stamp adopt">ADOPT<br>A7</span></div><div class="rowbody">
+        <div class="rowfeature">Pilot school / pilot programme structure with named expected outcomes (100 learners, 5 trained teachers, 1 impact report)</div>
+        <span class="rowsrc">Kimi</span>
+        <p class="rowwhy">Turns "field test" (already our next step) into a repeatable, sellable format with a reference-customer output.</p>
+        <div class="roweffort"><b>Effort:</b> template</div>
+      </div></div>
+
+      <div class="rowcard" data-v="adopt"><div class="stampcol"><span class="stamp adopt">ADOPT<br>A8</span></div><div class="rowbody">
+        <div class="rowfeature">Project governance repo — GitHub from day 1 holding Program Charter, Product Backlog, Sprint Board, Decision Log, Risk Register; sprint cadence with demo + review</div>
+        <span class="rowsrc">ChatGPT (PDF pp. 70–75)</span>
+        <p class="rowwhy">We already run a decision register in chat; ChatGPT's version makes it an artifact. For a founder juggling PIC + CWx + this, the decision log and risk register are the memory that survives context switching. All deliverables produced so far become the repo's first commit.</p>
+        <div class="roweffort"><b>Effort:</b> 1 hour setup</div>
+      </div></div>
+
+      <div class="rowcard" data-v="adopt"><div class="stampcol"><span class="stamp adopt">ADOPT<br>A9</span></div><div class="rowbody">
+        <div class="rowfeature">Build-in-public narrative — dated milestones ("Day 18: homepage done. Day 72: first learner joined") published as the marketing channel</div>
+        <span class="rowsrc">ChatGPT</span>
+        <p class="rowwhy">Zero-budget marketing that compounds; perfectly matches the founder-story asset (A2) and Thai LinkedIn/Facebook audiences. Also creates the sponsor-facing progress evidence for free.</p>
+        <div class="roweffort"><b>Effort:</b> copy cadence, no build</div>
+      </div></div>
+
+      <div class="rowcard" data-v="adopt"><div class="stampcol"><span class="stamp adopt">ADOPT<br>A10</span></div><div class="rowbody">
+        <div class="rowfeature">Case-study → module cross-mapping — each career case explicitly tagged to the module that uses it</div>
+        <span class="rowsrc">Kimi (TH About page)</span>
+        <p class="rowwhy">Sharper than A6: Kimi doesn't just embed cases, it indexes them, and the TH page adds two module concepts we never had — <b>Teach &amp; Mentor</b> (senior staff coaching juniors through new systems) and <b>Second Career</b> (the Khon Kaen story as a template for late-career reinvention, a strong bridge between Operators and Second Act). The Thai page also nails the one-line thesis worth stealing: the gap is not Thailand vs Silicon Valley, it's <i>what AI can do</i> vs <i>what Thai people believe they can do</i>.</p>
+        <div class="roweffort"><b>Effort:</b> content mapping</div>
+      </div></div>
+
+      <div class="rowcard" data-v="adopt"><div class="stampcol"><span class="stamp adopt">ADOPT<br>A11</span></div><div class="rowbody">
+        <div class="rowfeature">"AI GPS" positioning — build it like Google Maps, not a textbook</div>
+        <span class="rowsrc">ChatGPT (30-pg PDF, pp. 16–23)</span>
+        <p class="rowwhy">"People don't want 500 lessons, they want: where am I now, and what's the next step?" This is the marketing language for the architecture we already built — the route map, placement check, and entry-station logic ARE a GPS. Use "AI GPS" (or Thai equivalent) in hero copy and the patron deck alongside the transit metaphor.</p>
+        <div class="roweffort"><b>Effort:</b> copy only</div>
+      </div></div>
+
+      <div class="rowcard" data-v="adopt"><div class="stampcol"><span class="stamp adopt">ADOPT<br>A12</span></div><div class="rowbody">
+        <div class="rowfeature">Demand-validation phase before full build — concept homepage + path quiz + sample roadmaps + email signup</div>
+        <span class="rowsrc">ChatGPT (30-pg PDF, pp. 16–17)</span>
+        <p class="rowwhy">Our plan validates <b>usability</b> (5 phones, watch people use it) but never validates <b>demand</b>. This is the missing half, and our existing prototypes already are the validation site — add an email/LINE signup and drop-off analytics and Phase 0 doubles as the demand test. Which line gets the most signups should decide build order for lines 3–6.</p>
+        <div class="roweffort"><b>Effort:</b> signup form + 3 analytics events</div>
+      </div></div>
+
+      <div class="rowcard" data-v="adopt"><div class="stampcol"><span class="stamp adopt">ADOPT<br>A13</span></div><div class="rowbody">
+        <div class="rowfeature">Patronage productization details — sponsorship ladder, named Patronage Deck, grant + developer-credit applications in Phase 1</div>
+        <span class="rowsrc">Gemini (Execution Plan §§4–6, schema)</span>
+        <p class="rowwhy">Three practical upgrades to A3/A5: a ladder (community/bronze/silver/gold) lets a ฿20k SME and a ฿500k corporate sit in the same programme; the deck is the actual sales asset the patron page must deliver — nothing else converts a CFO; developer credits reduce Phase-1 hosting/AI costs to near zero while grant applications are pending.</p>
+        <div class="roweffort"><b>Effort:</b> deck (~10 slides) + ladder table</div>
+      </div></div>
+
+      <div class="rowcard" data-v="adopt"><div class="stampcol"><span class="stamp adopt">ADOPT<br>A14</span></div><div class="rowbody">
+        <div class="rowfeature">Guiding-principle feature filter — one sentence applied to every roadmap discussion, PR, and design review</div>
+        <span class="rowsrc">ChatGPT (final chat)</span>
+        <p class="rowwhy">"If a feature doesn't help someone learn, apply, or confidently use AI, it doesn't belong." The best governance tool in any of the twelve sources, and it costs nothing. It would have auto-rejected half of Section 2c on sight. Adopt verbatim, with one Thai-context addition: "…or keep someone safe while doing so" — protecting our safety stations from ever being cut for scope.</p>
+        <div class="roweffort"><b>Effort:</b> one line in the charter</div>
+      </div></div>
+
+      <div class="rowcard" data-v="adopt"><div class="stampcol"><span class="stamp adopt">ADOPT<br>A15</span></div><div class="rowbody">
+        <div class="rowfeature">PMO scaffold as a concrete checklist — GitHub org, VISION.md as first commit, ~20 named documents, milestone ladder</div>
+        <span class="rowsrc">ChatGPT (final chat)</span>
+        <p class="rowwhy">Extends A8 from "make a repo" to a filled-in scaffold. The honest accounting: <b>9 of the ~20 documents already exist</b> in this project — personas are the six lines, IA is the site structure, UX is the prototypes, monetization is this comparison's A-rows, DB design is deliberately deferred by locked decision #11. The first commit is not a blank charter, it's a half-complete program.</p>
+        <div class="roweffort"><b>Effort:</b> half a day of filing</div>
+      </div></div>
+    </section>
+
+    <!-- ============ SECTION 2b ADAPT ============ -->
+    <section class="sec" id="adapt">
+      <div class="sec-eyebrow">Section 2 · Filed</div>
+      <h2 class="sech">Adapt — good idea, wrong shape</h2>
+      <p class="lede">Take the core, change the mechanism to fit the decision register.</p>
+
+      <div class="rowcard" data-v="adapt"><div class="stampcol"><span class="stamp adapt">ADAPT<br>B1</span></div><div class="rowbody">
+        <div class="rowfeature">Certificates / micro-badges ($15–49, LinkedIn-shareable)</div>
+        <span class="rowsrc">Gemini · ChatGPT · Kimi</span>
+        <p class="rowwhy">Yes for <b>Builders and Operators only</b> — a completion certificate tied to the capstone (deployed agent / measured automation), which makes it evidence, not a participation trophy. <b>Never</b> for Second Act or Adaptive Pace. Free with capstone; charge institutions, not learners.</p>
+      </div></div>
+
+      <div class="rowcard" data-v="adapt"><div class="stampcol"><span class="stamp adapt">ADAPT<br>B2</span></div><div class="rowbody">
+        <div class="rowfeature">AI mentor / coach per learner</div>
+        <span class="rowsrc">ChatGPT · Gemini</span>
+        <p class="rowwhy">Not in MVP (locked decision: no LLM widget = no moderation surface, no minor exposure, no cost). Adapt as <b>phase 3, Operators + Builders only, 20+</b>, scoped to "help me apply this station to my task." Never for minors, never companionship-framed.</p>
+      </div></div>
+
+      <div class="rowcard" data-v="adapt"><div class="stampcol"><span class="stamp adapt">ADAPT<br>B3</span></div><div class="rowbody">
+        <div class="rowfeature">AI Playground / sandbox</div>
+        <span class="rowsrc">ChatGPT · Gemini</span>
+        <p class="rowwhy">The copy-button prompts in our station pages already are a guided playground. A free-form sandbox for Sprouts contradicts our curated-cards-only child safety rule. Adapt: add 2–3 alternate prompts per Try step instead.</p>
+      </div></div>
+
+      <div class="rowcard" data-v="adapt"><div class="stampcol"><span class="stamp adapt">ADAPT<br>B4</span></div><div class="rowbody">
+        <div class="rowfeature">Business Owners tier (7th tier)</div>
+        <span class="rowsrc">ChatGPT</span>
+        <p class="rowwhy">Real audience in Thailand (SME owners aren't "office workers"), but a 7th line dilutes MVP. Adapt as an <b>Operators track</b> ("เจ้าของกิจการ SME") in phase 2 — same stations, different examples.</p>
+      </div></div>
+
+      <div class="rowcard" data-v="adapt"><div class="stampcol"><span class="stamp adapt">ADAPT<br>B5</span></div><div class="rowbody">
+        <div class="rowfeature">Learning-style dimension (read / watch / do / listen)</div>
+        <span class="rowsrc">ChatGPT</span>
+        <p class="rowwhy">Don't add a 4th routing question — our stations already contain all modes (Watch video, read Try, do Make). Adapt: make the transcript/audio option more prominent instead.</p>
+      </div></div>
+
+      <div class="rowcard" data-v="adapt"><div class="stampcol"><span class="stamp adapt">ADAPT<br>B6</span></div><div class="rowbody">
+        <div class="rowfeature">Employer-sponsored badges → talent pool</div>
+        <span class="rowsrc">Gemini · ChatGPT · Kimi</span>
+        <p class="rowwhy">We rejected placement/matching for licensing-risk reasons — that stands. The compliant middle: employers may <b>sponsor certification costs</b> and browse the <b>opt-in public showcase</b>. No matching, no fees per placement, no intermediary role.</p>
+      </div></div>
+
+      <div class="rowcard" data-v="adapt"><div class="stampcol"><span class="stamp adapt">ADAPT<br>B7</span></div><div class="rowbody">
+        <div class="rowfeature">Peer hubs / community forums</div>
+        <span class="rowsrc">Gemini · ChatGPT</span>
+        <p class="rowwhy">Correct instinct, ruinous moderation cost — and a segregated kids' forum is a child-safety surface we refuse. Adapt: <b>facilitator community only</b> (teachers, librarians, HR) in LINE OpenChat, phase 3.</p>
+      </div></div>
+
+      <div class="rowcard" data-v="adapt"><div class="stampcol"><span class="stamp adapt">ADAPT<br>B8</span></div><div class="rowbody">
+        <div class="rowfeature">Supabase + RLS schema, full auth</div>
+        <span class="rowsrc">Gemini</span>
+        <p class="rowwhy">Good engineering for a different design. Conflicts with our no-accounts MVP and facilitator-only data model. Adopt Supabase <b>when</b> facilitator accounts arrive (phase 3) — our decision register already says exactly this. RLS pattern is worth stealing then.</p>
+      </div></div>
+
+      <div class="rowcard" data-v="adapt"><div class="stampcol"><span class="stamp adapt">ADAPT<br>B9</span></div><div class="rowbody">
+        <div class="rowfeature">"We're hiring" section — writers, community managers, institutional partners, patrons</div>
+        <span class="rowsrc">Kimi (TH About page)</span>
+        <p class="rowwhy">Right idea, wrong timing: listing roles before launch signals scale that doesn't exist. Adapt: fold the institutional partner and patron asks into the Patron page now; publish writer/community roles only after the pilot produces its impact report (A7).</p>
+      </div></div>
+
+      <div class="rowcard" data-v="adapt"><div class="stampcol"><span class="stamp adapt">ADAPT<br>B10</span></div><div class="rowbody">
+        <div class="rowfeature">Prompt Trainer — prompt scored on four stars (Clarity, Context, Format, Tone) with suggested improvements</div>
+        <span class="rowsrc">ChatGPT (30-pg PDF, pp. 10–11, 19–20)</span>
+        <p class="rowwhy">The best interactive-learning mechanic in any of the twelve sources, but the LLM version breaks two locked decisions. Adapt in two stages: <b>MVP</b> — the same four-part rubric as a static self-check under every Operators/Builders Try step (exactly the OP2 prompt anatomy already in our video script); <b>Phase 3</b> — the AI-scored version for 20+, Operators/Builders only.</p>
+      </div></div>
+
+      <div class="rowcard" data-v="adapt"><div class="stampcol"><span class="stamp adapt">ADAPT<br>B11</span></div><div class="rowbody">
+        <div class="rowfeature">Knowledge-graph navigation — explore related topics instead of a fixed sequence</div>
+        <span class="rowsrc">ChatGPT (30-pg PDF, p. 20)</span>
+        <p class="rowwhy">Wrong for beginners, who are precisely the people who don't know what to explore next — linear stations are a feature for five of our six lines. Adapt as a small "related stations" footer link between lines, phase 2. No graph UI.</p>
+      </div></div>
+
+      <div class="rowcard" data-v="adapt"><div class="stampcol"><span class="stamp adapt">ADAPT<br>B12</span></div><div class="rowbody">
+        <div class="rowfeature">Workflow &amp; Prompt Template Marketplace</div>
+        <span class="rowsrc">Gemini (Execution Plan §4)</span>
+        <p class="rowwhy">A marketplace means payments, seller vetting, and quality moderation — infrastructure rejected elsewhere. Adapt as a <b>curated, free Blueprint Library</b> — the Operations AI Blueprints page (A2) grown over time with community-submitted prompts behind a review gate. Same value, no commerce layer.</p>
+      </div></div>
+    </section>
+
+    <!-- ============ SECTION 2c REJECT ============ -->
+    <section class="sec" id="reject">
+      <div class="sec-eyebrow">Section 2 · Filed</div>
+      <h2 class="sech">Reject — considered and declined, with reasons on record</h2>
+      <p class="lede">Nothing here is dismissed silently. Ten items, each with the specific conflict that sank it.</p>
+
+      <div class="rowcard" data-v="reject"><div class="stampcol"><span class="stamp reject">REJECT<br>C1</span></div><div class="rowbody">
+        <div class="rowfeature">Talent database / recruitment marketplace (฿5k–15k per placement)</div>
+        <span class="rowsrc">ChatGPT · Kimi</span>
+        <p class="rowwhy">Recruitment-agency licensing territory in Thailand + fraud-vetting burden. Locked decision #8 stands. B6 captures the safe portion.</p>
+      </div></div>
+
+      <div class="rowcard" data-v="reject"><div class="stampcol"><span class="stamp reject">REJECT<br>C2</span></div><div class="rowbody">
+        <div class="rowfeature">Daily missions, streaks, gamification</div>
+        <span class="rowsrc">ChatGPT</span>
+        <p class="rowwhy">Actively harmful for Adaptive Pace and Second Act; mild value elsewhere. Capstone-as-proof is our engagement mechanic.</p>
+      </div></div>
+
+      <div class="rowcard" data-v="reject"><div class="stampcol"><span class="stamp reject">REJECT<br>C3</span></div><div class="rowbody">
+        <div class="rowfeature">AI-as-companionship content for retirees ("using ChatGPT for companionship")</div>
+        <span class="rowsrc">ChatGPT tier 3</span>
+        <p class="rowwhy">Directly contradicts our Second Act design — we route toward family, buddies, and community, not toward the chatbot. This is the one place another plan is not just different but wrong.</p>
+      </div></div>
+
+      <div class="rowcard" data-v="reject"><div class="stampcol"><span class="stamp reject">REJECT<br>C4</span></div><div class="rowbody">
+        <div class="rowfeature">Sponsored tool placements inside lesson content</div>
+        <span class="rowsrc">Gemini</span>
+        <p class="rowwhy">Tool recommendations must stay trustworthy — a paid slot inside a lesson poisons the well, especially for fraud-adjacent Second Act content. Sponsors buy patron branding (A5), never curriculum placement.</p>
+      </div></div>
+
+      <div class="rowcard" data-v="reject"><div class="stampcol"><span class="stamp reject">REJECT<br>C5</span></div><div class="rowbody">
+        <div class="rowfeature">Multiple niche domains (kidsai.com etc.)</div>
+        <span class="rowsrc">ChatGPT (raised &amp; rejected there too)</span>
+        <p class="rowwhy">One platform, one brand. Already our architecture; the interchange feature is the payoff.</p>
+      </div></div>
+
+      <div class="rowcard" data-v="reject"><div class="stampcol"><span class="stamp reject">REJECT<br>C6</span></div><div class="rowbody">
+        <div class="rowfeature">Proctored exams</div>
+        <span class="rowsrc">ChatGPT</span>
+        <p class="rowwhy">Proctoring = surveillance infrastructure + PDPA surface for zero learner value. Capstone review does the job.</p>
+      </div></div>
+
+      <div class="rowcard" data-v="reject"><div class="stampcol"><span class="stamp reject">REJECT<br>C7</span></div><div class="rowbody">
+        <div class="rowfeature">Individual "Pro" paid tier (personalized roadmap, AI mentor, certificates behind a paywall)</div>
+        <span class="rowsrc">ChatGPT (30-pg PDF, pp. 21–22)</span>
+        <p class="rowwhy">Conflicts with the Robin Hood model — and notably, ChatGPT's own later 87-page conversation dropped it in favour of free-for-individuals with B2B patronage, as did Kimi. The evolution across the source documents is itself the evidence. Free for individuals stays absolute.</p>
+      </div></div>
+
+      <div class="rowcard" data-v="reject"><div class="stampcol"><span class="stamp reject">REJECT<br>C8</span></div><div class="rowbody">
+        <div class="rowfeature">Promised time savings per tier ("Expected time saved: 10 hours/week")</div>
+        <span class="rowsrc">ChatGPT (30-pg PDF, p. 5)</span>
+        <p class="rowwhy">An unverifiable marketing promise — the exact thing our OP4 script teaches learners not to do. We keep the mechanism (the hours-saved calculator produces the learner's own measured number) and quote real aggregated pilot results after the fact, not projections before it.</p>
+      </div></div>
+
+      <div class="rowcard" data-v="reject"><div class="stampcol"><span class="stamp reject">REJECT<br>C9</span></div><div class="rowbody">
+        <div class="rowfeature">Paid gated talent-pool access ($1,000–$5,000/yr for employer access to verified portfolios)</div>
+        <span class="rowsrc">Gemini (Execution Plan §6)</span>
+        <p class="rowwhy">Re-creates the intermediary position rejected in C1, just priced annually instead of per placement. Our showcase stays public and free; employers may sponsor certification costs — access to people is never the product.</p>
+      </div></div>
+
+      <div class="rowcard" data-v="reject"><div class="stampcol"><span class="stamp reject">REJECT<br>C10</span></div><div class="rowbody">
+        <div class="rowfeature">"AI Learning Foundation" multi-product umbrella (7 products incl. a marketplace and government portal)</div>
+        <span class="rowsrc">ChatGPT (final chat)</span>
+        <p class="rowwhy">Rejected for now, not forever — the seductive version of scope inflation: seven products sketched before one learner has finished one station. Directly violates A14's own filter. The ambition lives as one paragraph in VISION.md; everything else describes exactly one product until v1.0 ships.</p>
+      </div></div>
+    </section>
+
+    <!-- ============ SECTION 3 CONFLICTS ============ -->
+    <section class="sec" id="conflicts">
+      <div class="sec-eyebrow">Section 3</div>
+      <h2 class="sech">Conflicts with locked decisions — none require reopening</h2>
+      <p class="lede">Every place a source pushed against something already decided. Every one held.</p>
+
+      <div class="conflict">
+        <div class="lk">Locked decision</div>
+        <h3>#8 · No placement / matching</h3>
+        <div class="ch">Challenged by: Kimi career services, ChatGPT talent DB, Gemini paid talent-pool access (C9)</div>
+        <div class="vd"><b>Verdict</b>Hold. B6 is the compliant version.</div>
+      </div>
+
+      <div class="conflict">
+        <div class="lk">Locked decision</div>
+        <h3>Fraud defence at Station 2, before capability</h3>
+        <div class="ch">Challenged by: Gemini's Execution Plan puts senior scam safety at Stage 3 of 3 — last</div>
+        <div class="vd"><b>Verdict</b>Hold ours, firmly. Teaching a senior to converse with AI and generate images before teaching scam recognition means the most vulnerable learners spend weeks newly active online with no defence installed. Gemini's sequence is the strongest argument for why safety-before-capability is the whole point of our Second Act ordering.</div>
+      </div>
+
+      <div class="conflict">
+        <div class="lk">Locked decision</div>
+        <h3>#11 · No learner accounts in MVP</h3>
+        <div class="ch">Challenged by: Gemini's full auth schema</div>
+        <div class="vd"><b>Verdict</b>Hold for MVP; Gemini's stack is the phase-3 implementation note.</div>
+      </div>
+
+      <div class="conflict">
+        <div class="lk">Locked decision</div>
+        <h3>No gamification for vulnerable tiers</h3>
+        <div class="ch">Challenged by: ChatGPT's missions and streaks</div>
+        <div class="vd"><b>Verdict</b>Hold; certificates allowed only where B1 says.</div>
+      </div>
+
+      <div class="conflict">
+        <div class="lk">Locked decision</div>
+        <h3>No LLM widget in MVP</h3>
+        <div class="ch">Challenged by: ChatGPT / Gemini AI mentor</div>
+        <div class="vd"><b>Verdict</b>Hold; B2 is the phase-3 shape.</div>
+      </div>
+
+      <div class="conflict">
+        <div class="lk">Locked decision</div>
+        <h3>Sprouts curated-cards only</h3>
+        <div class="ch">Challenged by: ChatGPT / Gemini sandbox</div>
+        <div class="vd"><b>Verdict</b>Hold; B3.</div>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 4 PLAN ============ -->
+    <section class="sec" id="plan">
+      <div class="sec-eyebrow">Section 4</div>
+      <h2 class="sech">What this changes in the build plan</h2>
+
+      <p class="lede">New pages, small and high-leverage, no new architecture:</p>
+      <div class="pages3">
+        <div class="pagecard"><b>About / Founder story</b><span>Kimi's structure, condensed</span></div>
+        <div class="pagecard"><b>Operations AI Blueprints</b><span>Gemini's cards, PIC-sourced content</span></div>
+        <div class="pagecard"><b>Partner / Patron page</b><span>THB pricing, Kimi's table, validated numbers</span></div>
+      </div>
+
+      <div class="phaseline">
+        <div class="ph">Phase 0<br><span style="font-weight:400;color:var(--ink-soft)">this week</span></div>
+        <p>Governance repo with decision log, risk register, and all existing deliverables as first commit (A8). Build-in-public cadence started (A9). Email/LINE signup and drop-off analytics on the existing prototypes so Phase 0 doubles as the demand test (A12) — line-level signup counts decide build order for lines 3–6.</p>
+      </div>
+      <div class="phaseline">
+        <div class="ph">Phase 1<br><span style="font-weight:400;color:var(--ink-soft)">MVP</span></div>
+        <p>About page (Kimi's TH structure + the "what Thai people believe they can do" thesis line). "AI GPS" positioning in hero and patron deck (A11). Blueprints page. Patron page with sponsorship ladder and the Corporate Patronage Deck as a real deliverable (A13, B9). EdTech grant and developer-credit applications submitted (A13). Impact-loop copy. Case-study rewrite of 4 Operators steps using A10's case→module index. Static four-part prompt self-check rubric under Operators/Builders Try steps (B10 stage 1).</p>
+      </div>
+      <div class="phaseline">
+        <div class="ph">Phase 2</div>
+        <p>SME-owner track inside Operators (B4). Builders/Operators capstone certificates (B1). "Second Career" module bridging Operators → Second Act (A10). Cross-line "related stations" links (B11).</p>
+      </div>
+      <div class="phaseline">
+        <div class="ph">Phase 3</div>
+        <p>White-label kit (A4). Facilitator community (B7). Supabase/RLS when accounts arrive (B8). Scoped AI helper 20+ (B2). AI-scored Prompt Trainer for Operators/Builders 20+ (B10 stage 2). Community-submitted blueprints behind a review gate (B12). Public hiring for writers/community roles once the pilot report exists (B9).</p>
+      </div>
+
+      <div class="callout" data-label="Naming — open decision">
+        <p>Four candidates are now on the table, each with real assets already written around it:</p>
+        <div class="namechips">
+          <span class="namechip">Pathwise AI — Kimi</span>
+          <span class="namechip">AI Navigator — Gemini</span>
+          <span class="namechip">AI Learning Compass — ChatGPT</span>
+          <span class="namechip">AI Lines — working label</span>
+        </div>
+        <p>ChatGPT's argument is the sharpest: <i>"a roadmap is static; a compass helps people continuously navigate"</i> — which lines up exactly with our AI GPS framing (A11) and the transit-map architecture. Naming gates the domain, the About page, the patron deck, and the GitHub organization — it is now the single decision blocking the most downstream work.</p>
+      </div>
+
+      <div class="callout" data-label="Convergence noted">
+        <p>ChatGPT's final chat independently prescribes the exact delivery sequence this project already followed — documents first, then wireframes, then plain HTML prototypes with no framework, then user testing, and only then the production build. Three of its five phases are already complete here. That is external validation of the build order, and it means the "10-week accelerator" ChatGPT proposes is, for this project, roughly a 4-week remainder.</p>
+      </div>
+    </section>
+
+    <footer class="pagefoot">Compiled from 12 source files across 5 models (ChatGPT, Gemini, Kimi K3, Z.AI, Claude) using markitdown, OCR on image-based PDFs, and direct document reads. Working document — revise as new sources or decisions arrive.</footer>
+  </main>
+</div>
+
+<script>
+// text scale
+document.querySelectorAll('[data-scale]').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('[data-scale]').forEach(x=>x.setAttribute('aria-pressed',x===b));
+  document.documentElement.style.setProperty('--scale',b.dataset.scale);
+}));
+document.getElementById('printBtn').addEventListener('click',()=>window.print());
+
+// verdict filter
+const filters={adopt:true,adapt:true,reject:true};
+function applyFilter(){
+  document.querySelectorAll('.rowcard').forEach(c=>{
+    c.classList.toggle('hide', !filters[c.dataset.v]);
+  });
+  const vis=document.querySelectorAll('.rowcard:not(.hide)').length;
+  const tot=document.querySelectorAll('.rowcard').length;
+  document.getElementById('visCount').textContent = vis+' of '+tot+' rows shown';
+}
+document.querySelectorAll('.stamp-mini button').forEach(b=>b.addEventListener('click',()=>{
+  const f=b.dataset.filter; filters[f]=!filters[f];
+  b.setAttribute('aria-pressed', filters[f]);
+  applyFilter();
+}));
+applyFilter();
+
+// scroll spy for rail nav
+const links=document.querySelectorAll('.navlink');
+const secs=[...links].map(l=>document.querySelector(l.getAttribute('href')));
+function spy(){
+  let cur=secs[0];
+  secs.forEach(s=>{ if(s && s.getBoundingClientRect().top < 120) cur=s; });
+  links.forEach(l=>l.classList.toggle('on', document.querySelector(l.getAttribute('href'))===cur));
+}
+document.addEventListener('scroll', spy, {passive:true});
+spy();
+</script>
+</body>
+</html>

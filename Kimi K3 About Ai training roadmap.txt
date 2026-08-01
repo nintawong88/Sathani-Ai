@@ -1,0 +1,226 @@
+# About Pathwise AI
+
+---
+
+## Hero Section
+
+### AI for every Thai. Free for every learner.
+
+Pathwise AI is a free, tiered AI literacy platform built for Thailand — from 5-year-old children discovering robots, to 65-year-old grandparents connecting with family, to warehouse supervisors automating their daily work.
+
+**No paywalls. No ads. No data selling.**
+
+We believe AI literacy is infrastructure, not a luxury. And we believe the people who need it most — parents, SME owners, factory staff, seniors — are often the ones left behind.
+
+[Explore the tiers](#tiers) · [Support our mission](#patronage)
+
+---
+
+## About the Founder
+
+### From programmer to warehouse floor to AI advocate
+
+My name is **Chawin Intawong**. I am not an AI professor. I am someone who spent 28 years building and running distribution centers across Thailand — and learned AI because the problems on the floor demanded it.
+
+I started as a programmer in 1994, writing code for finance and securities systems. Then I spent nearly three decades in logistics operations: Nestlé, DHL Exel, Samsung, Minor Food Group, Linfox, and Siam Makro (CP Group). I managed budgets of 280 million baht. I built greenfield warehouses from scratch. I relocated 22,000-square-meter facilities with zero operational disruption.
+
+I watched talented warehouse operators struggle with new WMS screens. I saw experienced managers resist SAP eWM because no one taught them why it mattered. The technology was never the problem. The gap was **trust and translation**.
+
+So I started learning AI. Not in a lab. On the job.
+
+At Pattna Intercool, I built a stock-taking app. I linked WMS to SAP. I created an AI procurement system. I built a maintenance app, a business hub, and custom reporting tools. Recently, I completed a **Generative AI Mastermind** to deepen my understanding.
+
+Now I am building the platform I wish existed when I started.
+
+---
+
+## The Journey
+
+### 1994 — Programmer
+Started as a programmer at CL Sahaviriya Finance and Siam City Syndicate Finance. Learned that code is only useful if it solves a real problem.
+
+### 1998 — IT Project Manager
+Led WMS implementations for Johnson & Johnson across Thailand, Malaysia, and Taiwan. First exposure to warehouse software at scale.
+
+### 2001 — Operations Manager, DHL Exel
+Managed warehouse and transport for Nestlé, Siam Makro, Minor Group, and ALCAN. Delivered SAP L.E.S. for Nestlé's 40,000 sqm DC. Secured a 240 million baht contract renewal.
+
+### 2007 — Senior Manager, CEVA & Toll
+Led Samsung Thailand DC relocation (22,000 sqm, Laem Chabang) with zero disruption. Built Western Digital's Finished Goods Hub and Huawei's Telecommunication Distribution Hub.
+
+### 2012 — Site Manager, Linfox / Minor Food Group
+Full P&L ownership of a multi-temperature DC (-25°C to ambient) and transport for 1,200+ QSR stores across 6 brands. Annual logistics budget: 280 million baht. Re-engineered the entire supply chain with SAP eWM and SAP MRP.
+
+### 2014 — Senior Manager, Siam Makro (CP Group)
+Directed Thailand's most advanced automated cold-chain DC: an ASRS frozen warehouse with 25,000 pallet positions plus an 18,000 sqm fresh food cross-dock — one of Asia's most complex distribution center builds. Later led dry/non-food DC operations across 3 facilities with full 3PL governance and multi-million baht P&L ownership.
+
+### 2025 — Senior Consultant, Pattna Intercool
+Warehouse standardisation, SAP eWM process optimisation, and KPI framework design for commercial freezer manufacturing. Built 7 internal apps including AI procurement, maintenance tracking, and a business hub.
+
+### 2026 — Founder, Pathwise AI
+Turning decades of operational experience into a free AI literacy platform for every Thai, every age.
+
+---
+
+## Real Track Record
+
+These are not theories. These are projects I led, budgets I managed, and teams I built.
+
+| Metric | Project | Context |
+|--------|---------|---------|
+| **28+ years** | Operations leadership | FMCG, food service, cold chain, 3PL |
+| **25,000 pallets** | ASRS frozen warehouse | Siam Makro automated cold-chain DC |
+| **18,000 sqm** | Fresh food cross-dock | One of Asia's most complex DC builds |
+| **280M THB** | Annual logistics budget | Minor Food Group multi-temp DC |
+| **1,200+ stores** | QSR supply network | 6 brands, full P&L ownership |
+| **22,000 sqm** | Samsung DC relocation | Zero operational disruption |
+| **40,000 sqm** | Nestlé Thailand DC | SAP L.E.S. implementation, 240M contract renewal |
+| **7 apps** | Internal tools suite | Pattna Intercool: WMS, AI procurement, maintenance, reporting |
+
+*Logos displayed with permission: Siam Makro (CP Group), Minor Food Group, Linfox, DHL Exel, Nestlé, Samsung, Pattna Intercool.*
+
+---
+
+## Why I Built This
+
+At Siam Makro, I watched a 50-year-old warehouse supervisor stare at a new SAP screen for twenty minutes, too proud to ask for help. He had 30 years of operational wisdom. The system treated him like a beginner.
+
+At Minor Food Group, I saw a talented operations manager resist a new WMS because the training was in English, full of jargon, and assumed he already understood "cloud architecture." He didn't. Neither did I, at first.
+
+In Khon Kaen, I helped a friend build a distribution center from 1,200 sqm to 10,000 sqm. He had never run a warehouse before. We learned together. Today that center generates nearly 2 million baht in monthly profit. But the first six months were terrifying — not because the work was hard, but because no one had translated the knowledge into language he trusted.
+
+**That is the gap Pathwise AI fills.**
+
+Not between Thailand and Silicon Valley. Between **what AI can do** and **what Thai people believe they can do**.
+
+This platform is for:
+- The parent who wants to guide their child safely through ChatGPT
+- The SME owner who thinks AI is only for big companies
+- The warehouse supervisor who has seen three "digital transformation" projects fail
+- The 60-year-old who thinks technology passed them by
+- The 20-year-old who wants a career in AI but has no roadmap
+
+**Free. In Thai. For every age.**
+
+Because digital literacy is not a luxury. It is infrastructure.
+
+---
+
+## From the Warehouse to the Classroom
+
+My operational experience becomes your case studies. These are real Thai businesses, real decisions, real outcomes.
+
+### Case: Siam Makro Cold-Chain DC
+**How we built Thailand's most advanced automated frozen warehouse**
+
+An ASRS system with 25,000 pallet positions plus an 18,000 sqm fresh food cross-dock. What AI can learn from cold-chain logistics: predictive demand, automated replenishment, and temperature compliance.
+
+*Used in: Professionals Module 05 — Industry Lab*
+
+### Case: Samsung DC Relocation
+**22,000 sqm. Zero disruption. Full stop.**
+
+The planning, risk management, stakeholder communication, and team coordination that moved an entire distribution center without missing a single delivery window.
+
+*Used in: Navigators Module 04 — Teach & Mentor*
+
+### Case: Minor Food Group Re-engineering
+**Multi-temperature DC from -25°C to ambient**
+
+SAP eWM + SAP MRP integration for 1,200+ QSR stores across 6 brands. Building a team from scratch, designing shift patterns, and creating KPI frameworks that actually motivated people.
+
+*Used in: Professionals Module 02 — Data & Decisions*
+
+### Case: Khon Kaen Greenfield DC
+**1,200 sqm to 10,000 sqm in 18 months**
+
+Helping a friend succeed. From minimal warehouse knowledge to 2 million baht monthly profit. The real lesson: technology is only as good as the trust you build before you turn it on.
+
+*Used in: Navigators Module 05 — Second Career*
+
+---
+
+## What I Built
+
+At Pattna Intercool, I did not wait for someone else to solve our problems. I built the tools myself.
+
+- **Stock Take App** — Real-time inventory accuracy for the warehouse floor
+- **WMS Shell linked to SAP** — Bridging the gap between warehouse operations and enterprise systems
+- **FG Goods Return to Repair Shop** — Reverse logistics workflow for finished goods
+- **AI Procurement** — Using AI to optimise purchasing decisions and supplier selection
+- **Maintenance App** — Machine health tracking and preventive maintenance for factory equipment
+- **Business Hub** — Internal company knowledge base and workflow platform with AI assistance
+- **Report Tools** — Custom analytics and KPI dashboards for management
+
+I built these because the problem was real and the solution did not exist.
+
+That is the same reason I am building Pathwise AI.
+
+---
+
+## My AI Learning Journey
+
+I did not study AI at university. I studied Statistics and Computer Science at Kasetsart University, then spent decades in warehouses.
+
+My AI journey started with a simple question: *"Can AI help me order freezer parts more efficiently?"*
+
+It turned into an AI procurement system.
+
+Then I asked: *"Can AI help my team find answers faster?"*
+
+It turned into a Business Hub with an AI assistant.
+
+Recently, I completed a **Generative AI Mastermind** to deepen my technical understanding. I am still learning. I will always be learning.
+
+If I can learn AI at 50+ — between running operations, managing budgets, and building apps — so can you. The difference is not talent. The difference is having a path that respects your time, your language, and your experience.
+
+---
+
+## Thai-First, Global-Quality
+
+I grew up in Tak Province. I studied at Kasetsart University. I won an AFS scholarship to Tikipunga High School in New Zealand. I have managed Thai teams, reported to multinational boards, and negotiated with local authorities.
+
+I speak the language of the warehouse floor and the boardroom. I know what "digital transformation" looks like when your staff have never used a tablet. I know what "AI strategy" sounds like to a manager who has seen three failed IT projects.
+
+That is why this platform is built **for Thailand first**.
+
+**Thai language.** Thai case studies. Thai context. Global quality, local heart.
+
+We are not a translated Silicon Valley course. We are a platform built by someone who has walked the same factory floors, sat in the same traffic, and faced the same "is this really for me?" doubt that our learners feel.
+
+---
+
+## The Team
+
+Currently, Pathwise AI is a mission-driven project led by me, supported by a growing network of Thai AI educators, university partners, and enterprise advisors.
+
+We are actively seeking:
+- **Thai AI curriculum writers** (university graduates, industry practitioners)
+- **Community managers** (part-time, Thai-language)
+- **Institutional partners** (schools, libraries, senior centers, SMEs)
+- **Enterprise patrons** (companies that want to upskill their workforce while funding free community access)
+
+If you believe in this mission, [get in touch](#contact).
+
+---
+
+## Contact
+
+**Chawin Intawong**  
+Founder, Pathwise AI
+
+- Email: chawin@pathwise.ai *(placeholder — update with your email)*
+- LinkedIn: [linkedin.com/in/chawin-intawong](https://linkedin.com/in/chawin-intawong) *(update with your actual URL)*
+- Location: Bangkok, Thailand
+
+**For institutional partnerships and enterprise training:**  
+Email: partnerships@pathwise.ai *(placeholder)*
+
+**For media, grants, and speaking inquiries:**  
+Email: press@pathwise.ai *(placeholder)*
+
+---
+
+*Pathwise AI is a social-impact education initiative. Every baht earned from institutional licenses and enterprise training funds free access for individual learners across Thailand.*
+
+*© 2026 Pathwise AI. All rights reserved.*

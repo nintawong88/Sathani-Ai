@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Navigator - Learning Roadmaps & Operational Blueprints</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <style>
+        :root {
+            --font-sans: 'Google Sans', -apple-system, sans-serif;
+            --font-mono: 'Google Sans Code', monospace;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: #0b0f19;
+            color: #f3f4f6;
+        }
+
+        .mono {
+            font-family: var(--font-mono);
+        }
+
+        .tier-card {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tier-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .tier-card.active {
+            border-color: #3b82f6;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.25);
+            background-color: #1e293b;
+        }
+
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-blue-500 selection:text-white">
+
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center font-bold text-xl text-white shadow-lg shadow-blue-500/20">
+                    AI
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-white leading-none">AI Navigator</h1>
+                    <p class="text-xs text-slate-400 mt-1">Free Lifetime Roadmaps for Every Lifecycle</p>
+                </div>
+            </div>
+
+            <!-- Accessibility & Language Toggles -->
+            <div class="flex items-center gap-2">
+                <button onclick="toggleLanguage()" id="lang-btn" class="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-300 transition flex items-center gap-1.5">
+                    <span class="material-icons text-sm">language</span>
+                    <span id="lang-text">TH / EN</span>
+                </button>
+                <button onclick="toggleFontSize()" class="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-300 transition flex items-center gap-1.5">
+                    <span class="material-icons text-sm">format_size</span>
+                    <span class="hidden sm:inline">Text Size</span>
+                </button>
+                <button onclick="openPatronModal()" class="px-4 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-xs font-semibold text-white transition shadow-md shadow-blue-600/20 flex items-center gap-1">
+                    <span class="material-icons text-sm">business</span>
+                    <span>Corporate Patronage</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="bg-slate-900 border-b border-slate-800/80 py-3 px-4">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs text-slate-400">
+            <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span class="font-medium text-slate-200">Architected by 28+ Year Supply Chain & Computer Science Leader</span>
+                <span class="hidden md:inline text-slate-600">|</span>
+                <span class="hidden md:inline text-slate-400">Ex-Siam Makro ASRS Cold-Chain, Linfox, DHL & Pattna Intercool</span>
+            </div>
+            <button onclick="openBlueprintModal()" class="text-blue-400 hover:text-blue-300 font-medium flex items-center gap-1 underline underline-offset-2">
+                <span class="material-icons text-sm">precision_manufacturing</span>
+                <span>View Industrial & WMS AI Blueprints</span>
+            </button>
+        </div>
+    </section>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+        
+        <!-- Header Text -->
+        <div class="text-center max-w-3xl mx-auto mb-10">
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-3">
+                Inclusive AI Roadmaps for Everyone
+            </h2>
+            <p class="text-slate-400 text-sm sm:text-base">
+                From 6-year-old curious minds to corporate supply chain teams and active retirees—select your tier to explore your personalized, zero-cost AI learning path.
+            </p>
+        </div>
+
+        <!-- Tier Grid Selectors -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            
+            <!-- Tier 1 -->
+            <div onclick="selectTier(1)" id="tier-card-1" class="tier-card active cursor-pointer p-5 rounded-2xl border border-slate-800 bg-slate-900/60 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Tier 1</span>
+                        <span class="material-icons text-emerald-400 text-xl">child_care</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1">Young Explorers</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed mb-4">Ages 6–14. Playful games, Scratch AI, digital storytelling, and safe experimentation.</p>
+                </div>
+                <div class="text-[11px] text-slate-500 font-medium border-t border-slate-800 pt-3">
+                    Pace: 1–2 hrs/week • Gamified
+                </div>
+            </div>
+
+            <!-- Tier 2 -->
+            <div onclick="selectTier(2)" id="tier-card-2" class="tier-card cursor-pointer p-5 rounded-2xl border border-slate-800 bg-slate-900/60 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">Tier 2</span>
+                        <span class="material-icons text-blue-400 text-xl">code</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1">Tech Pioneers</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed mb-4">Ages 15–22. Python logic, LLM APIs, LangChain, and GitHub portfolio apps.</p>
+                </div>
+                <div class="text-[11px] text-slate-500 font-medium border-t border-slate-800 pt-3">
+                    Pace: 4–6 hrs/week • Hands-on Code
+                </div>
+            </div>
+
+            <!-- Tier 3 -->
+            <div onclick="selectTier(3)" id="tier-card-3" class="tier-card cursor-pointer p-5 rounded-2xl border border-slate-800 bg-slate-900/60 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">Tier 3</span>
+                        <span class="material-icons text-amber-400 text-xl">precision_manufacturing</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1">Productivity & Ops</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed mb-4">Office Workers & Ops Teams. WMS/SAP prompt recipes, Excel macros, and workflow automation.</p>
+                </div>
+                <div class="text-[11px] text-slate-500 font-medium border-t border-slate-800 pt-3">
+                    Pace: 2–3 hrs/week • Workplace ROI
+                </div>
+            </div>
+
+            <!-- Tier 4 -->
+            <div onclick="selectTier(4)" id="tier-card-4" class="tier-card cursor-pointer p-5 rounded-2xl border border-slate-800 bg-slate-900/60 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20">Tier 4</span>
+                        <span class="material-icons text-purple-400 text-xl">nature_people</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1">Gentle Navigators</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed mb-4">Seniors & Gentle Pace. Hands-free voice AI, family history, and online scam protection.</p>
+                </div>
+                <div class="text-[11px] text-slate-500 font-medium border-t border-slate-800 pt-3">
+                    Pace: 1 hr/week • Voice & Stress-Free
+                </div>
+            </div>
+
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 relative overflow-hidden shadow-2xl">
+            
+            <div id="roadmap-header-container" class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-800 pb-6 mb-8 gap-4">
+                <!-- Injected via JavaScript -->
+            </div>
+
+            <!-- Timeline Stages -->
+            <div id="roadmap-stages-container" class="space-y-6 relative before:absolute before:inset-0 before:left-3 sm:before:left-4 before:w-0.5 before:bg-slate-800 before:z-0">
+                <!-- Injected via JavaScript -->
+            </div>
+
+        </div>
+
+    </main>
+
+    <div id="blueprint-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-3xl w-full max-h-[85vh] overflow-hidden flex flex-col shadow-2xl">
+            <div class="p-6 border-b border-slate-800 flex items-center justify-between bg-slate-950">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                        <span class="material-icons text-xl">precision_manufacturing</span>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white">Supply Chain & Operations AI Blueprints</h3>
+                        <p class="text-xs text-slate-400">Real-world operational prompts inspired by 28+ years of enterprise DC management.</p>
+                    </div>
+                </div>
+                <button onclick="closeBlueprintModal()" class="text-slate-400 hover:text-white transition">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            
+            <div class="p-6 overflow-y-auto space-y-4 text-sm">
+                <!-- Blueprint 1 -->
+                <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="font-bold text-blue-400">1. SAP eWM & Stock-Take Variance Analysis</span>
+                        <span class="text-[10px] font-mono bg-blue-500/10 text-blue-300 px-2 py-0.5 rounded">Prompt Template</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-3">Reconcile physical stock-take sheets against SAP eWM bin records and identify discrepancy causes (e.g., cross-dock staging error, unit-of-measure confusion).</p>
+                    <div class="bg-slate-900 p-3 rounded-xl font-mono text-xs text-slate-300 border border-slate-800">
+                        "Act as a Senior Warehouse Ops Analyst. Compare Dataset A (SAP eWM Bin Records) against Dataset B (Physical Stock Counts). Highlight top 5 variance SKUs, calculate financial impact in THB, and categorize root causes into 'Stage Mismatch', 'UOM Error', or 'Unrecorded Movement'."
+                    </div>
+                </div>
+
+                <!-- Blueprint 2 -->
+                <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="font-bold text-emerald-400">2. Cold-Chain & ASRS Predictive Maintenance</span>
+                        <span class="text-[10px] font-mono bg-emerald-500/10 text-emerald-300 px-2 py-0.5 rounded">Vision AI Workflow</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-3">Convert technician photos of freezer equipment or ASRS crane fault codes into structured maintenance logs and spare-part requisitions.</p>
+                    <div class="bg-slate-900 p-3 rounded-xl font-mono text-xs text-slate-300 border border-slate-800">
+                        "Analyze this image of the freezer compressor control panel. Extract fault code numbers, match with the troubleshooting matrix, and draft a 1-page work order including safety precautions for -25°C environments."
+                    </div>
+                </div>
+
+                <!-- Blueprint 3 -->
+                <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="font-bold text-amber-400">3. AI Procurement & Reorder Requisitions</span>
+                        <span class="text-[10px] font-mono bg-amber-500/10 text-amber-300 px-2 py-0.5 rounded">Automation Pipeline</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-3">Automatically draft supplier purchase orders based on safety stock thresholds and lead-time variability.</p>
+                    <div class="bg-slate-900 p-3 rounded-xl font-mono text-xs text-slate-300 border border-slate-800">
+                        "Draft a purchase requisition for commercial refrigeration coils. Check supplier lead times (30 days vs 45 days) and calculate reorder quantities maintaining a 15% buffer above safety stock."
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4 border-t border-slate-800 bg-slate-950 flex justify-end">
+                <button onclick="closeBlueprintModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white rounded-xl transition">
+                    Close Blueprints
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="patron-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 shadow-2xl relative">
+            <button onclick="closePatronModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white transition">
+                <span class="material-icons">close</span>
+            </button>
+            
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center mx-auto mb-3 shadow-lg shadow-blue-500/20">
+                    <span class="material-icons text-white text-2xl">business</span>
+                </div>
+                <h3 class="text-xl font-bold text-white">Become an Institutional Patron</h3>
+                <p class="text-xs text-slate-400 mt-1">Keep AI education 100% free for community learners while upskilling your enterprise workforce.</p>
+            </div>
+
+            <div class="space-y-3 mb-6 text-xs text-slate-300">
+                <div class="flex items-start gap-2.5 p-3 rounded-xl bg-slate-950 border border-slate-800">
+                    <span class="material-icons text-emerald-400 text-base mt-0.5">check_circle</span>
+                    <div>
+                        <strong class="text-white block">Custom Operational Roadmaps</strong>
+                        Tailored modules aligned with your company's WMS, SAP eWM, or internal SOPs.
+                    </div>
+                </div>
+                <div class="flex items-start gap-2.5 p-3 rounded-xl bg-slate-950 border border-slate-800">
+                    <span class="material-icons text-emerald-400 text-base mt-0.5">check_circle</span>
+                    <div>
+                        <strong class="text-white block">Employee Progress Dashboard</strong>
+                        Track team AI adoption and skill assessment scores without administrative overhead.
+                    </div>
+                </div>
+                <div class="flex items-start gap-2.5 p-3 rounded-xl bg-slate-950 border border-slate-800">
+                    <span class="material-icons text-emerald-400 text-base mt-0.5">check_circle</span>
+                    <div>
+                        <strong class="text-white block">Brand Recognition as Education Patron</strong>
+                        Featured placement as an official sponsor funding Tier 1 (Kids) & Tier 4 (Seniors) digital literacy.
+                    </div>
+                </div>
+            </div>
+
+            <form onsubmit="handlePatronSubmit(event)" class="space-y-3">
+                <input type="text" placeholder="Company / Organization Name" required class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition">
+                <input type="email" placeholder="Work Email Address" required class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition">
+                <button type="submit" class="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-xs font-bold text-white rounded-xl transition shadow-lg shadow-blue-600/25">
+                    Request Corporate Patronage Deck
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-slate-950 py-6 px-4 text-center text-xs text-slate-500">
+        <p>© 2026 AI Navigator Platform. Designed for universal digital literacy & operational excellence.</p>
+    </footer>
+
+    <script>
+        // Data Store
+        const roadmaps = {
+            1: {
+                title: "Tier 1: Young Explorers Roadmap",
+                target: "Kids & Early Teens (Ages 6–14)",
+                pace: "1–2 hours / week",
+                style: "Gamified, Visual & Play-Based",
+                color: "emerald",
+                stages: [
+                    {
+                        title: "Stage 1: AI Magic & Storytelling",
+                        desc: "Discover how computers learn through interactive games. Use Scratch AI blocks and image tools to create digital storybooks.",
+                        tools: ["Scratch AI", "Teachable Machine", "DALL-E Mini"]
+                    },
+                    {
+                        title: "Stage 2: Training Your First AI Model",
+                        desc: "Train a simple image or sound recognition model using webcam pictures of pets, drawings, or gestures.",
+                        tools: ["Google Teachable Machine", "Micro:bit"]
+                    },
+                    {
+                        title: "Stage 3: Building a Friendly Chatbot",
+                        desc: "Design a virtual companion that answers quiz questions about hobbies using simple drag-and-drop block coding.",
+                        tools: ["MIT App Inventor", "Dialogflow"]
+                    }
+                ]
+            },
+            2: {
+                title: "Tier 2: Tech Pioneers Roadmap",
+                target: "Teens & College Students (Ages 15–22)",
+                pace: "4–6 hours / week",
+                style: "Hands-on Coding, APIs & Portfolio",
+                color: "blue",
+                stages: [
+                    {
+                        title: "Stage 1: Python Fundamentals & Prompting",
+                        desc: "Master basic Python logic, structured prompting techniques, and using AI coding assistants effectively.",
+                        tools: ["Python", "VS Code", "GitHub Copilot", "Claude"]
+                    },
+                    {
+                        title: "Stage 2: API Integration & LLM Apps",
+                        desc: "Connect OpenAI/Gemini APIs to Python backends. Build dynamic web apps and simple document-reading models.",
+                        tools: ["OpenAI API", "LangChain", "Streamlit", "FastAPI"]
+                    },
+                    {
+                        title: "Stage 3: Full-Stack AI Portfolio Project",
+                        desc: "Deploy a complete SaaS prototype with database storage, vector search, and user authentication.",
+                        tools: ["Next.js", "Supabase", "Pinecone", "Vercel"]
+                    }
+                ]
+            },
+            3: {
+                title: "Tier 3: Productivity & Operations Roadmap",
+                target: "Office Workers, Logistics & Operations Teams",
+                pace: "2–3 hours / week",
+                style: "WMS/SAP Prompts, Excel Macros & Automation",
+                color: "amber",
+                stages: [
+                    {
+                        title: "Stage 1: Enterprise Prompt Engineering",
+                        desc: "Master system prompts for SAP data cleanup, email drafting, report summarization, and inventory variance detection.",
+                        tools: ["ChatGPT Plus", "Claude Pro", "Microsoft 365 Copilot"]
+                    },
+                    {
+                        title: "Stage 2: No-Code Automation & WMS Workflows",
+                        desc: "Build automated pipelines connecting spreadsheets, inventory logs, and repair tickets with AI logic.",
+                        tools: ["Zapier", "Make.com", "Custom GPTs"]
+                    },
+                    {
+                        title: "Stage 3: Operational AI & Predictive Maintenance",
+                        desc: "Analyze floor datasets, automate reorder requisitions, and enforce strict data safety compliance.",
+                        tools: ["Advanced Data Analysis", "Power BI", "Notion AI"]
+                    }
+                ]
+            },
+            4: {
+                title: "Tier 4: Gentle Navigators Roadmap",
+                target: "Retirees, Senior Citizens & Gentle Pace Learners",
+                pace: "1 hour / week (Flexible)",
+                style: "Voice-First, Low Stress & Practical Safety",
+                color: "purple",
+                stages: [
+                    {
+                        title: "Stage 1: Voice AI & Everyday Companion",
+                        desc: "Learn to converse naturally with voice AI for daily reminders, health tips, recipe planning, and travel ideas.",
+                        tools: ["ChatGPT Voice", "Google Assistant", "Tablet / Smartphone"]
+                    },
+                    {
+                        title: "Stage 2: AI for Family Hobbies & Memoirs",
+                        desc: "Use AI to help write life stories, organize family recipe collections, or generate artwork for greeting cards.",
+                        tools: ["Midjourney", "Bing Image Creator", "Voice Recorders"]
+                    },
+                    {
+                        title: "Stage 3: Digital Safety & Deepfake Protection",
+                        desc: "Recognize AI voice scams, fake email notifications, and online misinformation to browse safely.",
+                        tools: ["Safety Checklists", "Fact-Checking Tools"]
+                    }
+                ]
+            }
+        };
+
+        let currentTier = 1;
+        let isLargeFont = false;
+
+        function selectTier(tierId) {
+            currentTier = tierId;
+            
+            // Update Card Styles
+            document.querySelectorAll('.tier-card').forEach((card, idx) => {
+                if (idx + 1 === tierId) {
+                    card.classList.add('active');
+                } else {
+                    card.classList.remove('active');
+                }
+            });
+
+            renderRoadmap();
+        }
+
+        function renderRoadmap() {
+            const data = roadmaps[currentTier];
+            
+            // Render Header
+            const headerContainer = document.getElementById('roadmap-header-container');
+            headerContainer.innerHTML = `
+                <div>
+                    <h3 class="text-2xl font-bold text-white">${data.title}</h3>
+                    <p class="text-xs text-slate-400 mt-1">Tailored Profile: <strong class="text-slate-200">${data.target}</strong></p>
+                </div>
+                <div class="flex flex-wrap items-center gap-3 text-xs">
+                    <span class="px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 border border-slate-700 font-medium">
+                        Pace: <strong class="text-white">${data.pace}</strong>
+                    </span>
+                    <span class="px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 border border-slate-700 font-medium">
+                        Style: <strong class="text-white">${data.style}</strong>
+                    </span>
+                </div>
+            `;
+
+            // Render Stages
+            const stagesContainer = document.getElementById('roadmap-stages-container');
+            stagesContainer.innerHTML = '';
+
+            data.stages.forEach((stage, idx) => {
+                const stageEl = document.createElement('div');
+                stageEl.className = 'relative z-10 pl-8 sm:pl-10';
+                stageEl.innerHTML = `
+                    <div class="absolute left-0 top-1.5 w-6 sm:w-8 h-6 sm:h-8 rounded-full bg-slate-900 border-2 border-blue-500 text-blue-400 font-mono text-xs font-bold flex items-center justify-center shadow-md shadow-blue-500/20">
+                        ${idx + 1}
+                    </div>
+                    <div class="bg-slate-950/80 p-5 rounded-2xl border border-slate-800 hover:border-slate-700 transition">
+                        <h4 class="text-base font-bold text-white mb-1.5">${stage.title}</h4>
+                        <p class="text-xs sm:text-sm text-slate-400 leading-relaxed mb-4">${stage.desc}</p>
+                        <div class="flex flex-wrap gap-1.5">
+                            ${stage.tools.map(tool => `
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-[11px] font-mono text-slate-300">
+                                    ${tool}
+                                </span>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                stagesContainer.appendChild(stageEl);
+            });
+        }
+
+        // Modals & UI Toggles
+        function openBlueprintModal() {
+            document.getElementById('blueprint-modal').classList.remove('hidden');
+        }
+
+        function closeBlueprintModal() {
+            document.getElementById('blueprint-modal').classList.add('hidden');
+        }
+
+        function openPatronModal() {
+            document.getElementById('patron-modal').classList.remove('hidden');
+        }
+
+        function closePatronModal() {
+            document.getElementById('patron-modal').classList.add('hidden');
+        }
+
+        function handlePatronSubmit(e) {
+            e.preventDefault();
+            alert("Thank you! Our institutional patronage team will send the sponsorship & enterprise deck to your email.");
+            closePatronModal();
+        }
+
+        function toggleFontSize() {
+            isLargeFont = !isLargeFont;
+            document.documentElement.style.fontSize = isLargeFont ? '18px' : '16px';
+        }
+
+        function toggleLanguage() {
+            alert("Language toggled: Thai / English support enabled.");
+        }
+
+        // Initial Render
+        renderRoadmap();
+    </script>
+</body>
+</html>

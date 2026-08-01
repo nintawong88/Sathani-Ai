@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Lines — pick the route that fits your life</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EBEDF1;
+  --card:#F7F8FA;
+  --ink:#12161D;
+  --ink-soft:#4E5765;
+  --rule:#C7CDD6;
+  --amber:#B4761C;
+  --rose:#C42A62;
+  --violet:#5B3FC9;
+  --teal:#0C6D7C;
+  --forest:#237848;
+  --copper:#96471E;
+  --focus:#12161D;
+  --scale:1;
+  --track:14px;
+  font-size:calc(16px * var(--scale));
+}
+html[data-contrast="high"]{
+  --paper:#FFFFFF; --card:#FFFFFF; --ink:#000000; --ink-soft:#1D2229; --rule:#7C838D;
+  --amber:#7A4E08; --rose:#96003F; --violet:#3B1FA8; --teal:#004C59; --forest:#0C5730; --copper:#6E2E09;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"IBM Plex Sans Thai",system-ui,sans-serif;
+  font-size:1rem; line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;line-height:1.02;letter-spacing:-.02em;margin:0}
+.mono{font-family:"IBM Plex Mono",monospace}
+a{color:inherit}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft)}
+
+/* ---------- utility bar ---------- */
+.util{position:sticky;top:0;z-index:50;background:var(--ink);color:var(--paper);}
+.util .wrap{display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding-top:8px;padding-bottom:8px}
+.util .brand{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;letter-spacing:-.02em;margin-right:auto;font-size:1.02rem}
+.util .brand span{opacity:.55;font-weight:400;font-size:.78rem;letter-spacing:0}
+.ctl{display:flex;align-items:center;gap:4px}
+.ctl>b{font-family:"IBM Plex Mono",monospace;font-weight:400;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;opacity:.6;margin-right:2px}
+.util button{background:transparent;border:1px solid rgba(255,255,255,.28);color:inherit;border-radius:999px;padding:3px 10px;font-size:.78rem;line-height:1.4}
+.util button[aria-pressed="true"],.util button.on{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.util :focus-visible{outline-color:#fff}
+
+/* ---------- hero ---------- */
+.hero{padding:56px 0 10px}
+.hero h1{font-size:clamp(2.4rem,6.4vw,4.6rem);max-width:15ch}
+.hero h1 em{font-style:normal;display:block;color:var(--ink-soft)}
+.hero p.lede{max-width:46ch;margin:18px 0 0;font-size:1.06rem;color:var(--ink-soft)}
+.hero .meta{display:flex;gap:26px;flex-wrap:wrap;margin-top:26px}
+.hero .meta div{border-top:2px solid var(--ink);padding-top:6px}
+.hero .meta b{display:block;font-family:"Bricolage Grotesque",sans-serif;font-size:1.5rem}
+.hero .meta span{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+
+/* ---------- map ---------- */
+.map{margin:44px 0 8px;position:relative}
+.maphead{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--rule);padding-bottom:8px;margin-bottom:6px;gap:12px;flex-wrap:wrap}
+.route{
+  display:grid;
+  grid-template-columns:minmax(150px,200px) 1fr;
+  gap:0 18px; align-items:center;
+  border:0;background:none;padding:16px 0;width:100%;text-align:left;
+  border-bottom:1px solid var(--rule);
+}
+.route:hover .rname,.route[aria-pressed="true"] .rname{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:4px}
+.route[aria-pressed="true"]{background:linear-gradient(90deg,rgba(18,22,29,.05),transparent 60%)}
+.rname{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:1.12rem;display:block}
+.rwho{font-size:.82rem;color:var(--ink-soft);display:block}
+.rdose{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.08em;color:var(--ink-soft);display:block;margin-top:3px}
+.track{position:relative;height:44px;display:flex;align-items:center}
+.line{position:absolute;left:0;right:0;height:var(--track);border-radius:99px;background:currentColor;opacity:.9}
+.stations{position:relative;display:flex;justify-content:space-between;width:100%;padding:0 4px}
+.stop{width:20px;height:20px;border-radius:50%;background:var(--paper);border:4px solid currentColor;position:relative;z-index:2;flex:0 0 auto}
+.stop::after{
+  content:attr(data-label);position:absolute;top:26px;left:50%;transform:translateX(-50%);
+  font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.05em;color:var(--ink-soft);
+  white-space:nowrap;display:none
+}
+.terminus{border-left:2px dashed var(--rule);padding-left:14px;margin-top:14px}
+.terminus b{font-family:"Bricolage Grotesque",sans-serif;font-size:1.05rem}
+.terminus span{display:block;font-size:.84rem;color:var(--ink-soft)}
+.legend{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.06em;color:var(--ink-soft)}
+
+/* ---------- detail ---------- */
+.detail{margin:36px 0 0;background:var(--card);border:1px solid var(--rule);border-top:8px solid currentColor;border-radius:4px;padding:28px}
+.detail h2{font-size:clamp(1.7rem,4vw,2.5rem)}
+.dgrid{display:grid;grid-template-columns:1.5fr 1fr;gap:34px;margin-top:22px}
+.facts{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 20px;margin:16px 0 26px;padding:16px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.facts dt{font-family:"IBM Plex Mono",monospace;font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+.facts dd{margin:2px 0 0;font-weight:600}
+ol.st{list-style:none;padding:0;margin:0;counter-reset:s}
+ol.st li{counter-increment:s;padding:14px 0 14px 46px;position:relative;border-bottom:1px dashed var(--rule)}
+ol.st li::before{
+  content:counter(s);position:absolute;left:0;top:14px;width:30px;height:30px;border-radius:50%;
+  border:3px solid currentColor;color:currentColor;background:var(--paper);
+  display:grid;place-items:center;font-family:"IBM Plex Mono",monospace;font-size:.82rem;font-weight:500
+}
+ol.st b{display:block;color:var(--ink);font-size:1.02rem}
+ol.st span{display:block;color:var(--ink-soft);font-size:.9rem}
+.gate{display:inline-block;margin-top:6px;font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;border:1px solid currentColor;border-radius:99px;padding:1px 8px}
+.panel{border:1px solid var(--rule);border-radius:4px;padding:18px;background:var(--paper)}
+.panel+.panel{margin-top:16px}
+.panel h3{font-size:1.05rem;margin-bottom:8px}
+.panel ul{margin:0;padding-left:18px;font-size:.92rem;color:var(--ink-soft)}
+.panel li{margin-bottom:6px}
+
+/* ---------- quiz ---------- */
+.finder{margin:64px 0;border-top:3px solid var(--ink);padding-top:26px}
+.q{margin-top:24px}
+.q p{font-family:"Bricolage Grotesque",sans-serif;font-weight:600;font-size:1.12rem;margin:0 0 10px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opts button{background:var(--card);border:1px solid var(--rule);border-radius:99px;padding:7px 15px;font-size:.92rem}
+.opts button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.result{margin-top:26px;border:2px solid var(--ink);border-radius:4px;padding:20px;display:none;background:var(--card)}
+.result.show{display:block}
+.result .big{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:1.9rem;display:block}
+.result button{margin-top:12px;background:var(--ink);color:var(--paper);border:0;border-radius:99px;padding:9px 20px;font-size:.92rem}
+
+/* ---------- spine + footer ---------- */
+.spine{margin:64px 0;border-top:1px solid var(--rule);padding-top:26px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:20px}
+.step{border-top:3px solid var(--ink);padding-top:10px}
+.step b{font-family:"Bricolage Grotesque",sans-serif;font-size:1.15rem;display:block}
+.step span{font-size:.9rem;color:var(--ink-soft)}
+footer{border-top:1px solid var(--rule);margin-top:60px;padding:26px 0 60px;font-size:.84rem;color:var(--ink-soft)}
+.th-only{display:none}
+html[data-lang="th"] .th-only{display:inline}
+html[data-lang="th"] .en-only{display:none}
+
+@media (max-width:820px){
+  .dgrid{grid-template-columns:1fr;gap:24px}
+  .steps{grid-template-columns:repeat(2,1fr)}
+  .route{grid-template-columns:1fr;gap:10px;padding:14px 0}
+  .facts{grid-template-columns:1fr 1fr}
+  .hero{padding-top:34px}
+  .detail{padding:20px}
+}
+@media (min-width:900px){ .stop::after{display:block} }
+@media (prefers-reduced-motion:no-preference){
+  html[data-motion="on"] .line{transform-origin:left;animation:draw .9s cubic-bezier(.2,.8,.2,1) both}
+  html[data-motion="on"] .stop{animation:pop .4s ease both}
+  @keyframes draw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  @keyframes pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+}
+</style>
+</head>
+<body>
+
+<div class="util">
+  <div class="wrap">
+    <div class="brand">AI Lines <span class="en-only">/ สาย AI</span><span class="th-only">/ AI Lines</span></div>
+    <div class="ctl"><b>Text</b>
+      <button data-scale="1" aria-pressed="true">A</button>
+      <button data-scale="1.12" aria-pressed="false">A+</button>
+      <button data-scale="1.28" aria-pressed="false">A++</button>
+    </div>
+    <div class="ctl"><button id="contrast" aria-pressed="false">High contrast</button></div>
+    <div class="ctl"><button id="motion" aria-pressed="true">Motion on</button></div>
+    <div class="ctl"><b>Lang</b>
+      <button data-lang="en" aria-pressed="true">EN</button>
+      <button data-lang="th" aria-pressed="false">ไทย</button>
+    </div>
+  </div>
+</div>
+
+<header class="hero wrap">
+  <div class="eyebrow">Six lines · Four stations each · One destination</div>
+  <h1 id="heroTitle">Pick the route<em>that fits your life.</em></h1>
+  <p class="lede" id="heroLede">A nine-year-old and a retired accountant should not be handed the same AI course. Choose the line that matches your age, your free time, and what you actually want out of this.</p>
+  <div class="meta">
+    <div><b>15 min</b><span>shortest session</span></div>
+    <div><b>4 stations</b><span>on every line</span></div>
+    <div><b>TH / EN</b><span>both languages</span></div>
+    <div><b>Free</b><span>no account needed</span></div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="map" aria-labelledby="mapH">
+    <div class="maphead">
+      <h2 id="mapH" style="font-size:1.15rem">The map</h2>
+      <span class="legend">Thicker line = more hours per week · Tap a line to open it</span>
+    </div>
+    <div id="routes"></div>
+    <div class="terminus">
+      <b id="termTitle">All lines end here — Confident with AI</b>
+      <span id="termSub">You can use AI for something real, you know when not to trust it, and you can show someone else how.</span>
+    </div>
+  </section>
+
+  <section id="detail" class="detail" aria-live="polite"></section>
+
+  <section class="finder" aria-labelledby="findH">
+    <div class="eyebrow">Not sure?</div>
+    <h2 id="findH" style="font-size:clamp(1.6rem,4vw,2.3rem)">Find your line in three taps</h2>
+    <div id="quiz"></div>
+    <div class="result" id="result" role="status"></div>
+  </section>
+
+  <section class="spine" aria-labelledby="spineH">
+    <div class="eyebrow">Every station, every line</div>
+    <h2 id="spineH" style="font-size:clamp(1.6rem,4vw,2.3rem)">The same four steps. Different dose.</h2>
+    <div class="steps">
+      <div class="step"><b>Watch</b><span>3–6 minutes, captioned in Thai and English.</span></div>
+      <div class="step"><b>Try</b><span>A guided exercise. The prompt is written for you.</span></div>
+      <div class="step"><b>Make</b><span>Your own version. One thing you keep.</span></div>
+      <div class="step"><b>Show</b><span>To family, a class, a colleague, or the showcase.</span></div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  Mockup — layout, wording and interaction only. Content, videos and safety modules are placeholders pending sign-off.
+</footer>
+
+<script>
+const T = {
+  en:{heroT:"Pick the route<em>that fits your life.</em>",
+      heroL:"A nine-year-old and a retired accountant should not be handed the same AI course. Choose the line that matches your age, your free time, and what you actually want out of this.",
+      term:"All lines end here — Confident with AI",
+      termS:"You can use AI for something real, you know when not to trust it, and you can show someone else how."},
+  th:{heroT:"เลือกเส้นทาง<em>ที่เข้ากับชีวิตคุณ</em>",
+      heroL:"เด็กอายุเก้าขวบกับข้าราชการเกษียณ ไม่ควรเรียนคอร์ส AI เดียวกัน เลือกสายที่ตรงกับอายุ เวลาว่าง และสิ่งที่คุณอยากได้จริง ๆ",
+      term:"ทุกสายไปจบที่เดียวกัน — ใช้ AI ได้อย่างมั่นใจ",
+      termS:"ใช้ AI กับงานจริงได้ รู้ว่าเมื่อไรไม่ควรเชื่อ และสอนคนอื่นต่อได้"}
+};
+
+const LINES=[
+ {id:"sprouts",c:"var(--amber)",w:6,
+  en:{n:"Sprouts",who:"Ages 7–12, with an adult beside them",dose:"15 min × 3 days · 4 weeks",
+      fmt:"Prompt cards, no typing free-text",cap:"A three-page illustrated story made with a grown-up",
+      st:[["A machine that guesses","See that it predicts words — it does not know things.","Adult present"],
+          ["Ask a better question","Change one word, watch the answer change."],
+          ["Make something together","A story, a poster, a card for someone."],
+          ["Show your family","Explain what the machine did and what you did."]],
+      safe:["An adult must be present for every session","No accounts, no sign-up, no learner data stored","Curated prompt cards only — no open chat","Never type your name, school or address"]},
+  th:{n:"หน่อเล็ก",who:"อายุ 7–12 ปี มีผู้ใหญ่นั่งข้าง ๆ",dose:"15 นาที × 3 วัน · 4 สัปดาห์",
+      fmt:"ใช้การ์ดคำถามสำเร็จรูป ไม่พิมพ์เอง",cap:"นิทานสามหน้าพร้อมภาพ ทำร่วมกับผู้ใหญ่",
+      st:[["เครื่องที่เดาคำ","เห็นว่ามันเดาคำถัดไป ไม่ใช่รู้จริง","ต้องมีผู้ใหญ่"],
+          ["ถามให้ดีขึ้น","เปลี่ยนคำเดียว ดูคำตอบเปลี่ยน"],
+          ["ลองสร้างด้วยกัน","นิทาน โปสเตอร์ หรือการ์ดให้ใครสักคน"],
+          ["เล่าให้ที่บ้านฟัง","อธิบายว่าเครื่องทำอะไร เราทำอะไร"]],
+      safe:["ต้องมีผู้ใหญ่อยู่ด้วยทุกครั้ง","ไม่มีบัญชีผู้ใช้ ไม่เก็บข้อมูลเด็ก","ใช้เฉพาะการ์ดคำถามที่คัดมาแล้ว","ห้ามพิมพ์ชื่อ โรงเรียน หรือที่อยู่"]}},
+
+ {id:"explorers",c:"var(--rose)",w:9,
+  en:{n:"Explorers",who:"Ages 13–17, still at school",dose:"25 min × 4 days · 5 weeks",
+      fmt:"Self-paced, teacher-friendly",cap:"A study helper you built + a 60-second explainer video",
+      st:[["How it actually works","Tokens, guessing, and why it invents things."],
+          ["Honest use at school","Where the line is, and how to cite it.","Integrity gate"],
+          ["Build a study helper","One subject, your notes, your revision style."],
+          ["Spot the fake","Deepfakes, consent, and your digital footprint."]],
+      safe:["Station 2 must be completed before Station 3 unlocks","Follows your school's assessment rules — check them first","Nothing in this line uses AI as a friend or partner","Never upload photos of other people without asking"]},
+  th:{n:"นักสำรวจ",who:"อายุ 13–17 ปี กำลังเรียน",dose:"25 นาที × 4 วัน · 5 สัปดาห์",
+      fmt:"เรียนเองได้ ครูใช้สอนได้",cap:"ผู้ช่วยติวที่คุณสร้างเอง + คลิปอธิบาย 60 วินาที",
+      st:[["มันทำงานยังไงจริง ๆ","โทเคน การเดา และทำไมมันแต่งเรื่อง"],
+          ["ใช้อย่างซื่อสัตย์ที่โรงเรียน","เส้นแบ่งอยู่ตรงไหน และอ้างอิงยังไง","ด่านความซื่อสัตย์"],
+          ["สร้างผู้ช่วยติว","หนึ่งวิชา โน้ตของคุณ สไตล์ของคุณ"],
+          ["จับของปลอม","ดีปเฟก การขออนุญาต และร่องรอยดิจิทัล"]],
+      safe:["ต้องผ่านสถานี 2 ก่อนจึงเปิดสถานี 3","ต้องดูกฎการวัดผลของโรงเรียนก่อน","สายนี้ไม่มีเนื้อหาใช้ AI เป็นเพื่อนหรือคู่คุย","ห้ามอัปโหลดรูปคนอื่นโดยไม่ขออนุญาต"]}},
+
+ {id:"builders",c:"var(--violet)",w:16,
+  en:{n:"Builders",who:"18–24, heading for a job",dose:"45–60 min × 5 days · 4 weeks",
+      fmt:"Project-based, portfolio output",cap:"A deployed agent, a case study page, and a public post",
+      st:[["Prompting as a skill","Role, goal, constraints, output schema."],
+          ["Tools and data","Function calling, retrieval, and where it breaks."],
+          ["Build an agent","Perceive, reason, act — with a step limit and a trace."],
+          ["Ship it publicly","Repo, README, demo video, one honest post."]],
+      safe:["Set a hard spend cap on every API key before Station 2","Never commit keys — .env.example only","Check the licence before scraping anyone's content","Assume every input is hostile: read the prompt-injection brief"]},
+  th:{n:"นักสร้าง",who:"18–24 ปี กำลังหางาน",dose:"45–60 นาที × 5 วัน · 4 สัปดาห์",
+      fmt:"เรียนจากโปรเจกต์ ได้ผลงานจริง",cap:"เอเจนต์ที่ deploy แล้ว + หน้าเคสสตัดดี + โพสต์สาธารณะ",
+      st:[["พรอมป์คือทักษะ","บทบาท เป้าหมาย ข้อจำกัด รูปแบบผลลัพธ์"],
+          ["เครื่องมือและข้อมูล","Function calling, retrieval และจุดที่มันพัง"],
+          ["สร้างเอเจนต์","รับรู้ คิด ลงมือ — พร้อมลิมิตและ log"],
+          ["ปล่อยสู่สาธารณะ","Repo, README, คลิปเดโม, โพสต์ตามจริง"]],
+      safe:["ตั้งเพดานค่าใช้จ่าย API ก่อนเข้าสถานี 2","ห้าม commit คีย์ — ใช้ .env.example","ตรวจสัญญาอนุญาตก่อนดึงเนื้อหาคนอื่น","อ่านเรื่อง prompt injection ก่อนรับ input จากภายนอก"]}},
+
+ {id:"operators",c:"var(--teal)",w:11,
+  en:{n:"Operators",who:"Working professionals, any department",dose:"20 min × 5 days · 8 weeks",
+      fmt:"Tracks for ops, finance, sales, HR, admin",cap:"One automation running weekly + a before/after time log",
+      st:[["Find your five repeat tasks","Log a week. Rank by hours × boredom."],
+          ["Rewrite one task","Same output, half the time. Measure it."],
+          ["Automate two steps","Trigger, AI step, human sign-off.","Data policy gate"],
+          ["Prove the hours saved","One page your manager can read in a minute."]],
+      safe:["Clear it with your employer's data policy before Station 3","No customer names, prices or PII in prompts","Every automation keeps a human sign-off step","Log what the AI did — you still own the output"]},
+  th:{n:"คนทำงาน",who:"คนทำงานประจำ ทุกแผนก",dose:"20 นาที × 5 วัน · 8 สัปดาห์",
+      fmt:"มีแทร็กแยกตามสายงาน",cap:"งานอัตโนมัติ 1 ชุดที่รันทุกสัปดาห์ + บันทึกเวลาก่อน/หลัง",
+      st:[["หา 5 งานที่ทำซ้ำ","จดหนึ่งสัปดาห์ จัดอันดับตามชั่วโมง × ความน่าเบื่อ"],
+          ["เขียนงานหนึ่งใหม่","ผลลัพธ์เท่าเดิม เวลาครึ่งเดียว แล้ววัดผล"],
+          ["ทำสองขั้นให้อัตโนมัติ","ทริกเกอร์ → AI → คนอนุมัติ","ด่านนโยบายข้อมูล"],
+          ["พิสูจน์ชั่วโมงที่ประหยัด","หนึ่งหน้า ที่หัวหน้าอ่านจบในหนึ่งนาที"]],
+      safe:["ตรวจนโยบายข้อมูลบริษัทก่อนเข้าสถานี 3","ห้ามใส่ชื่อลูกค้า ราคา หรือข้อมูลส่วนบุคคลในพรอมป์","ทุกงานอัตโนมัติต้องมีคนอนุมัติ","บันทึกว่า AI ทำอะไร ความรับผิดชอบยังเป็นของคุณ"]}},
+
+ {id:"adaptive",c:"var(--forest)",w:5,
+  en:{n:"Adaptive Pace",who:"Limited energy, chronic illness, or homebound",dose:"10 min · whenever you can",
+      fmt:"No schedule, no streaks, voice-first",cap:"An assistant for appointments, letters and forms",
+      st:[["One task, ten minutes","Pick the smallest thing that drains you."],
+          ["Speak instead of type","Voice input, dictation, and read-aloud."],
+          ["An assistant for admin","Appointments, letters, forms, phone scripts."],
+          ["Share on your own terms","Only if you want to. Nothing is public by default."]],
+      safe:["This roadmap gives no medical advice and does not replace your doctor","Never paste medical records into a public AI tool","Low-stimulation mode is on by default — no animation, no sound","Stop any time. Progress is kept, nothing expires, no reminders sent"]},
+  th:{n:"จังหวะของคุณ",who:"พลังงานจำกัด ป่วยเรื้อรัง หรืออยู่แต่ในบ้าน",dose:"10 นาที · เมื่อไรก็ได้",
+      fmt:"ไม่มีตาราง ไม่มีสตรีค ใช้เสียงได้",cap:"ผู้ช่วยจัดการนัดหมาย จดหมาย และแบบฟอร์ม",
+      st:[["หนึ่งงาน สิบนาที","เลือกเรื่องเล็กที่สุดที่ทำให้คุณเหนื่อย"],
+          ["พูดแทนการพิมพ์","สั่งด้วยเสียง พิมพ์อัตโนมัติ และอ่านออกเสียง"],
+          ["ผู้ช่วยงานเอกสาร","นัดหมาย จดหมาย แบบฟอร์ม บทพูดโทรศัพท์"],
+          ["แบ่งปันเท่าที่อยาก","จะแชร์หรือไม่ก็ได้ ค่าเริ่มต้นคือไม่เปิดเผย"]],
+      safe:["เส้นทางนี้ไม่ให้คำแนะนำทางการแพทย์ และไม่แทนที่แพทย์ของคุณ","ห้ามวางเวชระเบียนลงในเครื่องมือ AI สาธารณะ","เปิดโหมดสงบไว้เป็นค่าเริ่มต้น ไม่มีภาพเคลื่อนไหว ไม่มีเสียง","หยุดเมื่อไรก็ได้ ความคืบหน้าไม่หาย ไม่มีการแจ้งเตือนตาม"]}},
+
+ {id:"second",c:"var(--copper)",w:8,
+  en:{n:"Second Act",who:"60+, retired or winding down",dose:"30 min × 2 days · 6 weeks",
+      fmt:"Learn with a buddy · printable handouts",cap:"One chapter of your life story + teach one friend",
+      st:[["Your first conversation","Type a question. Read the answer. Nothing breaks."],
+          ["Spot the scam","Cloned voices, fake messages, and the pause rule.","Fraud module"],
+          ["A helper for daily life","Letters, recipes, translation, travel, hobbies."],
+          ["Your story, written down","Tell it out loud. Get it on paper for your family."]],
+      safe:["Fraud defence comes before capability — Station 2 is not optional","Never enter bank details, ID numbers, or an OTP. Nobody legitimate asks","If a message creates urgency, stop and call a family member","Every station has a printed handout — no need to remember steps"]},
+  th:{n:"วัยเก๋า",who:"60 ปีขึ้นไป เกษียณหรือใกล้เกษียณ",dose:"30 นาที × 2 วัน · 6 สัปดาห์",
+      fmt:"เรียนเป็นคู่ · มีเอกสารพิมพ์แจก",cap:"เรื่องเล่าชีวิตหนึ่งบท + สอนเพื่อนหนึ่งคน",
+      st:[["บทสนทนาแรกของคุณ","พิมพ์คำถาม อ่านคำตอบ ไม่มีอะไรพัง"],
+          ["จับมิจฉาชีพ","เสียงปลอม ข้อความหลอก และกฎ 'หยุดก่อน'","โมดูลกันโกง"],
+          ["ผู้ช่วยในชีวิตประจำวัน","จดหมาย สูตรอาหาร แปลภาษา ท่องเที่ยว งานอดิเรก"],
+          ["บันทึกเรื่องราวของคุณ","เล่าออกมา แล้วเก็บเป็นตัวอักษรให้ลูกหลาน"]],
+      safe:["เรียนกันโกงก่อนเรียนใช้งาน — สถานี 2 ข้ามไม่ได้","ห้ามกรอกเลขบัญชี เลขบัตรประชาชน หรือ OTP ไม่มีหน่วยงานจริงที่ขอ","ถ้าข้อความเร่งให้รีบ ให้หยุดแล้วโทรหาลูกหลาน","ทุกสถานีมีเอกสารพิมพ์ ไม่ต้องจำขั้นตอน"]}}
+];
+
+const LBL={
+ en:{who:"Who it's for",dose:"Dose",fmt:"Format",cap:"You finish with",stations:"Stations",safe:"Safeguards on this line",
+     open:"Open this line",q1:"How old is the learner?",q2:"Realistically, how much time each week?",
+     q3:"What matters most right now?",res:"Start here",again:"Change my answers",why:"Because you chose"},
+ th:{who:"เหมาะกับใคร",dose:"ปริมาณ",fmt:"รูปแบบ",cap:"จบแล้วได้",stations:"สถานี",safe:"ข้อกำหนดความปลอดภัยของสาย",
+     open:"เปิดสายนี้",q1:"ผู้เรียนอายุเท่าไร",q2:"มีเวลาสัปดาห์ละเท่าไรจริง ๆ",
+     q3:"ตอนนี้อะไรสำคัญที่สุด",res:"เริ่มที่นี่",again:"เปลี่ยนคำตอบ",why:"เพราะคุณเลือก"}
+};
+
+const QS={
+ en:[{k:"age",q:"How old is the learner?",o:[["Under 13","u13"],["13–17","t"],["18–24","c"],["25–59","w"],["60+","r"]]},
+     {k:"time",q:"Realistically, how much time each week?",o:[["Under 1 hour","a"],["1–3 hours","b"],["3–6 hours","c"],["6+ hours","d"]]},
+     {k:"goal",q:"What matters most right now?",o:[["Have fun and make things","fun"],["Do better at school","school"],["Get hired","job"],["Save time at work","work"],["Daily life and staying safe","life"],["Go at my own pace","pace"]]}],
+ th:[{k:"age",q:"ผู้เรียนอายุเท่าไร",o:[["ต่ำกว่า 13","u13"],["13–17","t"],["18–24","c"],["25–59","w"],["60 ขึ้นไป","r"]]},
+     {k:"time",q:"มีเวลาสัปดาห์ละเท่าไรจริง ๆ",o:[["ไม่ถึง 1 ชม.","a"],["1–3 ชม.","b"],["3–6 ชม.","c"],["6 ชม.ขึ้นไป","d"]]},
+     {k:"goal",q:"ตอนนี้อะไรสำคัญที่สุด",o:[["สนุกและได้สร้างของ","fun"],["เรียนให้ดีขึ้น","school"],["หางานให้ได้","job"],["ประหยัดเวลาทำงาน","work"],["ชีวิตประจำวันและความปลอดภัย","life"],["ไปตามจังหวะตัวเอง","pace"]]}]
+};
+
+const SCORE={
+ age:{u13:{sprouts:6},t:{explorers:6},c:{builders:6,operators:1},w:{operators:6,builders:2,adaptive:1},r:{second:6,adaptive:2}},
+ time:{a:{sprouts:2,second:2,adaptive:3},b:{explorers:2,operators:2,second:2,adaptive:2},c:{operators:2,builders:2,explorers:1},d:{builders:4,operators:1}},
+ goal:{fun:{sprouts:4,explorers:2},school:{explorers:4,builders:1},job:{builders:4,operators:1},work:{operators:4},life:{second:4,adaptive:2},pace:{adaptive:5}}
+};
+
+let lang="en", picked="operators", answers={};
+const html=document.documentElement;
+const L=()=>lang;
+
+/* ---- map ---- */
+function drawMap(){
+  const el=document.getElementById("routes"); el.innerHTML="";
+  LINES.forEach((l,i)=>{
+    const d=l[L()];
+    const b=document.createElement("button");
+    b.className="route"; b.style.color=l.c; b.setAttribute("aria-pressed", l.id===picked);
+    b.innerHTML=`<span><span class="rname">${d.n}</span><span class="rwho">${d.who}</span><span class="rdose mono">${d.dose}</span></span>
+      <span class="track"><span class="line" style="height:${l.w}px;animation-delay:${i*.08}s"></span>
+      <span class="stations">${d.st.map((s,n)=>`<span class="stop" style="animation-delay:${.35+i*.08+n*.05}s" data-label="${n+1}. ${s[0]}"></span>`).join("")}</span></span>`;
+    b.onclick=()=>{picked=l.id;drawMap();drawDetail();document.getElementById("detail").scrollIntoView({behavior:html.dataset.motion==="on"?"smooth":"auto",block:"start"});};
+    el.appendChild(b);
+  });
+}
+
+/* ---- detail ---- */
+function drawDetail(){
+  const l=LINES.find(x=>x.id===picked), d=l[L()], t=LBL[L()];
+  const el=document.getElementById("detail");
+  el.style.color=l.c;
+  el.innerHTML=`
+    <div class="eyebrow" style="color:${l.c}">${t.stations} · 4</div>
+    <h2 style="color:var(--ink)">${d.n}</h2>
+    <dl class="facts">
+      <div><dt>${t.who}</dt><dd>${d.who}</dd></div>
+      <div><dt>${t.dose}</dt><dd>${d.dose}</dd></div>
+      <div><dt>${t.fmt}</dt><dd>${d.fmt}</dd></div>
+      <div><dt>${t.cap}</dt><dd>${d.cap}</dd></div>
+    </dl>
+    <div class="dgrid">
+      <ol class="st">${d.st.map(s=>`<li><b>${s[0]}</b><span>${s[1]}</span>${s[2]?`<span class="gate">${s[2]}</span>`:""}</li>`).join("")}</ol>
+      <div><div class="panel"><h3>${t.safe}</h3><ul>${d.safe.map(s=>`<li>${s}</li>`).join("")}</ul></div></div>
+    </div>`;
+}
+
+/* ---- quiz ---- */
+function drawQuiz(){
+  const el=document.getElementById("quiz"); el.innerHTML="";
+  QS[L()].forEach(q=>{
+    const w=document.createElement("div"); w.className="q";
+    w.innerHTML=`<p>${q.q}</p><div class="opts" role="group" aria-label="${q.q}">${
+      q.o.map(o=>`<button data-k="${q.k}" data-v="${o[1]}" aria-pressed="${answers[q.k]===o[1]}">${o[0]}</button>`).join("")}</div>`;
+    el.appendChild(w);
+  });
+  el.querySelectorAll("button").forEach(b=>b.onclick=()=>{answers[b.dataset.k]=b.dataset.v;drawQuiz();score();});
+}
+function score(){
+  const r=document.getElementById("result");
+  if(Object.keys(answers).length<3){r.classList.remove("show");return;}
+  const s={}; Object.entries(answers).forEach(([k,v])=>Object.entries(SCORE[k][v]||{}).forEach(([id,n])=>s[id]=(s[id]||0)+n));
+  const win=Object.entries(s).sort((a,b)=>b[1]-a[1])[0][0];
+  const l=LINES.find(x=>x.id===win), d=l[L()], t=LBL[L()];
+  r.style.borderColor=l.c;
+  r.innerHTML=`<div class="eyebrow" style="color:${l.c}">${t.res}</div>
+    <span class="big">${d.n}</span><span style="color:var(--ink-soft)">${d.who} · ${d.dose}</span>
+    <br><button id="goto">${t.open}</button>`;
+  r.classList.add("show");
+  r.querySelector("#goto").onclick=()=>{picked=win;drawMap();drawDetail();document.getElementById("detail").scrollIntoView({behavior:"smooth"});};
+}
+
+/* ---- controls ---- */
+function setLang(v){
+  lang=v; html.dataset.lang=v; html.lang=v==="th"?"th":"en";
+  document.getElementById("heroTitle").innerHTML=T[v].heroT;
+  document.getElementById("heroLede").textContent=T[v].heroL;
+  document.getElementById("termTitle").textContent=T[v].term;
+  document.getElementById("termSub").textContent=T[v].termS;
+  drawMap();drawDetail();drawQuiz();score();
+}
+document.querySelectorAll("[data-scale]").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("[data-scale]").forEach(x=>x.setAttribute("aria-pressed",x===b));
+  html.style.setProperty("--scale",b.dataset.scale);
+});
+document.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("[data-lang]").forEach(x=>x.setAttribute("aria-pressed",x===b));
+  setLang(b.dataset.lang);
+});
+const cb=document.getElementById("contrast");
+cb.onclick=()=>{const on=html.dataset.contrast!=="high";html.dataset.contrast=on?"high":"normal";cb.setAttribute("aria-pressed",on);cb.classList.toggle("on",on)};
+const mb=document.getElementById("motion");
+mb.onclick=()=>{const on=html.dataset.motion!=="on";html.dataset.motion=on?"on":"off";mb.setAttribute("aria-pressed",on);mb.textContent=on?"Motion on":"Motion off"};
+
+html.dataset.motion="on"; html.dataset.contrast="normal"; html.dataset.lang="en";
+drawMap();drawDetail();drawQuiz();
+</script>
+</body>
+</html>

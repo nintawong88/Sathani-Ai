@@ -1,0 +1,60 @@
+Project: AI Learning Roadmap (AI For All)
+Founder: Chawin Intawong — Distribution Center Operations Director & Enterprise Tech Implementer (28+ Years Experience)Vision: To make AI literacy accessible to everyone, regardless of age, background, or physical capability, by providing tailored, interactive AI learning roadmaps that fit unique lifestyles.Monetization Model: "Robin Hood" Freemium. 100% free for individual learners (kids, students, retirees). Monetized via B2B "Precision Learning" dashboards, custom roadmaps, and certifications for institutions and corporations.
+
+1. The Founder's Edge (B2B Credibility)
+This platform is not built by a theoretical academic, but by an operations and technology turnaround specialist. The B2B sales pitch is grounded in real-world execution:
+
+Enterprise Tech Ecosystem: Built a suite of custom enterprise apps (WMS linked to SAP, AI-driven procurement, Maintenance App, Business Hub) for a 700M THB commercial freezer company (Patana Intercool).
+Operational Turnaround: Re-engineered an ambient Cross-Dock DC for Siam Makro, growing monthly throughput revenue from 5M THB to 38M THB.
+Greenfield Scaling: Scaled a Thai Cold Chain transport company's greenfield DC in Khon Kaen from 1,200 sqm to 10,000 sqm in 18 months, servicing 600 retail shops nationwide and generating nearly 2M THB profit.
+2. Audience Tiers & Curriculum Strategy
+Instead of standard "Beginner/Intermediate/Advanced" tiers, users are grouped by lifestyle and cognitive bandwidth.
+
+Tier 1: AI Sprouts (Kids & Young Teens)
+Profile: Ages 7-14. High curiosity, short attention span.
+Curriculum Focus: What is AI? How does it learn? Using AI for homework (ethically), creating art with AI.
+Format: Embedded YouTube videos, interactive puzzles, cartoon guides, sandbox play areas.
+Tier 2: AI Navigators (College Students & Office Workers)
+Profile: Ages 16-50. Goal-oriented, busy, looking for efficiency.
+Curriculum Focus: Prompt engineering, automating daily tasks, AI for data analysis, workplace AI ethics. Includes modules based on Chawin's enterprise app experience (e.g., "How to Build an AI Procurement System").
+Format: Video tutorials, text guides, curated external links, workflow templates.
+Tier 3: AI Companions (Retirees & Individuals with Health/Low-Energy Needs)
+Profile: Seniors, chronically ill, limited tech background, potential visual/motor impairments.
+Curriculum Focus: Voice assistants (Alexa/Siri), using AI to read aloud, identifying AI scams/deepfakes, using ChatGPT for companionship.
+Format: Audio-first modules, large-print text, simple interfaces, "pause and resume anytime" structure.
+3. Step-by-Step Implementation Process
+Phase 1: Foundation & Curation (Months 1–3)
+ Step 1.1: Finalize 5-step roadmap outlines for each tier using ChatGPT/Claude.
+ Step 1.2: Curate free external resources (YouTube links, articles, free AI tools) for each step.
+ Step 1.3: Build the core website UI (Homepage, Tier Pages, Dashboard). Note: Use HTML/Tailwind mockup as baseline.
+ Step 1.4: Implement accessibility features (text-to-speech, high contrast, large text toggle).
+ Step 1.5: Launch MVP (Minimum Viable Product) to a small test group for feedback.
+Phase 2: B2B "Precision Learning" Development (Months 3–6)
+ Step 2.1: Build the B2B Admin Dashboard for HR/Managers to track user progress.
+ Step 2.2: Create custom "Company-Specific" AI policy modules (e.g., "AI at Patana Intercool").
+ Step 2.3: Develop Case Study modules based on Chawin's real-world experience (Siam Makro DC turnaround, Khon Kaen Greenfield setup, SAP/AI Procurement integration).
+ Step 2.4: Begin B2B sales outreach to logistics, cold chain, and FMCG companies in Thailand.
+Phase 3: Certification & Career Pipeline (Months 6–12)
+ Step 3.1: Develop standardized "AI Practitioner" assessment exams.
+ Step 3.2: Implement certification generation system.
+ Step 3.3: Launch opt-in talent database for companies to recruit certified learners.
+Phase 4: Corporate Patronage & Sponsorships (Months 12+)
+ Step 4.1: Pitch corporate sponsorship packages to tech giants (Google, Microsoft) and large enterprises to sponsor free tiers.
+ Step 4.2: Apply for government digital literacy grants.
+4. Founder's 30-Day Personal Upskilling Plan
+Goal: Gain enough AI literacy to confidently curate and speak about AI, without needing to learn how to code models.
+
+ Week 1: Complete "Elements of AI" (University of Helsinki) - Free.
+ Week 2: Watch 3Blue1Brown "Neural Networks" playlist on YouTube - Free.
+ Week 3: Complete "AI for Everyone" (Andrew Ng, Coursera audit) & Google AI Essentials - Free.
+ Week 4: Audit first module of Andrew Ng's Machine Learning Specialization. Write 1-page summary.
+ Ongoing: Listen to AI audiobooks ("Co-Intelligence", "Life 3.0") during commutes.
+5. Marketing & Sales Strategy (The "No-Brag" Approach)
+The Asset: Chawin's CV (28+ years logistics, 5M to 38M THB turnaround, SAP/AI App building for 700M THB company).
+The Pitch to Businesses: "I know what it takes to run a warehouse and build enterprise tech. I scaled a DC in Khon Kaen from 1,200 to 10,000 sqm. I built an AI procurement system for a 700M THB company. I built this platform so your staff can learn to use these tools the way I did—not in theory, but in practice."
+The Evidence: Use Patana Intercool, Siam Makro, and Khon Kaen projects as embedded case studies in the learning modules.
+6. Recommended Tech Stack
+Frontend: React.js or Next.js (or simple HTML/Tailwind to start).
+Backend/Database: Supabase or Firebase (for quick user auth and progress tracking).
+Hosting: Vercel or Netlify (free tiers available).
+No-Code Alternative (if needed for Phase 1 MVP): Softr.io + Airtable.
