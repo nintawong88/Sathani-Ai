@@ -1,1 +1,47 @@
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap");
+
 @import "tailwindcss";
+
+:root {
+  --paper: #ebedf1;
+  --card: #f7f8fa;
+  --ink: #12161d;
+  --ink-soft: #4e5765;
+  --rule: #c7cdd6;
+  --amber: #b4761c;
+  --rose: #c42a62;
+  --violet: #5b3fc9;
+  --teal: #0c6d7c;
+  --forest: #237848;
+  --copper: #96471e;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "IBM Plex Sans Thai", system-ui, sans-serif;
+}
+
+.font-display {
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+html[lang="th"] .font-display {
+  font-family: "IBM Plex Sans Thai", sans-serif;
+  letter-spacing: 0;
+}
+
+.eyebrow {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+html[lang="th"] .eyebrow {
+  font-family: "IBM Plex Sans Thai", sans-serif;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}

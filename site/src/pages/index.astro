@@ -1,18 +1,66 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const LINES = [
+	{ n: 'หน่อเล็ก', who: '7–12 ปี · มีผู้ใหญ่อยู่ด้วย', c: 'var(--amber)', href: '/find-your-line' },
+	{ n: 'นักสำรวจ', who: '13–17 ปี · กำลังเรียน', c: 'var(--rose)', href: '/find-your-line' },
+	{ n: 'นักสร้าง', who: '18–24 ปี · กำลังหางาน', c: 'var(--violet)', href: '/find-your-line' },
+	{ n: 'คนทำงาน', who: 'คนทำงานประจำ ทุกแผนก', c: 'var(--teal)', href: '/lines/operators' },
+	{ n: 'จังหวะของคุณ', who: 'ตามจังหวะของคุณเอง', c: 'var(--forest)', href: '/find-your-line' },
+	{ n: 'วัยเก๋า', who: '60 ปีขึ้นไป · เกษียณหรือใกล้เกษียณ', c: 'var(--copper)', href: '/lines/second-act' },
+];
 ---
 
 <Layout title="สถานี AI · Sathani AI" lang="th">
-	<main class="mx-auto max-w-3xl px-6 py-16">
-		<h1 class="text-3xl font-bold">สถานี AI</h1>
-		<p class="mt-4 text-lg text-neutral-600">
-			ช่องว่าง…ที่คนไทยเชื่อว่าตัวเองทำได้
-		</p>
-		<nav class="mt-8 flex flex-col gap-2">
-			<a class="underline" href="/find-your-line">/find-your-line</a>
-			<a class="underline" href="/lines/operators">/lines/operators</a>
-			<a class="underline" href="/lines/second-act">/lines/second-act</a>
-			<a class="underline" href="/en/">English</a>
-		</nav>
+	<header class="border-b" style="border-color:var(--rule)">
+		<div class="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
+			<span class="eyebrow font-semibold" style="color:var(--ink)">สถานี AI</span>
+			<a href="/en/" class="eyebrow underline decoration-2 underline-offset-4">EN</a>
+		</div>
+	</header>
+
+	<main class="mx-auto max-w-5xl px-6">
+		<section class="py-20 md:py-28">
+			<p class="eyebrow">ไม่ต้องสมัคร · ไม่ต้องใช้อีเมล · 3 คำถามก็เริ่มได้</p>
+			<h1 class="font-display mt-4 text-4xl leading-tight font-bold md:text-6xl">
+				ช่องว่าง…ที่คนไทย<br />เชื่อว่าตัวเองทำได้
+			</h1>
+			<p class="mt-6 max-w-xl text-lg" style="color:var(--ink-soft)">
+				หาสายการเรียน AI ที่ตรงกับชีวิตคุณ — สนุก จับต้องได้ ไม่มีศัพท์วิชาการ
+			</p>
+			<a
+				href="/find-your-line"
+				class="font-display mt-8 inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-lg font-semibold text-white transition-transform hover:-translate-y-0.5 hover:shadow-lg"
+				style="background:var(--ink)"
+			>
+				หาสายของคุณ →
+			</a>
+		</section>
+
+		<section class="pb-24">
+			<h2 class="eyebrow mb-6">6 สายการเรียน</h2>
+			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+				{
+					LINES.map((l) => (
+						<a
+							href={l.href}
+							class="group block rounded-lg border-2 p-5 transition-all hover:-translate-y-1 hover:shadow-xl"
+							style={`border-color:${l.c}; background:var(--card)`}
+						>
+							<span
+								class="inline-block h-2.5 w-2.5 rounded-full transition-transform group-hover:scale-150"
+								style={`background:${l.c}`}
+							/>
+							<h3 class="font-display mt-3 text-xl font-bold" style={`color:${l.c}`}>
+								{l.n}
+							</h3>
+							<p class="mt-1 text-sm" style="color:var(--ink-soft)">
+								{l.who}
+							</p>
+						</a>
+					))
+				}
+			</div>
+		</section>
 	</main>
 </Layout>

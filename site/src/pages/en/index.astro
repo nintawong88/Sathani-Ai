@@ -1,16 +1,66 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+
+const LINES = [
+	{ n: 'Sprouts', who: '7–12, with an adult', c: 'var(--amber)', href: '/find-your-line' },
+	{ n: 'Explorers', who: '13–17, at school', c: 'var(--rose)', href: '/find-your-line' },
+	{ n: 'Builders', who: '18–24, heading for a job', c: 'var(--violet)', href: '/find-your-line' },
+	{ n: 'Operators', who: 'Working professionals', c: 'var(--teal)', href: '/lines/operators' },
+	{ n: 'Adaptive Pace', who: 'Your own schedule', c: 'var(--forest)', href: '/find-your-line' },
+	{ n: 'Second Act', who: '60+, retired or winding down', c: 'var(--copper)', href: '/lines/second-act' },
+];
 ---
 
 <Layout title="Sathani AI" lang="en">
-	<main class="mx-auto max-w-3xl px-6 py-16">
-		<h1 class="text-3xl font-bold">Sathani AI</h1>
-		<p class="mt-4 text-lg text-neutral-600">
-			The gap between what Thais believe they're capable of.
-		</p>
-		<nav class="mt-8 flex flex-col gap-2">
-			<a class="underline" href="/en/find-your-line">/find-your-line</a>
-			<a class="underline" href="/">ไทย</a>
-		</nav>
+	<header class="border-b" style="border-color:var(--rule)">
+		<div class="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
+			<span class="eyebrow font-semibold" style="color:var(--ink)">Sathani AI</span>
+			<a href="/" class="eyebrow underline decoration-2 underline-offset-4">ไทย</a>
+		</div>
+	</header>
+
+	<main class="mx-auto max-w-5xl px-6">
+		<section class="py-20 md:py-28">
+			<p class="eyebrow">No account · no email · three taps to start</p>
+			<h1 class="font-display mt-4 text-4xl leading-tight font-bold md:text-6xl">
+				The gap between what Thais<br />believe they're capable of.
+			</h1>
+			<p class="mt-6 max-w-xl text-lg" style="color:var(--ink-soft)">
+				Find the AI learning line that fits your life — fun, hands-on, no jargon.
+			</p>
+			<a
+				href="/find-your-line"
+				class="font-display mt-8 inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-lg font-semibold text-white transition-transform hover:-translate-y-0.5 hover:shadow-lg"
+				style="background:var(--ink)"
+			>
+				Find your line →
+			</a>
+		</section>
+
+		<section class="pb-24">
+			<h2 class="eyebrow mb-6">6 lines</h2>
+			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+				{
+					LINES.map((l) => (
+						<a
+							href={l.href}
+							class="group block rounded-lg border-2 p-5 transition-all hover:-translate-y-1 hover:shadow-xl"
+							style={`border-color:${l.c}; background:var(--card)`}
+						>
+							<span
+								class="inline-block h-2.5 w-2.5 rounded-full transition-transform group-hover:scale-150"
+								style={`background:${l.c}`}
+							/>
+							<h3 class="font-display mt-3 text-xl font-bold" style={`color:${l.c}`}>
+								{l.n}
+							</h3>
+							<p class="mt-1 text-sm" style="color:var(--ink-soft)">
+								{l.who}
+							</p>
+						</a>
+					))
+				}
+			</div>
+		</section>
 	</main>
 </Layout>
