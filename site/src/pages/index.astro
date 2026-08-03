@@ -22,15 +22,15 @@ const LINES = [
 	<main class="mx-auto max-w-5xl px-6">
 		<section class="py-20 md:py-28">
 			<p class="eyebrow">ไม่ต้องสมัคร · ไม่ต้องใช้อีเมล · 3 คำถามก็เริ่มได้</p>
-			<h1 class="font-display mt-4 text-4xl leading-tight font-bold md:text-6xl">
+			<h1 class="font-display mt-5 text-3xl leading-tight font-bold md:text-5xl">
 				ช่องว่าง…ที่คนไทย<br />เชื่อว่าตัวเองทำได้
 			</h1>
-			<p class="mt-6 max-w-xl text-lg" style="color:var(--ink-soft)">
+			<p class="mt-6 max-w-xl text-xl" style="color:var(--ink-soft)">
 				หาสายการเรียน AI ที่ตรงกับชีวิตคุณ — สนุก จับต้องได้ ไม่มีศัพท์วิชาการ
 			</p>
 			<a
 				href="/find-your-line"
-				class="font-display mt-8 inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-lg font-semibold text-white transition-transform hover:-translate-y-0.5 hover:shadow-lg"
+				class="font-display mt-8 inline-flex items-center gap-2 rounded-full px-8 py-4 text-lg font-semibold text-white transition-transform hover:-translate-y-0.5 hover:shadow-lg"
 				style="background:var(--ink)"
 			>
 				หาสายของคุณ →
@@ -44,17 +44,17 @@ const LINES = [
 					LINES.map((l) => (
 						<a
 							href={l.href}
-							class="group block rounded-lg border-2 p-5 transition-all hover:-translate-y-1 hover:shadow-xl"
+							class="group block rounded-lg border-2 p-6 transition-all hover:-translate-y-1 hover:shadow-xl"
 							style={`border-color:${l.c}; background:var(--card)`}
 						>
 							<span
-								class="inline-block h-2.5 w-2.5 rounded-full transition-transform group-hover:scale-150"
+								class="inline-block h-3 w-3 rounded-full transition-transform group-hover:scale-150"
 								style={`background:${l.c}`}
 							/>
-							<h3 class="font-display mt-3 text-xl font-bold" style={`color:${l.c}`}>
+							<h3 class="font-display mt-3 text-2xl font-bold" style={`color:${l.c}`}>
 								{l.n}
 							</h3>
-							<p class="mt-1 text-sm" style="color:var(--ink-soft)">
+							<p class="mt-1.5 text-base" style="color:var(--ink-soft)">
 								{l.who}
 							</p>
 						</a>
