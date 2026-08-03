@@ -357,6 +357,14 @@ document.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>{
 $("contrast").onclick=e=>{const on=document.documentElement.dataset.contrast!=="high";
   document.documentElement.dataset.contrast=on?"high":"normal";e.target.setAttribute("aria-pressed",on)};
 $("print").onclick=()=>window.print();
+{
+  const qp = new URLSearchParams(location.search).get("lang");
+  if (qp === "en") {
+    lang = "en";
+    document.documentElement.lang = "en";
+    document.querySelectorAll("[data-lang]").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.lang==="en")));
+  }
+}
 render();
 </script>
 </body>

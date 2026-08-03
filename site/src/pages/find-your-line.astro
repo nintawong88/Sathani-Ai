@@ -488,6 +488,14 @@ $("contrast").onclick=e=>{const on=document.documentElement.dataset.contrast!=="
   document.documentElement.dataset.contrast=on?"high":"normal";e.target.setAttribute("aria-pressed",on)};
 $("reset").onclick=()=>{A={};L={};prof={};litDone=skipped=false;line=null;station=1;show("s1")};
 
+{
+  const qp = new URLSearchParams(location.search).get("lang");
+  if (qp === "en") {
+    lang = "en";
+    document.documentElement.lang = "en";
+    document.querySelectorAll("[data-lang]").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.lang==="en")));
+  }
+}
 paint();
 </script>
 </body>

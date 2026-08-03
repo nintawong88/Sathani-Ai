@@ -2,12 +2,12 @@
 import Layout from '../../layouts/Layout.astro';
 
 const LINES = [
-	{ n: 'Sprouts', who: '7–12, with an adult', c: 'var(--amber)', href: '/find-your-line' },
-	{ n: 'Explorers', who: '13–17, at school', c: 'var(--rose)', href: '/find-your-line' },
-	{ n: 'Builders', who: '18–24, heading for a job', c: 'var(--violet)', href: '/find-your-line' },
-	{ n: 'Operators', who: 'Working professionals', c: 'var(--teal)', href: '/lines/operators' },
-	{ n: 'Adaptive Pace', who: 'Your own schedule', c: 'var(--forest)', href: '/find-your-line' },
-	{ n: 'Second Act', who: '60+, retired or winding down', c: 'var(--copper)', href: '/lines/second-act' },
+	{ n: 'Sprouts', who: '7–12, with an adult', c: 'var(--amber)', href: '/find-your-line?lang=en' },
+	{ n: 'Explorers', who: '13–17, at school', c: 'var(--rose)', href: '/find-your-line?lang=en' },
+	{ n: 'Builders', who: '18–24, heading for a job', c: 'var(--violet)', href: '/find-your-line?lang=en' },
+	{ n: 'Operators', who: 'Working professionals', c: 'var(--teal)', href: '/lines/operators?lang=en' },
+	{ n: 'Adaptive Pace', who: 'Your own schedule', c: 'var(--forest)', href: '/find-your-line?lang=en' },
+	{ n: 'Second Act', who: '60+, retired or winding down', c: 'var(--copper)', href: '/lines/second-act?lang=en' },
 ];
 ---
 
@@ -30,7 +30,7 @@ const LINES = [
 					Find the AI learning line that fits your life — fun, hands-on, no jargon.
 				</p>
 				<a
-					href="/find-your-line"
+					href="/find-your-line?lang=en"
 					class="font-display mt-4 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 hover:shadow-lg md:text-base"
 					style="background:var(--ink)"
 				>
