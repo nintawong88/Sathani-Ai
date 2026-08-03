@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="th" data-contrast="normal">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Lines — ขั้นตอนเข้าใช้งาน จัดระดับ และโปรไฟล์</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style is:global>
+:root{
+  --paper:#EBEDF1;--card:#F7F8FA;--ink:#12161D;--ink-soft:#4E5765;--rule:#C7CDD6;
+  --amber:#B4761C;--rose:#C42A62;--violet:#5B3FC9;--teal:#0C6D7C;--forest:#237848;--copper:#96471E;
+  --lock:#8A2F2F;--scale:1;
+  font-size:calc(16px * var(--scale));
+}
+html[data-contrast="high"]{--paper:#fff;--card:#fff;--ink:#000;--ink-soft:#1D2229;--rule:#7C838D;
+  --amber:#7A4E08;--rose:#96003F;--violet:#3B1FA8;--teal:#004C59;--forest:#0C5730;--copper:#6E2E09}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans Thai",system-ui,sans-serif;line-height:1.62}
+h1,h2,h3{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;letter-spacing:-.02em;line-height:1.12;margin:0}
+html[lang="th"] h1,html[lang="th"] h2,html[lang="th"] h3{font-family:"IBM Plex Sans Thai",sans-serif;font-weight:600;letter-spacing:0;line-height:1.3}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+html[lang="th"] .eyebrow{font-family:"IBM Plex Sans Thai";letter-spacing:.04em;text-transform:none;font-size:.8rem}
+
+.util{position:sticky;top:0;z-index:60;background:var(--ink);color:var(--paper)}
+.util .wrap{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:8px 20px}
+.util .brand{font-weight:600;margin-right:auto;font-size:.98rem}
+.util button{background:transparent;border:1px solid rgba(255,255,255,.3);color:inherit;border-radius:99px;padding:3px 11px;font-size:.8rem}
+.util button[aria-pressed="true"]{background:var(--paper);color:var(--ink)}
+.util :focus-visible{outline-color:#fff}
+
+.rail{display:flex;margin:34px 0 10px;flex-wrap:wrap}
+.rail div{flex:1 1 130px;border-top:5px solid var(--rule);padding:8px 12px 0 0}
+.rail div.done{border-color:var(--ink)}
+.rail div.now{border-color:var(--teal)}
+.rail b{display:block;font-size:.98rem;font-weight:600}
+.rail span{font-size:.78rem;color:var(--ink-soft)}
+
+.layout{display:grid;grid-template-columns:1fr 340px;gap:34px;align-items:start;padding-bottom:70px}
+.stage{background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:26px}
+.step{display:none}.step.on{display:block}
+h2.big{font-size:clamp(1.5rem,4vw,2.2rem);margin-bottom:6px}
+.q{margin-top:22px;border-top:1px dashed var(--rule);padding-top:16px}
+.q:first-of-type{border-top:0}
+.q p{font-weight:600;font-size:1.05rem;margin:0 0 10px}
+.q .hint{font-weight:400;font-size:.86rem;color:var(--ink-soft);margin:-6px 0 10px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opts button{background:var(--paper);border:1px solid var(--rule);border-radius:99px;padding:7px 15px;font-size:.92rem;text-align:left}
+.opts button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.opts.stack{flex-direction:column;align-items:stretch}
+.opts.stack button{border-radius:4px}
+.act{margin-top:26px;display:flex;gap:10px;flex-wrap:wrap}
+.primary{background:var(--ink);color:var(--paper);border:0;border-radius:99px;padding:10px 22px}
+.primary[disabled]{opacity:.35;cursor:not-allowed}
+.ghost{background:transparent;border:1px solid var(--rule);border-radius:99px;padding:10px 18px}
+.note{font-size:.9rem;color:var(--ink-soft);margin-top:12px}
+
+.flag{border-left:5px solid var(--teal);background:var(--paper);padding:14px 16px;margin-top:20px;border-radius:0 4px 4px 0}
+.flag.lock{border-color:var(--lock)}
+.flag b{display:block;font-weight:600;font-size:1rem}
+.flag span{font-size:.9rem;color:var(--ink-soft)}
+
+.reccard{border:2px solid currentColor;border-radius:4px;padding:22px;margin-top:8px}
+.lineName{font-weight:600;font-size:1.9rem;display:block;color:var(--ink);line-height:1.25}
+.rows{margin-top:18px;border-top:1px solid var(--rule)}
+.row{display:grid;grid-template-columns:130px 1fr;gap:14px;padding:12px 0;border-bottom:1px solid var(--rule)}
+.row dt{font-size:.78rem;color:var(--ink-soft);padding-top:4px}
+.row dd{margin:0}
+.row dd b{display:block;color:var(--ink)}
+.row dd span{display:block;font-size:.88rem;color:var(--ink-soft)}
+.why{font-size:.85rem;color:var(--ink-soft)}
+.locked{color:var(--lock);font-size:.76rem;border:1px solid var(--lock);border-radius:99px;padding:1px 10px;display:inline-block;margin-top:5px}
+
+.ledger{position:sticky;top:64px;border:1px solid var(--ink);border-radius:4px;background:var(--card)}
+.ledger header{background:var(--ink);color:var(--paper);padding:12px 16px}
+.ledger header b{font-size:1rem;display:block;font-weight:600}
+.ledger header span{font-size:.78rem;opacity:.72}
+.ledger .body{padding:14px 16px}
+.rec{font-size:.82rem;border-bottom:1px dashed var(--rule);padding:7px 0;display:flex;justify-content:space-between;gap:10px}
+.rec i{font-style:normal;color:var(--ink-soft);font-family:"IBM Plex Mono",monospace;font-size:.74rem}
+.rec b{font-weight:500;text-align:right}
+.tag{display:inline-block;font-size:.66rem;border:1px solid var(--rule);border-radius:99px;padding:0 8px;color:var(--ink-soft)}
+.never{margin-top:14px;padding-top:12px;border-top:2px solid var(--ink)}
+.never b{font-weight:600;font-size:.95rem}
+.never ul{margin:6px 0 0;padding-inline-start:18px;font-size:.84rem;color:var(--ink-soft)}
+.never li{margin-bottom:5px}
+
+fieldset{border:1px solid var(--rule);border-radius:4px;padding:14px 16px;margin:0 0 14px}
+legend{font-size:.78rem;color:var(--ink-soft);padding:0 6px}
+label.f{display:block;font-size:.86rem;color:var(--ink-soft);margin-bottom:4px}
+input[type=text],select{width:100%;padding:9px 11px;border:1px solid var(--rule);border-radius:4px;background:var(--paper);font:inherit;font-size:.94rem;margin-bottom:12px;color:var(--ink)}
+fieldset[disabled]{opacity:.55}
+footer{border-top:1px solid var(--rule);padding:22px 0 60px;font-size:.85rem;color:var(--ink-soft)}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.ledger{position:static}.row{grid-template-columns:1fr;gap:4px}}
+</style>
+</head>
+<body>
+
+<div class="util"><div class="wrap">
+  <div class="brand" id="brand"></div>
+  <button data-scale="1" aria-pressed="true">ก</button>
+  <button data-scale="1.14" aria-pressed="false">ก+</button>
+  <button data-scale="1.3" aria-pressed="false">ก++</button>
+  <button id="contrast" aria-pressed="false"></button>
+  <button id="reset"></button>
+  <button data-lang="th" aria-pressed="true">ไทย</button>
+  <button data-lang="en" aria-pressed="false">EN</button>
+</div></div>
+
+<div class="wrap">
+  <div class="rail" id="rail"></div>
+  <div class="layout">
+    <div>
+      <section class="stage step on" id="s1">
+        <div class="eyebrow" data-t="s1eye"></div><h2 class="big" data-t="s1h"></h2>
+        <p class="note" data-t="s1note"></p>
+        <div id="entryQs"></div>
+        <div class="flag" id="pathFlag" style="display:none"></div>
+        <div class="act"><button class="primary" id="toS2" disabled data-t="next"></button></div>
+      </section>
+
+      <section class="stage step" id="s2">
+        <div class="eyebrow" data-t="s2eye"></div><h2 class="big" data-t="s2h"></h2>
+        <p class="note" data-t="s2note"></p>
+        <div id="litQs"></div>
+        <div class="act">
+          <button class="primary" id="toS3" disabled data-t="seeRec"></button>
+          <button class="ghost" id="skipLit" data-t="skipLit"></button>
+        </div>
+      </section>
+
+      <section class="stage step" id="s2b">
+        <div class="eyebrow" data-t="fbEye"></div><h2 class="big" data-t="fbH"></h2>
+        <div class="flag lock"><b data-t="fbFlagT"></b><span data-t="fbFlagS"></span></div>
+        <div style="margin-top:20px" id="facForm"></div>
+        <div class="act"><button class="primary" id="toS3b" data-t="fbBtn"></button></div>
+      </section>
+
+      <section class="stage step" id="s3">
+        <div class="eyebrow" data-t="s3eye"></div><h2 class="big" data-t="s3h"></h2>
+        <div id="rec"></div>
+        <div class="act"><button class="primary" id="toS4" data-t="ok"></button>
+        <button class="ghost" id="override" data-t="notRight"></button></div>
+      </section>
+
+      <section class="stage step" id="s4">
+        <div class="eyebrow" data-t="s4eye"></div><h2 class="big" data-t="s4h"></h2>
+        <p class="note" data-t="s4note"></p>
+        <div id="profileForm"></div>
+        <div class="act"><button class="primary" id="finish" data-t="save"></button>
+        <button class="ghost" id="skipProf" data-t="skipProf"></button></div>
+      </section>
+
+      <section class="stage step" id="s5">
+        <div class="eyebrow" data-t="s5eye"></div><h2 class="big" data-t="s5h"></h2>
+        <div id="final"></div>
+      </section>
+    </div>
+
+    <aside class="ledger" aria-labelledby="ledH">
+      <header><b id="ledH" data-t="ledT"></b><span data-t="ledS"></span></header>
+      <div class="body">
+        <div id="ledger"></div>
+        <div class="never"><b data-t="neverT"></b><ul id="neverList"></ul></div>
+      </div>
+    </aside>
+  </div>
+  <footer data-t="foot"></footer>
+</div>
+
+<script is:inline>
+const D={
+th:{
+ brand:"AI Lines — ต้นแบบขั้นตอนสมัคร", contrast:"คอนทราสต์สูง", reset:"เริ่มใหม่", next:"ถัดไป",
+ rail:[["เข้าใช้งาน","3 คำถาม ไม่ต้องสมัคร"],["จัดระดับ","แบบวัดเพื่อข้ามขั้น"],["คำแนะนำ","+ โปรไฟล์ (ไม่บังคับ)"],["สถานี 1","เริ่มเรียน"]],
+ s1eye:"ช่วงที่ 1 จาก 3 · ไม่ต้องสมัคร ไม่ต้องใช้อีเมล", s1h:"สามคำถาม ก็รู้ว่าคุณอยู่สายไหน",
+ s1note:"ยังไม่มีข้อมูลใดถูกส่งไปเก็บบนเซิร์ฟเวอร์ ตอบครบแล้วแผนที่จะเปิดขึ้น",
+ s2eye:"ช่วงที่ 2 จาก 3 · แบบวัดเพื่อข้ามขั้น", s2h:"บอกเราว่าคุณรู้อะไรอยู่แล้ว",
+ s2note:"แปดข้อ ประมาณสามนาที ไม่มีเกณฑ์ผ่าน และไม่มีใครเห็นคะแนน ใช้เพื่อกำหนดว่าคุณเริ่มที่สถานีไหนเท่านั้น ข้ามได้ แล้วเริ่มจากต้น",
+ seeRec:"ดูคำแนะนำของฉัน", skipLit:"ข้าม — เริ่มที่สถานี 1",
+ fbEye:"อายุต่ำกว่า 18 · ตั้งค่าโดยผู้ดูแล", fbH:"ผู้ใหญ่เป็นคนสมัคร ไม่ใช่ผู้เรียน",
+ fbFlagT:"เราไม่สร้างระเบียนข้อมูลของผู้เรียนคนนี้",
+ fbFlagS:"เพราะผู้เรียนอายุต่ำกว่า 18 ปี จึงไม่ถือเป็นเจ้าของข้อมูลบนเว็บไซต์นี้ คุณ — ผู้ปกครอง ครู หรือเจ้าหน้าที่ศูนย์ — เป็นผู้ถือบัญชีเพียงผู้เดียว ความคืบหน้าของผู้เรียนเก็บอยู่ในเบราว์เซอร์นี้ และไม่ผูกกับตัวตนใด",
+ fbBtn:"ดูสายการเรียน",
+ facLeg1:"ผู้ดูแล (คุณ)", facLeg2:"ผู้เรียน — เว้นว่างโดยตั้งใจ",
+ facName:"ชื่อของคุณ", facMail:"อีเมล — ใช้ส่งเอกสารประกอบการสอนเท่านั้น", facRole:"บทบาทของคุณ",
+ facRoles:["ผู้ปกครอง","ครู","เจ้าหน้าที่ศูนย์ชุมชน","บรรณารักษ์"],
+ lName:"ชื่อ", lSchool:"โรงเรียน", lDob:"วันเดือนปีเกิด", notColl:"ไม่เก็บ", dobNote:"ไม่เก็บ — ใช้ช่วงอายุเท่านั้น",
+ s3eye:"ผลจากช่วงที่ 2 · แสดงเหตุผลทุกข้อ", s3h:"เริ่มที่นี่", ok:"ถูกต้องแล้ว ไปต่อ", notRight:"ยังไม่ใช่ ขอเลือกเอง",
+ rLine:"สายการเรียน", rStation:"สถานีเริ่มต้น", rTrack:"แทร็ก", rNext:"ขั้นต่อไป", yourLine:"สายของคุณ",
+ because:(a,b)=>`เพราะคุณเลือก “${a}” และ “${b}”`,
+ stationOf:n=>`สถานี ${n} จาก 4`,
+ lockNote:(n,name)=>`สถานี ${n} ยังต้องเรียน — ${name}`,
+ trackProv:"ยังเป็นค่าตั้งต้น ปรับได้ในโปรไฟล์", noTrack:"สายนี้ไม่มีแทร็กย่อย",
+ ns1:l=>`1 · คอร์สจากพาร์ตเนอร์ ${l}`, ns1s:"ลิงก์จากไดเรกทอรี แจ้งสถานะพันธมิตรบนการ์ด",
+ ns2:"2 · เครื่องมือฝึกที่ใช้บนมือถือได้", ns2s:"ใช้ฟรี ไม่ต้องผูกบัตร",
+ ns3o:"3 · ชุมชนในสายงานของคุณ", ns3c:"3 · ชุมชนผู้เรียน",
+ ns3os:"ไดเรกทอรีงานและฟรีแลนซ์เปิดให้คุณแล้ว เรารวบรวมแหล่งประกาศ ไม่ได้จัดหางานให้",
+ ns3cs:"ไดเรกทอรีงานและฟรีแลนซ์เปิดเมื่ออายุ 21",
+ s4eye:"ช่วงที่ 3 จาก 3 · ไม่บังคับ กรอกหลังจบสถานี 1", s4h:"บอกข้อมูลนี้ แล้วตัวอย่างจะเลิกกว้าง ๆ",
+ s4note:"ทุกช่องไม่บังคับ แต่ละช่องเปลี่ยนสิ่งที่คุณเห็นจริง ไม่มีช่องไหนกำหนดสายหรือสถานีของคุณ",
+ save:"บันทึกและเปิดสถานี 1", skipProf:"ข้ามขั้นนี้",
+ pLeg1:"เปลี่ยนตัวอย่างที่คุณเห็น", pLeg2:"เปลี่ยนระดับภาษา ไม่เปลี่ยนสาย",
+ pLeg3:"เฉพาะอายุ 21 ปีขึ้นไป", pLeg3l:"ล็อกจนถึงอายุ 21",
+ pLeg4:"ใช้รายงานผู้สนับสนุนเท่านั้น — ไม่ใช้ในการแนะนำใด ๆ",
+ pRole:"ตำแหน่งงานของคุณ", pRoleP:"หัวหน้าคลังสินค้า", pInd:"อุตสาหกรรม", pTrack:"แทร็ก",
+ pEdu:"ระดับการศึกษาสูงสุดที่จบ",
+ pOrg:"ที่ทำงานหรือสถานศึกษา — กำหนดโมดูลนโยบายข้อมูลที่คุณจะได้ ไม่แสดงต่อสาธารณะ", pOrgP:"ชื่อบริษัทหรือสถาบัน",
+ pCv:"CV — แปลงเป็นข้อมูลทักษะ แสดงให้คุณดู แล้วลบไฟล์ทิ้ง ไม่เก็บไว้", pCvP:"เลือกไฟล์…",
+ pGen:"เพศ — ไม่บังคับ ระบุเอง", pGenP:"ไม่ประสงค์ระบุ", locked21:"ล็อกจนถึงอายุ 21",
+ inds:["—","โลจิสติกส์และซัพพลายเชน","การผลิต","ค้าปลีก","สุขภาพ","การศึกษา","อื่น ๆ"],
+ edus:["—","ประถม","มัธยม","อาชีวะ","ปริญญาตรี","สูงกว่าปริญญาตรี"],
+ s5eye:"เสร็จแล้ว", s5h:"จัดสายให้คุณแล้ว",
+ spine:"ดู → ลอง → ทำ → เล่า", changeAny:"เปลี่ยนสาย สถานี หรือข้อมูลโปรไฟล์ได้ทุกเมื่อ ลบข้อมูลทั้งหมดได้ในคลิกเดียว ไม่ต้องใช้อีเมล",
+ ledT:"ข้อมูลที่เราเก็บเกี่ยวกับคุณ", ledS:"อัปเดตสดตามที่คุณกรอก", ledEmpty:"ยังไม่มีข้อมูล ตอบคำถามแรกแล้วจะปรากฏที่นี่",
+ tagDev:"อุปกรณ์", tagSrv:"เซิร์ฟเวอร์", neverT:"ไม่เก็บเด็ดขาด",
+ never:["โรคประจำตัว ความพิการ หรือเหตุผลที่คุณเลือกจังหวะการเรียน","วันเดือนปีเกิด — เก็บเป็นช่วงอายุเท่านั้น","ข้อมูลใด ๆ ของผู้เรียนอายุต่ำกว่า 18","ไฟล์ CV — แปลงข้อมูล แสดงให้ดู แล้วลบ","เลขบัตรประชาชน ข้อมูลธนาคาร หรือ OTP"],
+ answered:n=>`ตอบแล้ว ${n}/8`,
+ foot:"ต้นแบบ — แสดงเฉพาะตรรกะการทำงานและกฎการเก็บข้อมูลขั้นต่ำ · ไม่ใช่คำแนะนำทางกฎหมาย: ข้อยกเว้นอายุ 18–20 โมเดลให้ผู้ดูแลเป็นเจ้าของข้อมูล และถ้อยคำในประกาศความเป็นส่วนตัว ต้องผ่านการตรวจจากที่ปรึกษากฎหมาย",
+ flagU18T:"เส้นทางผู้ดูแล — อายุต่ำกว่า 18",
+ flagU18S:"ผู้ใหญ่เป็นคนตั้งค่าและถือบัญชีเพียงผู้เดียว ผู้เรียนไม่ต้องสมัคร และเราไม่สร้างระเบียนข้อมูลของผู้เรียน ความคืบหน้าเก็บไว้ในเบราว์เซอร์นี้",
+ flag20T:"เรียนได้อย่างเดียว — อายุ 18–20",
+ flag20S:"ตามกฎหมายไทย บรรลุนิติภาวะเมื่ออายุ 20 ปี คุณสมัครเรียนเองได้ แต่การอัปโหลด CV ช่องที่ทำงาน และไดเรกทอรีงานและฟรีแลนซ์จะเปิดเมื่ออายุ 21",
+ flagFullT:"เข้าถึงได้เต็มรูปแบบ",
+ flagFullS:"สมัครเองได้ กรอกโปรไฟล์เพิ่มได้ตามสมัครใจ และเปิดไดเรกทอรีงานและฟรีแลนซ์",
+ whyJudge:"ด้านวิจารณญาณและความปลอดภัยยังต้องเสริม จึงเริ่มจากต้น ไม่ว่าข้ออื่นจะทำได้ดีแค่ไหน",
+ whyStrong:"ทำได้ดีทั้งสี่ด้าน สองสถานีแรกจะซ้ำกับสิ่งที่คุณรู้อยู่แล้ว",
+ whyMid:"พื้นฐานแน่น แต่ด้านการตรวจสอบหรือการสั่งงานยังบางอยู่",
+ whyLow:"เริ่มจากต้นดีกว่า ใช้เวลาไม่นาน", whySkip:"คุณข้ามแบบวัด จึงเริ่มที่สถานี 1",
+ langTH:"ภาษาไทย", langEN:"ภาษาอังกฤษ"
+},
+en:{
+ brand:"AI Lines — flow prototype", contrast:"High contrast", reset:"Start over", next:"Continue",
+ rail:[["Entry","3 taps · no account"],["Placement","skip-ahead check"],["Recommendation","+ optional profile"],["Station 1","start learning"]],
+ s1eye:"Moment 1 of 3 · no account, no email", s1h:"Three taps to your line",
+ s1note:"Nothing here is stored on a server. Answer and the map opens.",
+ s2eye:"Moment 2 of 3 · skip-ahead check", s2h:"Show us what you already know",
+ s2note:"Eight questions, about three minutes. There is no pass mark and no score is shown to anyone. It only decides which station you start at — you can skip it and start at the beginning.",
+ seeRec:"See my recommendation", skipLit:"Skip — start at Station 1",
+ fbEye:"Under 18 · facilitator setup", fbH:"The adult registers, not the learner",
+ fbFlagT:"No record is created for this learner",
+ fbFlagS:"Because the learner is under 18, they are not a data subject on this site. You — the parent, teacher, or centre — hold the only account. The learner's progress stays in this browser and is tied to no identity.",
+ fbBtn:"See the line",
+ facLeg1:"Facilitator (you)", facLeg2:"Learner — deliberately empty",
+ facName:"Your name", facMail:"Email — for session materials only", facRole:"Your role",
+ facRoles:["Parent or guardian","Teacher","Community centre staff","Librarian"],
+ lName:"Name", lSchool:"School", lDob:"Date of birth", notColl:"not collected", dobNote:"not collected — age band only",
+ s3eye:"Moment 2 result · every reason shown", s3h:"Start here", ok:"Looks right — continue", notRight:"This isn't right, let me choose",
+ rLine:"Line", rStation:"Entry station", rTrack:"Track", rNext:"Next steps", yourLine:"Your line",
+ because:(a,b)=>`Because you chose “${a}” and “${b}”.`,
+ stationOf:n=>`Station ${n} of 4`,
+ lockNote:(n,name)=>`Station ${n} stays required — ${name}`,
+ trackProv:"Provisional — refine it in the optional profile.", noTrack:"This line has no sub-tracks.",
+ ns1:l=>`1 · A partner course in ${l}`, ns1s:"Directory link. Affiliate status disclosed on the card.",
+ ns2:"2 · A practice tool that works on your phone", ns2s:"Free tier, no card needed.",
+ ns3o:"3 · A community for your field", ns3c:"3 · A learners' community",
+ ns3os:"Jobs and freelance directory is open to you. We list boards — we don't place people.",
+ ns3cs:"Jobs and freelance directory opens at 21.",
+ s4eye:"Moment 3 of 3 · optional, after Station 1", s4h:"Tell us this and the examples stop being generic",
+ s4note:"Every field is optional. Each one changes something you can see. Nothing here decides your line or your station.",
+ save:"Save and open Station 1", skipProf:"Skip this",
+ pLeg1:"Changes your worked examples", pLeg2:"Changes reading level, not your line",
+ pLeg3:"Ages 21+ only", pLeg3l:"Locked until 21",
+ pLeg4:"Funder reporting only — excluded from every recommendation",
+ pRole:"Your role or job title", pRoleP:"Warehouse supervisor", pInd:"Industry", pTrack:"Track",
+ pEdu:"Highest level of study finished",
+ pOrg:"Employer or school — decides which data-policy module you get. Never shown publicly.", pOrgP:"Company or institution",
+ pCv:"CV — parsed to skills, shown to you, then the file is discarded. Never stored.", pCvP:"Choose a file…",
+ pGen:"Gender — optional, describe it yourself", pGenP:"Prefer not to say", locked21:"Locked until 21",
+ inds:["—","Logistics & supply chain","Manufacturing","Retail","Healthcare","Education","Other"],
+ edus:["—","Primary","Secondary","Vocational","Bachelor's","Postgraduate"],
+ s5eye:"Done", s5h:"You're routed",
+ spine:"Watch → Try → Make → Show", changeAny:"You can change line, station, or anything in your profile at any time. Deleting everything takes one tap and needs no email.",
+ ledT:"What we hold about you", ledS:"Live. Updates as you move.", ledEmpty:"Nothing yet. Answer the first question and it appears here.",
+ tagDev:"device", tagSrv:"server", neverT:"Never collected",
+ never:["Health condition, disability, or why you chose a pace","Date of birth — age band only","Anything at all about a learner under 18","Your CV as a file — parsed, shown to you, discarded","National ID, bank details, or an OTP"],
+ answered:n=>`${n}/8 answered`,
+ foot:"Prototype — interaction logic and data-minimisation rules only. Not legal advice: the 18–20 carve-out, the facilitator-as-data-subject model, and the privacy notice need counsel sign-off.",
+ flagU18T:"Facilitator path — under 18",
+ flagU18S:"An adult sets this up and holds the only account. The learner never registers, and no record of them is created. Progress lives in this browser.",
+ flag20T:"Learning only — ages 18–20",
+ flag20S:"Thai majority is 20. You can self-register for the course. CV upload, employer field, and the jobs and freelance directory stay closed until 21.",
+ flagFullT:"Full access",
+ flagFullS:"Self-registration, optional profile, and the jobs and freelance directory are all open to you.",
+ whyJudge:"Judgement and safety needs work, so you start at the beginning whatever else you scored.",
+ whyStrong:"Strong across all four areas, so the first two stations would repeat what you know.",
+ whyMid:"Solid on the basics, thinner on verification or instruction.",
+ whyLow:"Worth starting at the beginning — it's short.", whySkip:"You skipped the check, so you start at Station 1.",
+ langTH:"Thai", langEN:"English"
+}};
+
+const LINES={
+ sprouts:{c:"var(--amber)",safeSt:null,th:{n:"หน่อเล็ก",who:"7–12 ปี มีผู้ใหญ่อยู่ด้วย",dose:"15 นาที × 3 วัน/สัปดาห์ · 4 สัปดาห์"},en:{n:"Sprouts",who:"7–12 with an adult",dose:"15 min × 3/wk · 4 weeks"}},
+ explorers:{c:"var(--rose)",safeSt:2,th:{n:"นักสำรวจ",who:"13–17 ปี กำลังเรียน",dose:"25 นาที × 4 วัน/สัปดาห์ · 5 สัปดาห์",safeName:"ใช้อย่างซื่อสัตย์ที่โรงเรียน"},en:{n:"Explorers",who:"13–17, at school",dose:"25 min × 4/wk · 5 weeks",safeName:"Honest use at school"}},
+ builders:{c:"var(--violet)",safeSt:null,th:{n:"นักสร้าง",who:"18–24 ปี กำลังหางาน",dose:"45–60 นาที × 5 วัน/สัปดาห์ · 4 สัปดาห์"},en:{n:"Builders",who:"18–24, heading for a job",dose:"45–60 min × 5/wk · 4 weeks"}},
+ operators:{c:"var(--teal)",safeSt:3,th:{n:"คนทำงาน",who:"คนทำงานประจำ ทุกแผนก",dose:"20 นาที × 5 วัน/สัปดาห์ · 8 สัปดาห์",safeName:"ด่านนโยบายข้อมูล"},en:{n:"Operators",who:"Working professionals",dose:"20 min × 5/wk · 8 weeks",safeName:"Data policy gate"}},
+ adaptive:{c:"var(--forest)",safeSt:null,th:{n:"จังหวะของคุณ",who:"ตามจังหวะของคุณเอง",dose:"10 นาที · เมื่อไรก็ได้"},en:{n:"Adaptive Pace",who:"Your own schedule",dose:"10 min · whenever you can"}},
+ second:{c:"var(--copper)",safeSt:2,th:{n:"วัยเก๋า",who:"60 ปีขึ้นไป เกษียณหรือใกล้เกษียณ",dose:"30 นาที × 2 วัน/สัปดาห์ · 6 สัปดาห์",safeName:"จับมิจฉาชีพ"},en:{n:"Second Act",who:"60+, retired or winding down",dose:"30 min × 2/wk · 6 weeks",safeName:"Spot the scam"}}
+};
+const TRACKS={
+ operators:{th:["ซัพพลายเชนและคลังสินค้า","การเงินและบัญชี","ขายและลูกค้า","บุคคลและธุรการ","งานสำนักงานทั่วไป"],en:["Supply chain & warehouse","Finance & accounting","Sales & customer","HR & admin","General office"]},
+ builders:{th:["ผลิตภัณฑ์และซอฟต์แวร์","ข้อมูลและการวิเคราะห์","การตลาดและคอนเทนต์","ทั่วไป"],en:["Product & software","Data & analytics","Marketing & content","General"]}};
+
+const ENTRY=[
+ {k:"locale",th:{q:"คุณอยู่ที่ไหน",hint:"กำหนดภาษา เครื่องมือที่ใช้ได้ และตัวอย่างกลโกงที่คุณจะเห็น",o:[["ประเทศไทย","th"],["ประเทศอื่นในอาเซียน","sea"],["นอกภูมิภาค","row"]]},
+   en:{q:"Where are you?",hint:"Sets language, which tools are available, and which scam examples you see.",o:[["Thailand","th"],["Elsewhere in SE Asia","sea"],["Rest of world","row"]]}},
+ {k:"age",th:{q:"ผู้เรียนอายุเท่าไร",hint:"ถามเป็นช่วงอายุเท่านั้น เราไม่ถามวันเดือนปีเกิด",o:[["ต่ำกว่า 13","u13"],["13–17","t"],["18–20","y"],["21–59","w"],["60 ขึ้นไป","r"]]},
+   en:{q:"How old is the learner?",hint:"Age band only. We never ask for a date of birth.",o:[["Under 13","u13"],["13–17","t"],["18–20","y"],["21–59","w"],["60+","r"]]}},
+ {k:"goal",th:{q:"ตอนนี้อะไรสำคัญที่สุด",hint:"",o:[["สนุกและได้สร้างของ","fun"],["เรียนให้ดีขึ้น","school"],["หางานให้ได้","job"],["ประหยัดเวลาทำงาน","work"],["ชีวิตประจำวันและความปลอดภัย","life"],["ไปตามจังหวะตัวเอง","pace"]]},
+   en:{q:"What matters most right now?",hint:"",o:[["Have fun and make things","fun"],["Do better at school","school"],["Get hired","job"],["Save time at work","work"],["Daily life and staying safe","life"],["Go at my own pace","pace"]]}}
+];
+const SCORE={
+ age:{u13:{sprouts:6},t:{explorers:6},y:{builders:6,operators:1},w:{operators:6,builders:2,adaptive:1},r:{second:6,adaptive:2}},
+ goal:{fun:{sprouts:4,explorers:2},school:{explorers:4,builders:1},job:{builders:4,operators:1},work:{operators:4},life:{second:4,adaptive:2},pace:{adaptive:5}}
+};
+
+const LIT=[
+ {c:"mechanics",a:1,
+  th:{q:"เวลา AI เขียนคำตอบ จริง ๆ แล้วมันกำลังทำอะไร",o:["ค้นจากฐานข้อมูลข้อเท็จจริง","เดาคำถัดไปที่น่าจะเป็นไปได้มากที่สุด","คัดลอกจากเว็บไซต์เดียวคำต่อคำ","ถามคนที่อยู่เบื้องหลัง"]},
+  en:{q:"When an AI writes an answer, what is it mostly doing?",o:["Looking it up in a database of facts","Guessing the most likely next words","Copying one website word for word","Asking a person in the background"]}},
+ {c:"mechanics",a:1,
+  th:{q:"ทำไมถามคำถามเดิม แล้วได้คำตอบต่างกันในแต่ละครั้ง",o:["มันเสีย","มันเลือกจากตัวเลือกที่น่าจะเป็นไปได้ใหม่ทุกครั้ง","มันกำลังเรียนรู้จากตัวคุณโดยเฉพาะ","อินเทอร์เน็ตช้า"]},
+  en:{q:"Why can the same question give a different answer each time?",o:["It's broken","It picks from several likely options each time","It's learning from you personally","Your internet is slow"]}},
+ {c:"verify",a:1,
+  th:{q:"AI ให้ข้อมูลพร้อมลิงก์อ้างอิง แต่ลิงก์เปิดไม่ได้ ควรทำอย่างไร",o:["ใช้ได้เลย เพราะมันอ้างอิงมาแล้ว","ตรวจสอบข้อมูลนั้นด้วยตัวเองก่อนนำไปใช้","ถาม AI ว่าแน่ใจหรือไม่","เก็บข้อมูลไว้ แล้วตัดแหล่งอ้างอิงทิ้ง"]},
+  en:{q:"An AI gives a fact with a source link. The link doesn't open. What now?",o:["Use it — the AI cited something","Check the fact yourself before using it","Ask the AI whether it's sure","Keep the fact, drop the source"]}},
+ {c:"verify",a:1,
+  th:{q:"ข้อไหนที่ AI มีโอกาสทำผิดพลาดมากที่สุด",o:["สรุปข้อความที่คุณวางให้","ตัวเลข วันที่ หรือแหล่งอ้างอิงที่เจาะจง","เรียบเรียงประโยคของคุณให้อ่านง่ายขึ้น","แปลคำที่ใช้กันทั่วไป"]},
+  en:{q:"Which of these is it most likely to get wrong?",o:["Summarising text you pasted in","A specific number, date or citation","Rewriting your sentence more clearly","Translating a common word"]}},
+ {c:"instruct",a:1,
+  th:{q:"คำสั่งแบบไหนได้คำตอบที่ใช้งานได้จริงมากกว่า",o:["“เขียนอะไรสักอย่างเรื่องความปลอดภัย”","“เขียนบทพูดความปลอดภัยก่อนเข้างาน 150 คำ สำหรับพนักงานขับโฟล์คลิฟท์ เรื่องมุมอับ ใช้ภาษาง่าย สรุปเป็น 3 ข้อปฏิบัติ”"]},
+  en:{q:"Which prompt gets a more useful reply?",o:["“Write something about safety”","“Write a 150-word toolbox talk for forklift operators on blind corners. Plain language. Three actions.”"]}},
+ {c:"instruct",a:1,
+  th:{q:"คำตอบยาวเกินไปและเป็นทางการเกินไป ควรทำอะไรต่อ",o:["เปิดแชทใหม่","พิมพ์ต่อว่า “100 คำ ภาษาง่าย ๆ สำหรับผู้อ่านอายุ 60 ปี”","บอกให้มันตั้งใจกว่านี้","วางลง Word แล้วตัดเอง"]},
+  en:{q:"The reply is too long and too formal. Best next move?",o:["Start a brand new chat","Reply: 100 words, plain language, for a 60-year-old reader","Tell it to try harder","Paste into Word and cut it down"]}},
+ {c:"judge",a:1,
+  th:{q:"ข้อมูลแบบไหนที่ไม่ควรวางลงในเครื่องมือ AI สาธารณะ",o:["บันทึกร่างถึงตัวเอง","รายชื่อลูกค้าพร้อมราคา","ข่าวประชาสัมพันธ์ที่เผยแพร่ไปแล้ว","สูตรอาหาร"]},
+  en:{q:"Which should never be pasted into a public AI tool?",o:["A draft note to yourself","A customer list with names and prices","A press release already published","A recipe"]}},
+ {c:"judge",a:2,
+  th:{q:"มีข้อความบอกว่าบัญชีธนาคารจะถูกปิดใน 1 ชั่วโมง ให้กดลิงก์ทันที ควรทำอย่างไร",o:["กดเข้าไปดูก่อน","ตอบกลับถามว่าเป็นใคร","ไม่กด แล้วโทรหาธนาคารตามเบอร์บนบัตรของตัวเอง","ส่งต่อให้ลูกหลานแล้วรอ"]},
+  en:{q:"A message says your bank account closes in one hour — click the link. Best action?",o:["Click it to check","Reply and ask who they are","Don't click. Call the bank on the number from your own card.","Forward it to family and wait"]}}
+];
+
+let lang="th",A={},L={},litDone=false,skipped=false,line=null,station=1,prof={},cur="s1";
+const $=id=>document.getElementById(id), t=()=>D[lang], steps=["s1","s2","s2b","s3","s4","s5"];
+
+function show(id){cur=id;steps.forEach(s=>$(s).classList.toggle("on",s===id));window.scrollTo({top:0,behavior:"smooth"});paint()}
+function paint(){
+  const T=t();
+  document.querySelectorAll("[data-t]").forEach(e=>{const v=T[e.dataset.t];if(typeof v==="string")e.textContent=v});
+  $("brand").textContent=T.brand;$("contrast").textContent=T.contrast;$("reset").textContent=T.reset;
+  const map={s1:0,s2:1,s2b:1,s3:2,s4:2,s5:3};
+  $("rail").innerHTML=T.rail.map((n,i)=>`<div class="${i<map[cur]?'done':i===map[cur]?'now':''}"><b>${n[0]}</b><span>${n[1]}</span></div>`).join("");
+  $("neverList").innerHTML=T.never.map(n=>`<li>${n}</li>`).join("");
+  drawEntry();
+  if(cur==="s2")drawLit();
+  if(cur==="s2b")drawFac();
+  if(line&&(cur==="s3"||cur==="s5"))decide();
+  if(cur==="s4")drawProfile();
+  if(cur==="s5")render5();
+  drawLedger();
+}
+function drawEntry(){
+  const T=t();
+  $("entryQs").innerHTML=ENTRY.map(q=>{const d=q[lang];return `<div class="q"><p>${d.q}</p>${d.hint?`<p class="hint">${d.hint}</p>`:""}
+    <div class="opts">${d.o.map(o=>`<button data-k="${q.k}" data-v="${o[1]}" aria-pressed="${A[q.k]===o[1]}">${o[0]}</button>`).join("")}</div></div>`}).join("");
+  $("entryQs").querySelectorAll("button").forEach(b=>b.onclick=()=>{A[b.dataset.k]=b.dataset.v;drawEntry();drawLedger()});
+  $("toS2").disabled=!ENTRY.every(q=>A[q.k]);
+  const f=$("pathFlag");
+  if(!A.age){f.style.display="none";return}
+  f.style.display="block";
+  if(A.age==="u13"||A.age==="t"){f.className="flag lock";f.innerHTML=`<b>${T.flagU18T}</b><span>${T.flagU18S}</span>`}
+  else if(A.age==="y"){f.className="flag lock";f.innerHTML=`<b>${T.flag20T}</b><span>${T.flag20S}</span>`}
+  else{f.className="flag";f.innerHTML=`<b>${T.flagFullT}</b><span>${T.flagFullS}</span>`}
+}
+function drawFac(){
+  const T=t();
+  $("facForm").innerHTML=`
+  <fieldset><legend>${T.facLeg1}</legend>
+    <label class="f">${T.facName}</label><input type="text">
+    <label class="f">${T.facMail}</label><input type="text">
+    <label class="f">${T.facRole}</label><select>${T.facRoles.map(r=>`<option>${r}</option>`).join("")}</select>
+  </fieldset>
+  <fieldset disabled><legend>${T.facLeg2}</legend>
+    <label class="f">${T.lName}</label><input type="text" placeholder="${T.notColl}">
+    <label class="f">${T.lSchool}</label><input type="text" placeholder="${T.notColl}">
+    <label class="f">${T.lDob}</label><input type="text" placeholder="${T.dobNote}">
+  </fieldset>`;
+}
+function drawLit(){
+  $("litQs").innerHTML=LIT.map((q,i)=>{const d=q[lang];return `<div class="q"><p>${i+1}. ${d.q}</p>
+    <div class="opts stack">${d.o.map((o,j)=>`<button data-i="${i}" data-j="${j}" aria-pressed="${L[i]===j}">${o}</button>`).join("")}</div></div>`}).join("");
+  $("litQs").querySelectorAll("button").forEach(b=>b.onclick=()=>{L[b.dataset.i]=+b.dataset.j;drawLit();drawLedger()});
+  $("toS3").disabled=Object.keys(L).length<LIT.length;
+}
+function litResult(){
+  const T=t(),c={mechanics:0,verify:0,instruct:0,judge:0};
+  LIT.forEach((q,i)=>{if(L[i]===q.a)c[q.c]++});
+  const total=Object.values(c).reduce((a,b)=>a+b,0);
+  if(c.judge===0)return{st:1,why:T.whyJudge};
+  if(total>=6&&Object.values(c).every(v=>v>=1))return{st:3,why:T.whyStrong};
+  if(total>=4)return{st:2,why:T.whyMid};
+  return{st:1,why:T.whyLow};
+}
+function labelOf(k){const q=ENTRY.find(x=>x.k===k)[lang];return (q.o.find(o=>o[1]===A[k])||["—"])[0]}
+function decide(){
+  const T=t(),s={};
+  ["age","goal"].forEach(k=>Object.entries(SCORE[k][A[k]]||{}).forEach(([id,n])=>s[id]=(s[id]||0)+n));
+  line=Object.entries(s).sort((a,b)=>b[1]-a[1])[0][0];
+  const r=(litDone&&!skipped)?litResult():{st:1,why:T.whySkip};
+  station=r.st;
+  const l=LINES[line],d=l[lang],tr=TRACKS[line]?TRACKS[line][lang]:null;
+  const lock=(l.safeSt&&station>l.safeSt)?`<span class="locked">${T.lockNote(l.safeSt,d.safeName)}</span>`:"";
+  const jobs=(A.age==="w"||A.age==="r");
+  $("rec").innerHTML=`<div class="reccard" style="color:${l.c}">
+    <div class="eyebrow" style="color:${l.c}">${T.yourLine}</div>
+    <span class="lineName">${d.n}</span>
+    <dl class="rows">
+      <div class="row"><dt>${T.rLine}</dt><dd><b>${d.n} — ${d.who}</b><span>${d.dose}</span>
+        <span class="why">${T.because(labelOf("age"),labelOf("goal"))}</span></dd></div>
+      <div class="row"><dt>${T.rStation}</dt><dd><b>${T.stationOf(station)}</b><span class="why">${r.why}</span>${lock}</dd></div>
+      <div class="row"><dt>${T.rTrack}</dt><dd><b>${tr?tr[0]:"—"}</b><span class="why">${tr?T.trackProv:T.noTrack}</span></dd></div>
+      <div class="row"><dt>${T.rNext}</dt><dd>
+        <b>${T.ns1(A.locale==="th"?T.langTH:T.langEN)}</b><span>${T.ns1s}</span>
+        <b style="margin-top:8px">${T.ns2}</b><span>${T.ns2s}</span>
+        <b style="margin-top:8px">${jobs?T.ns3o:T.ns3c}</b><span>${jobs?T.ns3os:T.ns3cs}</span>
+      </dd></div>
+    </dl></div>`;
+}
+function drawProfile(){
+  const T=t(),full=(A.age==="w"||A.age==="r"),tr=TRACKS[line]?TRACKS[line][lang]:["—"];
+  $("profileForm").innerHTML=`
+  <fieldset><legend>${T.pLeg1}</legend>
+    <label class="f">${T.pRole}</label><input type="text" id="p_role" placeholder="${T.pRoleP}" value="${prof.p_role||""}">
+    <label class="f">${T.pInd}</label><select id="p_ind">${T.inds.map(i=>`<option ${prof.p_ind===i?"selected":""}>${i}</option>`).join("")}</select>
+    <label class="f">${T.pTrack}</label><select id="p_track">${tr.map(x=>`<option>${x}</option>`).join("")}</select>
+  </fieldset>
+  <fieldset><legend>${T.pLeg2}</legend>
+    <label class="f">${T.pEdu}</label><select id="p_edu">${T.edus.map(e=>`<option ${prof.p_edu===e?"selected":""}>${e}</option>`).join("")}</select>
+  </fieldset>
+  <fieldset ${full?"":"disabled"}><legend>${full?T.pLeg3:T.pLeg3l}</legend>
+    <label class="f">${T.pOrg}</label><input type="text" id="p_org" placeholder="${full?T.pOrgP:T.locked21}">
+    <label class="f">${T.pCv}</label><input type="text" id="p_cv" placeholder="${full?T.pCvP:T.locked21}">
+  </fieldset>
+  <fieldset><legend>${T.pLeg4}</legend>
+    <label class="f">${T.pGen}</label><input type="text" id="p_gen" placeholder="${T.pGenP}" value="${prof.p_gen||""}">
+  </fieldset>`;
+  ["p_role","p_ind","p_edu","p_track","p_org","p_gen"].forEach(id=>{const e=$(id);if(e)e.oninput=e.onchange=()=>{prof[id]=e.value;drawLedger()}});
+}
+function render5(){
+  const T=t(),l=LINES[line],d=l[lang];
+  $("final").innerHTML=`<div class="reccard" style="color:${l.c}">
+    <span class="lineName">${d.n} · ${T.stationOf(station)}</span>
+    <p class="note">${T.spine} — ${d.dose}</p><p class="note">${T.changeAny}</p></div>`;
+}
+function drawLedger(){
+  const T=t(),rows=[];
+  if(A.locale)rows.push(["locale",labelOf("locale"),T.tagDev]);
+  if(A.age)rows.push(["age_band",labelOf("age"),T.tagDev]);
+  if(A.goal)rows.push(["goal",labelOf("goal"),T.tagDev]);
+  if(A.age==="u13"||A.age==="t")rows.push(["facilitator_id","—",T.tagSrv]);
+  const n=Object.keys(L).length;if(n)rows.push(["placement",T.answered(n),T.tagDev]);
+  if(line){rows.push(["line",LINES[line][lang].n,T.tagDev]);rows.push(["station",station,T.tagDev])}
+  Object.entries(prof).forEach(([k,v])=>{if(v&&v!=="—")rows.push([k.replace("p_","profile_"),v.length>16?v.slice(0,16)+"…":v,T.tagSrv])});
+  $("ledger").innerHTML=rows.length?rows.map(r=>`<div class="rec"><i>${r[0]}</i><b>${r[1]}<br><span class="tag">${r[2]}</span></b></div>`).join("")
+    :`<p class="note" style="margin:0">${T.ledEmpty}</p>`;
+}
+
+$("toS2").onclick=()=>{(A.age==="u13"||A.age==="t")?show("s2b"):show("s2")};
+$("skipLit").onclick=()=>{skipped=true;litDone=false;decide();show("s3")};
+$("toS3").onclick=()=>{litDone=true;skipped=false;decide();show("s3")};
+$("toS3b").onclick=()=>{decide();show("s3")};
+$("override").onclick=()=>show("s1");
+$("toS4").onclick=()=>show("s4");
+$("skipProf").onclick=()=>{prof={};show("s5")};
+$("finish").onclick=()=>show("s5");
+document.querySelectorAll("[data-scale]").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("[data-scale]").forEach(x=>x.setAttribute("aria-pressed",x===b));
+  document.documentElement.style.setProperty("--scale",b.dataset.scale)});
+document.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("[data-lang]").forEach(x=>x.setAttribute("aria-pressed",x===b));
+  lang=b.dataset.lang;document.documentElement.lang=lang;paint()});
+$("contrast").onclick=e=>{const on=document.documentElement.dataset.contrast!=="high";
+  document.documentElement.dataset.contrast=on?"high":"normal";e.target.setAttribute("aria-pressed",on)};
+$("reset").onclick=()=>{A={};L={};prof={};litDone=skipped=false;line=null;station=1;show("s1")};
+
+paint();
+</script>
+</body>
+</html>

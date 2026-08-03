@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="th" data-contrast="normal">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>คนทำงาน — สถานีการเรียน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style is:global>
+:root{
+  --paper:#EBEDF1;--card:#F7F8FA;--ink:#12161D;--ink-soft:#4E5765;--rule:#C7CDD6;
+  --teal:#0C6D7C;--lock:#8A2F2F;--ok:#237848;--scale:1;
+  font-size:calc(16px * var(--scale));
+}
+html[data-contrast="high"]{--paper:#fff;--card:#fff;--ink:#000;--ink-soft:#1D2229;--rule:#7C838D;--teal:#004C59;--lock:#6B0000;--ok:#0C5730}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans Thai",system-ui,sans-serif;line-height:1.65}
+h1,h2,h3{font-weight:600;margin:0;line-height:1.32}
+html[lang="en"] h1,html[lang="en"] h2{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;letter-spacing:-.02em;line-height:1.14}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.wrap{max-width:940px;margin:0 auto;padding:0 20px}
+.eyebrow{font-size:.82rem;color:var(--ink-soft)}
+.mono{font-family:"IBM Plex Mono",monospace}
+
+.util{position:sticky;top:0;z-index:60;background:var(--ink);color:var(--paper)}
+.util .wrap{display:flex;gap:9px;align-items:center;flex-wrap:wrap;padding:8px 20px;max-width:940px}
+.util .brand{font-weight:600;margin-right:auto}
+.util button{background:transparent;border:1px solid rgba(255,255,255,.3);color:inherit;border-radius:99px;padding:3px 11px;font-size:.8rem}
+.util button[aria-pressed="true"]{background:var(--paper);color:var(--ink)}
+.util :focus-visible{outline-color:#fff}
+
+.srail{display:flex;gap:8px;margin:28px 0 22px;flex-wrap:wrap}
+.srail button{flex:1 1 165px;text-align:left;background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:10px 13px}
+.srail button[aria-current="true"]{border-color:var(--teal);border-width:2px;background:var(--paper)}
+.srail .num{font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--ink-soft);display:block}
+.srail .nm{font-weight:600;font-size:.93rem;display:block;line-height:1.35}
+.srail .st{font-size:.73rem;display:inline-block;margin-top:5px;border-radius:99px;padding:0 9px;border:1px solid var(--rule);color:var(--ink-soft)}
+.srail .st.gate{border-color:var(--lock);color:var(--lock)}
+.srail .st.done{border-color:var(--ok);color:var(--ok)}
+
+.head{background:var(--card);border:1px solid var(--rule);border-top:6px solid var(--teal);border-radius:4px;padding:24px}
+.head h1{font-size:clamp(1.5rem,4.2vw,2.2rem)}
+.meta{display:flex;gap:24px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid var(--rule)}
+.meta div span{display:block;font-size:.76rem;color:var(--ink-soft)}
+.meta div b{font-weight:600}
+
+.gate{border:2px solid var(--lock);border-radius:4px;padding:18px;margin-top:18px;background:var(--paper)}
+.gate h3{color:var(--lock);font-size:1.05rem}
+.gate p{font-size:.9rem;color:var(--ink-soft);margin:6px 0 12px}
+.gitem{display:flex;gap:11px;align-items:flex-start;padding:8px 0;border-top:1px dashed var(--rule)}
+.gitem:first-of-type{border-top:0}
+.gitem p{margin:0;font-size:.94rem;color:var(--ink)}
+.veil{position:relative}
+.veil.locked>.step{filter:blur(3px);opacity:.4;pointer-events:none;user-select:none}
+.veilmsg{text-align:center;padding:22px;border:1px dashed var(--lock);border-radius:4px;margin-top:16px;color:var(--lock);font-size:.95rem}
+
+.step{background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:22px;margin-top:16px}
+.step>header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.badge{width:36px;height:36px;border-radius:50%;border:3px solid var(--teal);color:var(--teal);display:grid;place-items:center;font-weight:600;flex:0 0 auto;background:var(--paper)}
+.step h2{font-size:1.24rem}
+.step .mins{margin-inline-start:auto;font-size:.8rem;color:var(--ink-soft);white-space:nowrap}
+.video{border:1px dashed var(--rule);border-radius:4px;padding:15px;display:flex;gap:14px;align-items:center;background:var(--paper)}
+.video .play{width:40px;height:40px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;flex:0 0 auto}
+.video b{display:block}
+.video span{font-size:.83rem;color:var(--ink-soft)}
+
+.prompt{border:2px solid var(--ink);border-radius:4px;background:var(--paper);margin-top:12px}
+.prompt .ptxt{padding:15px 17px;font-size:1rem}
+.prompt footer{display:flex;gap:10px;align-items:center;border-top:1px solid var(--rule);padding:8px 13px;flex-wrap:wrap}
+.prompt footer span{font-size:.79rem;color:var(--ink-soft);margin-inline-end:auto}
+.copy{background:var(--ink);color:var(--paper);border:0;border-radius:99px;padding:6px 16px;font-size:.85rem}
+.noai{border:1px solid var(--rule);border-radius:4px;background:var(--paper);padding:15px 17px;margin-top:12px}
+.noai b{display:block;color:var(--teal)}
+.noai ul{margin:8px 0 0;padding-inline-start:18px;font-size:.93rem}
+.noai li{margin-bottom:5px}
+.expect{margin-top:12px;font-size:.92rem;color:var(--ink-soft)}
+.stuck{margin-top:12px;border-inline-start:4px solid var(--rule);padding-inline-start:14px;font-size:.9rem;color:var(--ink-soft)}
+.stuck b{color:var(--ink);font-weight:600}
+
+.calc{border:2px solid var(--teal);border-radius:4px;padding:18px;margin-top:14px;background:var(--paper)}
+.calc h3{color:var(--teal);font-size:1.02rem;margin-bottom:4px}
+.calc p.sub{font-size:.86rem;color:var(--ink-soft);margin:0 0 12px}
+.cfields{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.cfields label{font-size:.8rem;color:var(--ink-soft);display:block;margin-bottom:3px}
+.cfields input{width:100%;padding:9px 10px;border:1px solid var(--rule);border-radius:4px;background:var(--card);font:inherit;color:var(--ink)}
+.cout{margin-top:14px;padding-top:12px;border-top:1px solid var(--rule);display:flex;gap:26px;flex-wrap:wrap}
+.cout div b{display:block;font-family:"IBM Plex Mono",monospace;font-size:1.5rem;font-weight:500}
+.cout div span{font-size:.76rem;color:var(--ink-soft)}
+.cwarn{font-size:.84rem;color:var(--lock);margin-top:10px}
+
+.donebox{display:flex;gap:12px;align-items:flex-start;margin-top:16px;border-top:1px solid var(--rule);padding-top:14px}
+.check{width:28px;height:28px;border:2px solid var(--rule);border-radius:6px;background:var(--paper);flex:0 0 auto;display:grid;place-items:center;color:transparent}
+.check[aria-pressed="true"]{border-color:var(--ok);color:var(--ok)}
+.donebox p{margin:0;font-size:.93rem}
+.donebox p b{display:block}
+
+.foot{margin:26px 0 70px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.primary{background:var(--ink);color:var(--paper);border:0;border-radius:99px;padding:11px 24px}
+.ghost{background:transparent;border:1px solid var(--rule);border-radius:99px;padding:11px 20px}
+.pausenote{width:100%;font-size:.88rem;color:var(--ink-soft);margin-top:4px}
+@media print{.util,.srail,.foot,.copy,.donebox,.video .play{display:none!important}body{background:#fff;font-size:12pt}.step,.head,.calc{border:1px solid #999;break-inside:avoid;background:#fff}.veil.locked>.step{filter:none;opacity:1}}
+@media(max-width:640px){.cfields{grid-template-columns:1fr}.step{padding:18px}}
+</style>
+</head>
+<body>
+
+<div class="util"><div class="wrap">
+  <div class="brand" id="brand"></div>
+  <button data-scale="1" aria-pressed="true">ก</button>
+  <button data-scale="1.14" aria-pressed="false">ก+</button>
+  <button data-scale="1.3" aria-pressed="false">ก++</button>
+  <button id="contrast" aria-pressed="false"></button>
+  <button id="print"></button>
+  <button data-lang="th" aria-pressed="true">ไทย</button>
+  <button data-lang="en" aria-pressed="false">EN</button>
+</div></div>
+
+<div class="wrap">
+  <nav class="srail" id="srail" aria-label="stations"></nav>
+  <div id="station"></div>
+</div>
+
+<script is:inline>
+const UI={
+ th:{brand:"คนทำงาน · สายที่ 4", contrast:"คอนทราสต์สูง", print:"พิมพ์",
+  station:n=>`สถานี ${n} จาก 4`, gate:"ด่านนโยบายข้อมูล", doneTag:"เรียนแล้ว",
+  steps:["ดู","ลอง","ทำ","เล่า"],
+  mTime:"เวลาที่ใช้", mFormat:"รูปแบบ", mTrack:"แทร็ก", mOut:"ส่งงาน",
+  format:"20 นาที · สัปดาห์ละ 5 วัน · 8 สัปดาห์", track:"ซัพพลายเชนและคลังสินค้า",
+  copy:"คัดลอก", copied:"คัดลอกแล้ว", promptHint:"คัดลอกไปวาง แล้วแก้ให้ตรงงานของคุณ",
+  expectT:"ผลที่ควรได้", stuckT:"จุดที่มักพลาด", doneT:"ถือว่าผ่านเมื่อ", markDone:"ทำเสร็จแล้ว",
+  next:"ไปสถานีถัดไป", back:"ย้อนกลับ", finish:"จบสายคนทำงาน",
+  pause:"หยุดได้ทุกเมื่อ ความคืบหน้าไม่หาย",
+  gateH:"ต้องผ่านด่านนี้ก่อนเข้าสถานี 3",
+  gateP:"ตั้งแต่สถานีนี้ไป ข้อมูลจะออกจากเครื่องคุณไปยังบริการภายนอก ยืนยันทั้งสามข้อก่อน",
+  gateItems:["ผมได้ตรวจนโยบายข้อมูลของบริษัทแล้ว และงานนี้อยู่ในขอบเขตที่อนุญาต",
+             "ระบบชุดแรกของผมไม่มีชื่อลูกค้า ราคา หรือข้อมูลส่วนบุคคล",
+             "ทุกผลลัพธ์จะมีคนอ่านและอนุมัติก่อนส่งออกเสมอ"],
+  gateLocked:"ยืนยันครบสามข้อ แล้วเนื้อหาสถานีจะเปิด",
+  calcH:"เครื่องคิดชั่วโมงที่ประหยัดได้", calcP:"กรอกตัวเลขจริงจากสถานี 2 ตัวเลขนี้ต้องใช้ที่สถานี 4",
+  cBefore:"เดิม (นาทีต่อครั้ง)", cAfter:"ตอนนี้ (นาทีต่อครั้ง)", cFreq:"ทำกี่ครั้งต่อเดือน",
+  cSaveM:"นาทีที่ประหยัดต่อเดือน", cSaveY:"ชั่วโมงต่อปี", cPct:"เร็วขึ้น",
+  cWarn:"ตัวเลขนี้คือของงานเดียว ของคุณคนเดียว อย่าคูณด้วยจำนวนคนทั้งแผนกที่ยังไม่ได้ใช้",
+  noAiT:"สถานีนี้ยังไม่ใช้ AI", watchCap:"คำบรรยายไทยและอังกฤษ"},
+ en:{brand:"Operators · Line 4", contrast:"High contrast", print:"Print",
+  station:n=>`Station ${n} of 4`, gate:"Data policy gate", doneTag:"done",
+  steps:["Watch","Try","Make","Show"],
+  mTime:"Time", mFormat:"Format", mTrack:"Track", mOut:"Deliverable",
+  format:"20 min · 5 days a week · 8 weeks", track:"Supply chain & warehouse",
+  copy:"Copy", copied:"Copied", promptHint:"Copy it, then edit to match your own task",
+  expectT:"What you should get", stuckT:"Where this goes wrong", doneT:"You're done when", markDone:"Mark as done",
+  next:"Next station", back:"Back", finish:"Finish Operators",
+  pause:"Stop any time. Progress is kept.",
+  gateH:"Clear this before Station 3 opens",
+  gateP:"From this station onward, data leaves your machine for an outside service. Confirm all three.",
+  gateItems:["I've checked my company's data policy and this task is within what's permitted.",
+             "My first automation contains no customer names, pricing, or personal data.",
+             "Every output is read and approved by a person before it goes anywhere."],
+  gateLocked:"Confirm all three and the station content opens.",
+  calcH:"Hours-saved calculator", calcP:"Use the real numbers from Station 2. You'll need them at Station 4.",
+  cBefore:"Before (min per run)", cAfter:"Now (min per run)", cFreq:"Runs per month",
+  cSaveM:"Minutes saved per month", cSaveY:"Hours per year", cPct:"Faster by",
+  cWarn:"This is one task, for one person. Don't multiply it by a department that isn't using it yet.",
+  noAiT:"No AI at this station", watchCap:"Thai and English captions"}
+};
+
+const S={th:[
+ {n:"หา 5 งานที่คุณทำซ้ำทุกสัปดาห์",gate:false,out:"รายการ 5 งาน พร้อมคะแนน",
+  watch:{t:"หา 5 งานที่คุณทำซ้ำทุกสัปดาห์",d:"3 นาที"},
+  noai:["จดทุกครั้งที่ทำอะไรซ้ำ ตลอดหนึ่งสัปดาห์ — ชื่องานกับเวลาที่ใช้ พอ",
+        "สิ้นสัปดาห์ ให้คะแนนสองอย่าง: ชั่วโมงต่อเดือน และความน่าเบื่อ 1–5",
+        "คูณสองตัวเข้าด้วยกัน งานคะแนนสูงสุดคืองานของสถานีถัดไป",
+        "ตัดออก: งานที่ใช้ข้อมูลลูกค้าหรือราคา และงานที่ทำปีละครั้ง"],
+  expect:"รายการที่มักออกมาคล้ายกัน — สรุปรายงานประจำสัปดาห์ ตอบอีเมลเรื่องเดิม จัดรูปแบบข้อมูลจาก Excel เขียนสรุปประชุม ตามงานจากทีมอื่น",
+  stuck:"คนส่วนใหญ่เปิดเครื่องมือ AI ก่อนแล้วค่อยหางานให้มันทำ ผลคือได้ของเล่น ไม่ได้เวลาคืน · อีกข้อ อย่าเลือกงานที่ยากที่สุด เลือกงานที่ซ้ำที่สุด",
+  make:{t:"เขียนรายการ 5 งาน พร้อมคะแนนชั่วโมง × ความน่าเบื่อ วงกลมงานที่ได้คะแนนสูงสุด",d:"คุณชี้ได้ว่างานไหนคืองานแรก และบอกเหตุผลได้ด้วยตัวเลข"},
+  show:{t:"ให้เพื่อนร่วมทีมดูรายการ แล้วถามว่างานห้าข้อของเขาเหมือนกันไหม ถ้าเหมือน แปลว่าคุณเจอปัญหาของทีม ไม่ใช่ของคุณคนเดียว"}},
+
+ {n:"เขียนงานหนึ่งใหม่ ให้เสร็จในครึ่งเวลา",gate:false,out:"พรอมป์ที่ใช้ซ้ำได้ + ตัวเลขเวลาก่อน/หลัง",
+  watch:{t:"เขียนงานหนึ่งใหม่ ให้เสร็จในครึ่งเวลา",d:"3 นาที 40 วินาที"},
+  prompt:"คุณคือผู้ช่วยของผู้จัดการคลังสินค้า สรุปข้อมูลด้านล่างให้ผู้จัดการโรงงานอ่าน ความยาวไม่เกิน 200 คำ แบ่งเป็นสามหัวข้อ — ผลงาน ปัญหา สิ่งที่ต้องตัดสินใจ ใช้เฉพาะตัวเลขที่ให้มา ห้ามประมาณค่าเอง ถ้าข้อมูลไม่พอ ให้เขียนว่าไม่มีข้อมูล",
+  expect:"พรอมป์ที่ใช้ได้จริงบอกสี่อย่าง — คุณเป็นใคร ผู้อ่านเป็นใคร รูปแบบผลลัพธ์ และห้ามทำอะไร ประโยค “ถ้าข้อมูลไม่พอ ให้เขียนว่าไม่มีข้อมูล” สำคัญที่สุด ถ้าไม่บอก มันจะเติมตัวเลขที่ดูสมเหตุสมผลแต่ไม่จริง",
+  stuck:"“ช่วยสรุปให้หน่อย” ได้ของกลาง ๆ ที่ต้องแก้ทั้งหมด เท่ากับไม่ประหยัดอะไร · จับเวลาก่อนเริ่มเสมอ ถ้าไม่มีตัวเลขตั้งต้น คุณพิสูจน์อะไรไม่ได้ที่สถานีสี่",
+  calc:true,
+  make:{t:"บันทึกพรอมป์ที่ใช้ได้ไว้ในที่ที่หยิบใช้ได้ทุกสัปดาห์ แล้วจับเวลารอบใหม่",d:"งานเดิมเสร็จเร็วขึ้นชัดเจน และคุณมีตัวเลขก่อน/หลังจดไว้"},
+  show:{t:"ส่งผลลัพธ์ให้คนที่เป็นผู้อ่านตัวจริง แล้วถามว่าคุณภาพเท่าเดิมหรือไม่ ถ้าคุณภาพตกแต่เร็วขึ้น ไม่ถือว่าผ่าน"}},
+
+ {n:"ทำสองขั้นให้อัตโนมัติ",gate:true,out:"ระบบที่รันทุกสัปดาห์ + จุดอนุมัติของคน + log",
+  watch:{t:"ทำสองขั้นให้อัตโนมัติ โดยยังมีคนอนุมัติ",d:"5 นาที"},
+  noai:["โครงสร้างมีสามส่วนเท่านั้น — ตัวกระตุ้น ขั้นตอน AI คนอนุมัติ ไม่มีส่วนที่สี่",
+        "ตัวอย่าง: เช้าวันจันทร์ ดึงไฟล์ที่ส่งออกมา ให้ AI จัดรูปแบบและสรุป ส่งเป็นร่างเข้าอีเมลคุณ",
+        "วางพรอมป์จากสถานี 2 ลงในขั้นตอน AI ได้เลย นั่นคือเหตุผลที่ไม่ควรข้ามสถานี 2",
+        "เปิด log ทุกครั้งที่รัน — รันเมื่อไร ใช้ข้อมูลอะไร"],
+  expect:"ระบบที่ไม่ส่งอะไรออกไปหาคนอื่นเอง ทุกอย่างจบที่ร่างในกล่องขาเข้าของคุณ ใช้เครื่องมือแบบลากวางได้ ไม่ต้องเขียนโค้ด",
+  stuck:"ลองป้อนไฟล์ที่คอลัมน์ผิดรูปแบบเข้าไปดู มันจะสรุปออกมาได้ ตัวเลขผิด และไม่บอกว่าผิด — ระบบไม่รู้ว่าตัวเองผิด นั่นคือเหตุผลที่ต้องมีคนอ่านก่อนเสมอ · ความรับผิดชอบยังเป็นของคุณ “AI ทำ” ไม่ใช่คำอธิบายที่ใครยอมรับ",
+  make:{t:"สร้างระบบหนึ่งชุดที่รันได้จริงทุกสัปดาห์ พร้อมจุดอนุมัติของคนและ log",d:"มันรันเองครบสองสัปดาห์ติดกัน โดยคุณไม่ต้องเข้าไปแตะ"},
+  show:{t:"พาเพื่อนร่วมทีมดูทีละขั้น ให้เขาชี้ว่าจุดไหนน่าจะพังก่อน"}},
+
+ {n:"พิสูจน์ชั่วโมงที่ประหยัดได้",gate:false,out:"เอกสารหนึ่งหน้า ส่งถึงหัวหน้า",
+  watch:{t:"พิสูจน์ชั่วโมงที่ประหยัดได้",d:"3 นาที 30 วินาที"},
+  prompt:"ช่วยเรียบเรียงข้อมูลด้านล่างเป็นเอกสารหนึ่งหน้าสำหรับผู้จัดการ แบ่งเป็นสี่หัวข้อ — งานอะไร เวลาก่อนและหลัง ชั่วโมงต่อปี และความเสี่ยงที่เหลืออยู่พร้อมวิธีคุม ใช้เฉพาะตัวเลขที่ผมให้ ห้ามปัดขึ้น ห้ามเพิ่มคำโฆษณา จบด้วยหนึ่งบรรทัดว่าระบบนี้ยังทำอะไรไม่ได้",
+  expect:"หนึ่งหน้าที่หัวหน้าอ่านจบในหนึ่งนาที หัวข้อที่คนลืมคือข้อสี่ — ความเสี่ยงที่เหลือ แต่มันคือหัวข้อที่ทำให้ผู้บริหารเชื่อคุณ",
+  stuck:"อย่าปัดตัวเลขขึ้น ถ้าประหยัดได้ 28 นาที ก็เขียน 28 นาที ตัวเลขเล็กที่จริงมีน้ำหนักกว่าตัวเลขใหญ่ที่ตรวจสอบไม่ได้ ถ้าหัวหน้าจับได้ว่าปัดขึ้น เขาจะไม่เชื่อทั้งหน้า",
+  calc:true,
+  make:{t:"ส่งเอกสารหนึ่งหน้าให้หัวหน้า แล้วขอสองอย่าง — เวลาสำหรับงานถัดไป และเพื่อนร่วมทีมอีกหนึ่งคนมาเรียนด้วย",d:"หัวหน้าได้อ่านจริง และคุณได้คำตอบ ไม่ว่าจะใช่หรือไม่"},
+  show:{t:"โพสต์สรุปสั้น ๆ ให้ทีมเห็น พร้อมพรอมป์ที่คุณใช้ ให้คนอื่นเอาไปใช้ต่อได้"}}
+],
+en:[
+ {n:"Find the five tasks you repeat every week",gate:false,out:"A list of five tasks with scores",
+  watch:{t:"Find the five tasks you repeat every week",d:"3 min"},
+  noai:["For one week, log every time you repeat something — the task and roughly how long it took.",
+        "At the end of the week, score two things: hours per month, and how tedious it is, 1–5.",
+        "Multiply them. The highest score is your task for the next station.",
+        "Rule out: anything involving customer data or pricing, and anything you do once a year."],
+  expect:"The list usually looks similar for everyone — the weekly report, answering the same customer email, reformatting an Excel export, writing up meeting notes, chasing another team.",
+  stuck:"Most people open an AI tool first and then look for work to feed it. That produces a toy, not your time back. Also: don't pick the hardest task — pick the most repeated one.",
+  make:{t:"Write the five tasks with hours × tedium scores, and circle the highest.",d:"You can point to your first task and justify it with numbers."},
+  show:{t:"Show the list to a teammate and ask whether their five are the same. If they are, you've found a team problem, not a personal one."}},
+
+ {n:"Rewrite one task, at half the time",gate:false,out:"A reusable prompt + before/after times",
+  watch:{t:"Rewrite one task, at half the time",d:"3 min 40 sec"},
+  prompt:"You are assisting a warehouse manager. Summarise the data below for the plant manager. Maximum 200 words. Three headings: performance, problems, decisions needed. Use only the figures provided — do not estimate. If data is missing, write 'no data'.",
+  expect:"A prompt that works states four things: who you are, who's reading, the output shape, and what it must not do. The line 'if data is missing, write no data' is the critical one — without it, the model fills gaps with figures that look reasonable and aren't real.",
+  stuck:"'Summarise this' returns something generic that needs rewriting entirely — no time saved. Also: time yourself before you start. Without a baseline you can't prove anything at Station 4.",
+  calc:true,
+  make:{t:"Save the working prompt somewhere you'll reach for it weekly, then time the task again.",d:"The task is measurably faster and you've written down both numbers."},
+  show:{t:"Send the output to the person who actually reads it, and ask whether the quality held. Faster but worse is not a pass."}},
+
+ {n:"Automate two steps",gate:true,out:"A weekly automation + human approval + log",
+  watch:{t:"Automate two steps — and keep a human in the loop",d:"5 min"},
+  noai:["The structure has exactly three parts — trigger, AI step, human approval. There is no fourth part.",
+        "Example: Monday morning, pull the export, have AI format and summarise it, send the draft to your inbox.",
+        "The prompt from Station 2 drops straight into the AI step. That's why Station 2 isn't skippable.",
+        "Log every run — when it ran, and on what data."],
+  expect:"An automation that sends nothing to anyone on its own. Everything ends as a draft in your inbox. Drag-and-drop tools are fine — no code needed.",
+  stuck:"Feed it a file with the columns in the wrong format. It will still produce a summary, with wrong numbers and no warning — the system doesn't know it's wrong. That's why a person reads it first. And this is still your work: 'the AI did it' is not an explanation anyone accepts.",
+  make:{t:"Build one automation that runs weekly, with a human approval step and a log.",d:"It has run on its own for two consecutive weeks without you touching it."},
+  show:{t:"Walk a teammate through it step by step and have them point at what will break first."}},
+
+ {n:"Prove the hours you saved",gate:false,out:"A one-page document sent to your manager",
+  watch:{t:"Prove the hours you saved",d:"3 min 30 sec"},
+  prompt:"Turn the data below into a one-page document for a manager. Four sections: what the task is, time before and after, hours per year, and what risk remains with how it's controlled. Use only the figures I give you — do not round up, do not add promotional language. End with one line on what this still can't do.",
+  expect:"One page a manager reads in a minute. The section people leave out is the fourth — remaining risk — and it's the one that makes leadership trust you.",
+  stuck:"Don't inflate. If you saved 28 minutes, write 28 minutes. A small true number carries more weight than a big unverifiable one — if your manager catches you rounding up, they stop believing the whole page.",
+  calc:true,
+  make:{t:"Send the one-pager and ask for two things: time for the next task, and one teammate to go through this with you.",d:"Your manager has actually read it, and you have an answer either way."},
+  show:{t:"Post a short summary for the team, including the prompt you used, so someone else can pick it up."}}
+]};
+
+let lang="th",idx=0,done={},gateOK=[false,false,false],calc={b:"",a:"",f:""};
+const $=id=>document.getElementById(id),U=()=>UI[lang];
+
+function rail(){
+  const T=U();
+  $("srail").innerHTML=S[lang].map((s,i)=>{
+    const dn=(done[i]||[]).length===4;
+    return `<button data-i="${i}" aria-current="${i===idx}">
+      <span class="num">${i+1}</span><span class="nm">${s.n}</span>
+      ${s.gate?`<span class="st gate">${T.gate}</span>`:dn?`<span class="st done">✓ ${T.doneTag}</span>`:""}
+    </button>`}).join("");
+  $("srail").querySelectorAll("button").forEach(b=>b.onclick=()=>{idx=+b.dataset.i;render();window.scrollTo({top:0,behavior:"smooth"})});
+}
+function calcOut(){
+  const T=U(),b=+calc.b||0,a=+calc.a||0,f=+calc.f||0;
+  const perM=Math.max(0,(b-a))*f, perY=(perM*12/60), pct=b>0?Math.round((1-a/b)*100):0;
+  return `<div class="cout">
+    <div><b>${perM||0}</b><span>${T.cSaveM}</span></div>
+    <div><b>${perY?perY.toFixed(1):"0"}</b><span>${T.cSaveY}</span></div>
+    <div><b>${pct>0?pct:0}%</b><span>${T.cPct}</span></div></div>
+    <p class="cwarn">${T.cWarn}</p>`;
+}
+function chk(i){
+  const on=(done[idx]||[]).includes(i);
+  return `<div class="donebox"><button class="check" data-s="${i}" aria-pressed="${on}">✓</button><p><b>${U().markDone}</b></p></div>`;
+}
+function render(){
+  const T=U(),s=S[lang][idx];
+  $("brand").textContent=T.brand;$("contrast").textContent=T.contrast;$("print").textContent=T.print;
+  rail();
+  const locked=s.gate&&!gateOK.every(Boolean);
+  const tryBody=s.prompt
+    ? `<div class="prompt"><div class="ptxt">${s.prompt}</div>
+       <footer><span>${T.promptHint}</span><button class="copy" id="copyBtn">${T.copy}</button></footer></div>`
+    : `<div class="noai"><b>${T.noAiT}</b><ul>${s.noai.map(x=>`<li>${x}</li>`).join("")}</ul></div>`;
+
+  $("station").innerHTML=`
+  <div class="head">
+    <div class="eyebrow">${T.station(idx+1)}</div><h1>${s.n}</h1>
+    <div class="meta">
+      <div><span>${T.mTime}</span><b>20 ${lang==="th"?"นาที":"min"}</b></div>
+      <div><span>${T.mFormat}</span><b>${T.format}</b></div>
+      <div><span>${T.mTrack}</span><b>${T.track}</b></div>
+      <div><span>${T.mOut}</span><b>${s.out}</b></div>
+    </div>
+    ${s.gate?`<div class="gate"><h3>${T.gateH}</h3><p>${T.gateP}</p>
+      ${T.gateItems.map((g,i)=>`<div class="gitem"><button class="check" data-g="${i}" aria-pressed="${gateOK[i]}">✓</button><p>${g}</p></div>`).join("")}</div>`:""}
+  </div>
+
+  <div class="veil ${locked?"locked":""}">
+    <section class="step">
+      <header><span class="badge">1</span><h2>${T.steps[0]}</h2><span class="mins">${s.watch.d}</span></header>
+      <div class="video"><span class="play">▶</span><span><b>${s.watch.t}</b><span>${T.watchCap}</span></span></div>
+      ${chk(0)}
+    </section>
+    <section class="step">
+      <header><span class="badge">2</span><h2>${T.steps[1]}</h2></header>
+      ${tryBody}
+      <p class="expect"><b>${T.expectT}:</b> ${s.expect}</p>
+      <div class="stuck"><b>${T.stuckT}</b><br>${s.stuck}</div>
+      ${s.calc?`<div class="calc"><h3>${T.calcH}</h3><p class="sub">${T.calcP}</p>
+        <div class="cfields">
+          <div><label for="cb">${T.cBefore}</label><input id="cb" type="text" inputmode="numeric" value="${calc.b}"></div>
+          <div><label for="ca">${T.cAfter}</label><input id="ca" type="text" inputmode="numeric" value="${calc.a}"></div>
+          <div><label for="cf">${T.cFreq}</label><input id="cf" type="text" inputmode="numeric" value="${calc.f}"></div>
+        </div>${calcOut()}</div>`:""}
+      ${chk(1)}
+    </section>
+    <section class="step">
+      <header><span class="badge">3</span><h2>${T.steps[2]}</h2></header>
+      <p style="margin:0;font-size:1.02rem">${s.make.t}</p>
+      <div class="stuck" style="border-color:var(--ok)"><b>${T.doneT}</b><br>${s.make.d}</div>
+      ${chk(2)}
+    </section>
+    <section class="step">
+      <header><span class="badge">4</span><h2>${T.steps[3]}</h2></header>
+      <p style="margin:0;font-size:1.02rem">${s.show.t}</p>
+      ${chk(3)}
+    </section>
+    ${locked?`<div class="veilmsg">${T.gateLocked}</div>`:""}
+  </div>
+
+  <div class="foot">
+    ${idx>0?`<button class="ghost" id="prev">${T.back}</button>`:""}
+    <button class="primary" id="nxt">${idx<3?T.next:T.finish}</button>
+    <p class="pausenote">${T.pause}</p>
+  </div>`;
+
+  const cp=$("copyBtn");
+  if(cp)cp.onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(s.prompt);cp.textContent=T.copied;
+    setTimeout(()=>{const b=$("copyBtn");if(b)b.textContent=T.copy},1600)};
+  ["cb","ca","cf"].forEach((id,i)=>{const e=$(id);if(e)e.oninput=()=>{calc[["b","a","f"][i]]=e.value.replace(/[^0-9]/g,"");
+    const k=document.activeElement.id;render();const n=$(k);if(n){n.focus();n.setSelectionRange(n.value.length,n.value.length)}}});
+  document.querySelectorAll("[data-g]").forEach(c=>c.onclick=()=>{gateOK[+c.dataset.g]=!gateOK[+c.dataset.g];render()});
+  document.querySelectorAll("[data-s]").forEach(c=>c.onclick=()=>{
+    const i=+c.dataset.s,d=done[idx]||[];done[idx]=d.includes(i)?d.filter(x=>x!==i):[...d,i];render()});
+  const p=$("prev");if(p)p.onclick=()=>{idx--;render();window.scrollTo({top:0,behavior:"smooth"})};
+  $("nxt").onclick=()=>{if(idx<3){idx++;render();window.scrollTo({top:0,behavior:"smooth"})}};
+}
+document.querySelectorAll("[data-scale]").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("[data-scale]").forEach(x=>x.setAttribute("aria-pressed",x===b));
+  document.documentElement.style.setProperty("--scale",b.dataset.scale)});
+document.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("[data-lang]").forEach(x=>x.setAttribute("aria-pressed",x===b));
+  lang=b.dataset.lang;document.documentElement.lang=lang;render()});
+$("contrast").onclick=e=>{const on=document.documentElement.dataset.contrast!=="high";
+  document.documentElement.dataset.contrast=on?"high":"normal";e.target.setAttribute("aria-pressed",on)};
+$("print").onclick=()=>window.print();
+render();
+</script>
+</body>
+</html>
