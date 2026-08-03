@@ -12,50 +12,50 @@ const LINES = [
 ---
 
 <Layout title="สถานี AI · Sathani AI" lang="th">
-	<div class="flex h-screen flex-col overflow-hidden">
+	<div class="flex min-h-screen flex-col">
 		<header class="shrink-0 border-b" style="border-color:var(--rule)">
-			<div class="mx-auto flex max-w-5xl items-center justify-between px-6 py-3">
+			<div class="mx-auto flex max-w-5xl items-center justify-between px-6 py-2.5">
 				<span class="eyebrow font-semibold" style="color:var(--ink)">สถานี AI</span>
 				<a href="/en/" class="eyebrow underline decoration-2 underline-offset-4">EN</a>
 			</div>
 		</header>
 
-		<main class="mx-auto flex w-full max-w-5xl flex-1 flex-col justify-center px-6 py-4">
+		<main class="mx-auto flex w-full max-w-5xl flex-1 flex-col justify-center px-6 py-3">
 			<section>
 				<p class="eyebrow">ไม่ต้องสมัคร · ไม่ต้องใช้อีเมล · 3 คำถามก็เริ่มได้</p>
-				<h1 class="font-display mt-3 text-2xl leading-tight font-bold md:text-4xl">
+				<h1 class="font-display mt-2 text-xl leading-tight font-bold md:text-3xl">
 					ช่องว่าง…ที่คนไทยเชื่อว่าตัวเองทำได้
 				</h1>
-				<p class="mt-3 max-w-xl text-base md:text-lg" style="color:var(--ink-soft)">
+				<p class="mt-2 max-w-xl text-sm md:text-base" style="color:var(--ink-soft)">
 					หาสายการเรียน AI ที่ตรงกับชีวิตคุณ — สนุก จับต้องได้ ไม่มีศัพท์วิชาการ
 				</p>
 				<a
 					href="/find-your-line"
-					class="font-display mt-5 inline-flex items-center gap-2 rounded-full px-6 py-3 text-base font-semibold text-white transition-transform hover:-translate-y-0.5 hover:shadow-lg"
+					class="font-display mt-4 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 hover:shadow-lg md:text-base"
 					style="background:var(--ink)"
 				>
 					หาสายของคุณ →
 				</a>
 			</section>
 
-			<section class="mt-8">
-				<h2 class="eyebrow mb-3">6 สายการเรียน</h2>
-				<div class="grid grid-cols-2 gap-3 md:grid-cols-3">
+			<section class="mt-5">
+				<h2 class="eyebrow mb-2">6 สายการเรียน</h2>
+				<div class="grid grid-cols-2 gap-2 md:grid-cols-3">
 					{
 						LINES.map((l) => (
 							<a
 								href={l.href}
-								class="group block rounded-lg border-2 p-4 transition-all hover:-translate-y-1 hover:shadow-xl"
+								class="group block rounded-lg border-2 p-3 transition-all hover:-translate-y-1 hover:shadow-xl"
 								style={`border-color:${l.c}; background:var(--card)`}
 							>
 								<span
-									class="inline-block h-2.5 w-2.5 rounded-full transition-transform group-hover:scale-150"
+									class="inline-block h-2 w-2 rounded-full transition-transform group-hover:scale-150"
 									style={`background:${l.c}`}
 								/>
-								<h3 class="font-display mt-2 text-lg font-bold md:text-xl" style={`color:${l.c}`}>
+								<h3 class="font-display mt-1 text-base font-bold md:text-lg" style={`color:${l.c}`}>
 									{l.n}
 								</h3>
-								<p class="mt-1 text-sm" style="color:var(--ink-soft)">
+								<p class="mt-0.5 text-xs" style="color:var(--ink-soft)">
 									{l.who}
 								</p>
 							</a>
